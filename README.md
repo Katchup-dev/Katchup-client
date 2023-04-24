@@ -1,2 +1,0 @@
-# Katchup-client
-🥫Katchup🥫
