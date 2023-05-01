@@ -1,0 +1,25 @@
+{
+  "presets": [
+    [
+      "next/babel",
+      {
+        "preset-react": {
+          "runtime": "automatic",
+          "importSource": "@emotion/react"
+        }
+      }
+    ]
+  ],
+  "plugins": ["@emotion/babel-plugin"]
+}
+
+/*
+Emotion을 사용할 때 babelrc.json 파일에 설정을 추가하지 않았는데도 
+스타일이 적용되어 있는 이유는 무엇일까요?
+
+이는 Emotion이 제공하는 css 함수를 사용하면서 발생한 일입니다. 
+Emotion의 css 함수는 스타일을 문자열로 리턴합니다. 
+이 문자열은 컴파일러가 이해할 수 있는 형태가 아니므로, Emotion은 이 문자열을 다시 CSS로 변환하는 작업을 수행합니다. 
+이 작업은 브라우저에서 실행되며, 브라우저는 이 문자열을 CSS로 변환하여 페이지에 적용합니다. 
+즉, Emotion의 css 함수를 사용하면서 babelrc.json 파일에 설정을 추가하지 않더라도 스타일이 적용되는 것입니다. 
+*/
