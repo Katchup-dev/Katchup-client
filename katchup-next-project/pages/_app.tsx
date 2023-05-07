@@ -1,10 +1,9 @@
 import { resetStyle, globalStyle } from 'styles/globalStyle';
 import theme from 'styles/theme';
 
-import { Global } from '@emotion/react';
+import { Global, ThemeProvider } from '@emotion/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { ThemeProvider } from '@tanstack/react-query-devtools/build/lib/theme';
 import type { AppProps } from 'next/app';
 import { RecoilRoot } from 'recoil';
 

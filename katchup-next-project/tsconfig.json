@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
-    "jsx": "react-jsx",
+    // "jsx": "react-jsx",
+    "jsx": "preserve",
     "jsxImportSource": "@emotion/react",
     "baseUrl": ".",
     "target": "es5",
@@ -15,15 +16,14 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": true,
     "jsx": "preserve",
     "incremental": true,
     "paths": {
       "@/*": ["./src/*"]
-      //절대경로 설정
-      // "@api/*": ["src/lib/api/*"],
-      // "@assets/*": ["src/assets/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "../../**/*.d.ts"],
   "exclude": ["node_modules"]
 }
