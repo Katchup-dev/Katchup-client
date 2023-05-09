@@ -1,12 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  webpack: config => {
-    // 아래를 추가합니다.
+  webpack: (config) => {
     config.module.rules.push({
-      test: /\.svg$/i,
+      test: /\.svg$/,
       issuer: /\.[jt]sx?$/,
-      use: ["@svgr/webpack"]
+      use: ['@svgr/webpack'],
     });
     return config;
   },

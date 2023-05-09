@@ -1,1 +1,1 @@
-export {ReactComponent as IcLogo} from "./Ic_logo.svg"
+export { default as IcLogo } from './Ic_logo.svg';

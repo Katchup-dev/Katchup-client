@@ -19,10 +19,7 @@
     "noFallthroughCasesInSwitch": true,
     "noImplicitAny": true,
     "jsx": "preserve",
-    "incremental": true,
-    "paths": {
-      "@/*": ["./src/*"]
-    }
+    "incremental": true
   },
   "include": ["public/assets/asset.d.ts", "**/*.d.ts", "next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
