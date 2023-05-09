@@ -1,0 +1,1 @@
+export {ReactComponent as IcLogo} from "./Ic_logo.svg"
