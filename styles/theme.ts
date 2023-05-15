@@ -22,8 +22,8 @@ function FONT_KOR({ weight, size, height }: Font) {
     font-family: 'Pretendard';
     font-style: normal;
     font-weight: ${weight};
-    font-size: ${size};
-    line-height: ${height};
+    font-size: ${size}rem;
+    line-height: ${height}rem;
   `;
 }
 
@@ -31,7 +31,7 @@ function FONT_ENG({ weight, size, height }: Font) {
   return css`
     font-family: 'Montserrat';
     font-style: normal;
-    font-weight: ${weight}rem;
+    font-weight: ${weight};
     font-size: ${size}rem;
     line-height: ${height}rem;
   `;
