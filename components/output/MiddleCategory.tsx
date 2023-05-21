@@ -10,7 +10,9 @@ const MiddleCategory = (props: MiddleCategoryProps) => {
   return (
     <StMiddleFolder>
       <IcMore />
-      {categoryName}
+      <div>
+        <h2>{categoryName}</h2>
+      </div>
     </StMiddleFolder>
   );
 };
@@ -29,6 +31,19 @@ export const StMiddleFolder = styled.article`
     right: 2.2rem;
 
     cursor: pointer;
+  }
+
+  > div {
+    position: absolute;
+    left: 3rem;
+    bottom: 2.6rem;
+
+    ${({ theme }) => theme.fonts.h2_bigtitle_eng};
+    border-left: 0.4rem solid ${({ theme }) => theme.colors.katchup_main};
+
+    > h2 {
+      margin-left: 1.6rem;
+    }
   }
 `;
 
