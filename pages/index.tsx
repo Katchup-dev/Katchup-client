@@ -3,14 +3,14 @@ import { userInfoState } from 'core/atom';
 
 import styled from '@emotion/styled';
 import { useRecoilState } from 'recoil';
+import OutputMain from './outputMain';
 
 export default function Home() {
   const [nameInfo, setNameInfo] = useRecoilState(userInfoState);
 
   return (
     <>
-      <StMain>안녕</StMain>
-      <UserProfile username={'pinktopaz'}></UserProfile>
+      <OutputMain />
       {nameInfo.name}
     </>
   );

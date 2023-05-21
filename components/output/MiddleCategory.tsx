@@ -1,10 +1,16 @@
 import styled from '@emotion/styled';
 import { IcMore } from 'public/assets/icons';
 
-const MiddleCategory = () => {
+interface MiddleCategoryProps {
+  categoryName: string;
+}
+
+const MiddleCategory = (props: MiddleCategoryProps) => {
+  const { categoryName } = props;
   return (
     <StMiddleFolder>
       <IcMore />
+      {categoryName}
     </StMiddleFolder>
   );
 };
