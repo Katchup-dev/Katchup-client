@@ -2,14 +2,22 @@ import styled from '@emotion/styled';
 import { IcHelp, IcLogo } from 'public/assets/icons';
 import SearchBox from './SearchBox';
 import { css } from '@emotion/react';
+import { useRouter } from 'next/router';
 
 export interface HeaderProps {
-  isInput: boolean;
   profileImgSrc: string;
 }
 
 const Header = (props: HeaderProps) => {
-  const { isInput, profileImgSrc } = props;
+  const { profileImgSrc } = props;
+
+  const router = useRouter();
+
+  const handleNavigate = (e: React.MouseEvent) => {
+    const target = e.target as HTMLLIElement;
+    if (target.innerText === '모아보기') router.push('/output/main');
+    if (target.innerText === '작성하기') router.push('/input/main');
+  };
 
   return (
     <>
@@ -19,8 +27,12 @@ const Header = (props: HeaderProps) => {
 
           <StMenuNav>
             <ul>
-              <StMenuItem isSelected={true}>작성하기</StMenuItem>
-              <StMenuItem isSelected={false}>모아보기</StMenuItem>
+              <StMenuItem isSelected={router.pathname.includes('input')} onClick={(e) => handleNavigate(e)}>
+                작성하기
+              </StMenuItem>
+              <StMenuItem isSelected={router.pathname.includes('output')} onClick={(e) => handleNavigate(e)}>
+                모아보기
+              </StMenuItem>
             </ul>
           </StMenuNav>
         </div>
@@ -45,8 +57,6 @@ const StHeaderWrapper = styled.header`
 
   width: 100%;
   height: 14.5rem;
-
-  border: 1px solid black;
 
   background-color: ${({ theme }) => theme.colors.katchup_bg_gray};
 
