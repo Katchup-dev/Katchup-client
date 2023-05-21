@@ -1,7 +1,7 @@
-import MiddleCategory from '../components/output/MiddleCategory';
+import MiddleCategory from '../../components/output/MiddleCategory';
 
-import AddMiddleCategory from '../components/output/AddMiddleCategory';
-import MainCategoryList from '../components/output/MainCategoryList';
+import AddMiddleCategory from '../../components/output/AddMiddleCategory';
+import MainCategoryList from '../../components/output/MainCategoryList';
 import styled from '@emotion/styled';
 import { IcEditMain } from 'public/assets/icons';
 import { css } from '@emotion/react';
