@@ -38,11 +38,12 @@ export const StMiddleFolder = styled.article`
     left: 3rem;
     bottom: 2.6rem;
 
-    ${({ theme }) => theme.fonts.h2_bigtitle_eng};
     border-left: 0.4rem solid ${({ theme }) => theme.colors.katchup_main};
 
     > h2 {
       margin-left: 1.6rem;
+
+      ${({ theme }) => theme.fonts.h2_bigtitle_eng};
     }
   }
 `;
