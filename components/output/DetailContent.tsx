@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { IcDeleteFile, IcSubLogo } from 'public/assets/icons';
+import { IcBack, IcDeleteFile, IcSubLogo } from 'public/assets/icons';
 import { useState } from 'react';
 
 const DetailContent = () => {
@@ -31,6 +31,11 @@ const DetailContent = () => {
 
   return (
     <StDetailWrapper>
+      <button>
+        <IcBack />
+        중분류로 돌아가기
+      </button>
+
       <StSectionDetail>
         <div>
           <IcSubLogo />
@@ -94,15 +99,15 @@ const DetailContent = () => {
         </StFileWrapper>
 
         <StButtonWrapper>
-          <button>삭제하기</button>
-          <button>수정하기</button>
+          <button type="button">삭제하기</button>
+          <button type="button">수정하기</button>
         </StButtonWrapper>
       </StSectionDetail>
     </StDetailWrapper>
   );
 };
 
-const StDetailWrapper = styled.main`
+const StDetailWrapper = styled.article`
   padding: 6.2rem 7.4rem 3.3rem 7.4rem;
 
   position: relative;
@@ -113,9 +118,27 @@ const StDetailWrapper = styled.main`
   border: 0.1rem solid ${({ theme }) => theme.colors.katchup_line_gray};
   border-radius: 2.6rem;
   box-shadow: 0px 0px 2rem rgba(0, 0, 0, 0.05);
+
+  > button {
+    display: flex;
+    gap: 0.6rem;
+    position: absolute;
+    top: 5.1rem;
+    right: 7.4rem;
+
+    color: ${({ theme }) => theme.colors.katchup_gray};
+    ${({ theme }) => theme.fonts.h3_title};
+
+    background-color: transparent;
+    border: none;
+
+    cursor: pointer;
+  }
 `;
 
-const StSectionDetail = styled.article`
+const StSectionDetail = styled.div`
+  position: relative;
+
   > div:nth-of-type(1),
   div:nth-of-type(2) {
     display: flex;
