@@ -19,7 +19,6 @@ interface Font {
 
 function FONT_KOR({ weight, size, height }: Font) {
   return css`
-    font-family: 'Pretendard';
     font-style: normal;
     font-weight: ${weight};
     font-size: ${size}rem;
@@ -29,7 +28,6 @@ function FONT_KOR({ weight, size, height }: Font) {
 
 function FONT_ENG({ weight, size, height }: Font) {
   return css`
-    font-family: 'Montserrat';
     font-style: normal;
     font-weight: ${weight};
     font-size: ${size}rem;

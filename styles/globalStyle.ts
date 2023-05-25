@@ -140,13 +140,19 @@ export const resetStyle = css`
 export const globalStyle = `
 @font-face {
   font-family : 'Pretendard';
-  src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+  src : url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-dynamic-subset.css');
+  unicode-range: U+AC00-D7A3;
 }
 
 @font-face {
  font-family: 'Montserrat';
   src : url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap') format ('woff');
   unicode-range: U+0041-005A, U+0061-007A;
+}
+
+*{
+  font-family: 'Pretendard', 'Montserrat';
+  box-sizing: border-box;
 }
 
 #root, body, html {
