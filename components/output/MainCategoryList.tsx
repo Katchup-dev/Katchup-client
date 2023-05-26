@@ -9,10 +9,11 @@ import { mainCategoryInfo } from 'types/output';
 
 const MainCategoryList = () => {
   const { categoryList, isError } = useGetMainCategoryList();
+  console.log(categoryList);
   const [currentMainCategory, setCurrentMainCategory] = useRecoilState(currentMainCategoryAtom);
 
   useEffect(() => {
-    if (categoryList.length > 0) {
+    if (categoryList?.length > 0) {
       setCurrentMainCategory(categoryList[0]?.name);
     }
   }, []);

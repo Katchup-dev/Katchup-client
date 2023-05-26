@@ -1,14 +1,14 @@
-import { UserProfileInfo } from 'types/auth';
+import { SelectMainCategoryInfo } from 'types/output';
 
 import { atom } from 'recoil';
 import { recoilPersist } from 'recoil-persist';
 
 const { persistAtom } = recoilPersist();
 
-export const userInfoState = atom<UserProfileInfo>({
-  key: `userInfo`,
+export const currentMainCategoryAtom = atom<SelectMainCategoryInfo>({
+  key: `currentMainCategory`,
   default: {
-    name: 'Katchup',
+    mainCategory: '',
   },
   effects_UNSTABLE: [persistAtom],
 });
