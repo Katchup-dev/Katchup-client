@@ -14,3 +14,6 @@ export { default as IcBack } from './ic_back.svg';
 export { default as IcScreenshotTag } from './ic_ScreenshotTag.svg';
 export { default as IcFileIcon } from './ic_fileIcon.svg';
 export { default as IcMoreDetail } from './ic_moreDetail.svg';
+export { default as IcEditMiddleCategory } from './ic_editMiddleCategory.svg';
+export { default as IcDeleteWorkCard } from './ic_deleteWorkCard.svg';
+export { default as IcWorkCardFilter } from './ic_workCardFilter.svg';

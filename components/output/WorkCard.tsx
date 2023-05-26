@@ -6,7 +6,7 @@ const WorkCard = () => {
   const keywordList = ['가나다라마바사아자차', 'NOTION', '아야어여', '케첩파이팅케첩이최고'];
   return (
     <StWorkCardWrapper>
-      <StCardNumber>번호</StCardNumber>
+      <StCardNumber>1</StCardNumber>
 
       <StSmallCategory>
         <IcScreenshotTag />
