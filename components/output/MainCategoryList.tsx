@@ -1,8 +1,21 @@
 import styled from '@emotion/styled';
+import { currentMainCategoryAtom } from 'core/atom';
+import { useGetMainCategoryList } from 'lib/hooks/useGetMainCategoryList';
 import { IcAddMain, IcTrash } from 'public/assets/icons';
+import { useEffect } from 'react';
+import { useRecoilState } from 'recoil';
+import { css } from '@emotion/react';
+import { mainCategoryInfo } from 'types/output';
 
 const MainCategoryList = () => {
-  const MAIN_CATEGORY_LIST = ['katchup 외부 업무', 'Spark Design', 'Katchup Design', '기타 개인 업무'];
+  const { categoryList, isError } = useGetMainCategoryList();
+  const [currentMainCategory, setCurrentMainCategory] = useRecoilState(currentMainCategoryAtom);
+
+  useEffect(() => {
+    if (categoryList.length > 0) {
+      setCurrentMainCategory(categoryList[0]?.name);
+    }
+  }, []);
 
   return (
     <>
@@ -12,8 +25,10 @@ const MainCategoryList = () => {
           <IcAddMain />
         </header>
         <StMainCategoryWrapper>
-          {MAIN_CATEGORY_LIST.map((category, idx) => (
-            <StMainCategory key={idx}>{category}</StMainCategory>
+          {categoryList?.map((category: mainCategoryInfo, idx: number) => (
+            <StMainCategory isCurrentCategory={category.name === currentMainCategory.mainCategory} key={idx}>
+              {category.name}
+            </StMainCategory>
           ))}
         </StMainCategoryWrapper>
 
@@ -83,7 +98,7 @@ const StMainCategoryWrapper = styled.ul`
   list-style: none;
 `;
 
-const StMainCategory = styled.li`
+const StMainCategory = styled.li<{ isCurrentCategory: boolean }>`
   display: flex;
   align-items: center;
   padding-left: 1.4rem;
@@ -97,6 +112,13 @@ const StMainCategory = styled.li`
   ${({ theme }) => theme.fonts.h2_smalltitle};
 
   cursor: pointer;
+
+  ${({ theme, isCurrentCategory }) =>
+    isCurrentCategory &&
+    `
+      background-color: ${theme.colors.katchup_main};
+      opacity: 0.1;
+    `}
 `;
 
 export default MainCategoryList;
