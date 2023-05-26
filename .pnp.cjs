@@ -17320,6 +17320,15 @@ const ERR_PACKAGE_PATH_NOT_EXPORTED = createErrorType(
   },
   Error,
 );
+const ERR_PACKAGE_PATH_NOT_EXPORTED = createErrorType(
+  "ERR_PACKAGE_PATH_NOT_EXPORTED",
+  (pkgPath, subpath, base = void 0) => {
+    if (subpath === ".")
+      return `No "exports" main defined in ${pkgPath}package.json${base ? ` imported from ${base}` : ""}`;
+    return `Package subpath '${subpath}' is not defined by "exports" in ${pkgPath}package.json${base ? ` imported from ${base}` : ""}`;
+  },
+  Error
+);
 
 function filterOwnProperties(source, keys) {
   const filtered = /* @__PURE__ */ Object.create(null);
