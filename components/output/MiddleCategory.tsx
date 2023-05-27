@@ -27,6 +27,8 @@ export const StMiddleFolder = styled.article`
   border: 0.1rem solid ${({ theme }) => theme.colors.katchup_line_gray};
   border-radius: 2.6rem;
 
+  cursor: pointer;
+
   > svg {
     position: absolute;
     top: 1.2rem;

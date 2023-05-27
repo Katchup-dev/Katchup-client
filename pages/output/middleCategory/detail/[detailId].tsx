@@ -1,14 +1,23 @@
 import styled from '@emotion/styled';
 import DetailContent from 'components/output/DetailContent';
 import ScreenshotOutput from 'components/output/ScreenshotOutput';
-import React from 'react';
+import { useGetDetailPage } from 'lib/hooks/useGetDetailPage';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 const detail = () => {
+  const router = useRouter();
+  const { detailId, content } = router.query;
+
+  const { detailPageInfo, isError } = useGetDetailPage(Number(detailId));
+
   return (
     <>
       <StWrapper>
-        <DetailContent />
-        <ScreenshotOutput />
+        <DetailContent fileList={detailPageInfo?.fileList} content={content as string} />
+        {detailPageInfo?.screenshotList.length > 0 && (
+          <ScreenshotOutput screenshotList={detailPageInfo?.screenshotList} />
+        )}
       </StWrapper>
     </>
   );

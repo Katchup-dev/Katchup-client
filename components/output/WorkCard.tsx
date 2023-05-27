@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { IcFileIcon, IcMoreDetail, IcScreenshotTag } from '../../public/assets/icons';
 import { keywordColors } from '../../constants/output';
 import { KeywordInfo } from 'types/output';
+import Link from 'next/link';
 
 export interface WorkCardProps {
   cardId: number;
@@ -36,9 +37,15 @@ const WorkCard = (props: WorkCardProps) => {
         <IcFileIcon />
       </StFileBtn>
 
-      <StMoreDetailBtn>
-        <IcMoreDetail />
-      </StMoreDetailBtn>
+      <Link
+        href={{
+          pathname: `/output/middleCategory/detail/${cardId}`,
+          query: { content: content },
+        }}>
+        <StMoreDetailBtn>
+          <IcMoreDetail />
+        </StMoreDetailBtn>
+      </Link>
     </StWorkCardWrapper>
   );
 };

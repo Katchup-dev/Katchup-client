@@ -22,10 +22,13 @@ const WorkCardPage = () => {
   return (
     <>
       <StOutputMainWrapper>
-        <MainCategoryList />
+        <MainCategoryList
+          currentMain={currentMainCategory.mainCategory}
+          currentMainId={currentMainCategory.categoryId}
+        />
 
         <StMiddleBoard>
-          <Link href={`/output/main`}>
+          <Link href={`/output/${currentMainCategory.categoryId}`}>
             <button>
               <IcBack />
               <p>{currentMainCategory.mainCategory}</p>
@@ -48,7 +51,7 @@ const WorkCardPage = () => {
             </button>
           </header>
 
-          {workCardList.length ? (
+          {workCardList?.length ? (
             <>
               <StMiddleBoardNav>
                 <p>#</p>
@@ -61,6 +64,7 @@ const WorkCardPage = () => {
 
               {workCardList?.map((card: WorkCardInfo) => (
                 <WorkCard
+                  key={card.cardId}
                   cardId={card.cardId}
                   content={card.content}
                   keywordList={card.keywordList}

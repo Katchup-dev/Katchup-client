@@ -1,33 +1,22 @@
 import styled from '@emotion/styled';
+import { useGetDetailPage } from 'lib/hooks/useGetDetailPage';
+import { useRouter } from 'next/router';
 import { IcBack, IcDeleteFile, IcSubLogo } from 'public/assets/icons';
 import { useState } from 'react';
+import { FileInfo } from 'types/output';
 
-const DetailContent = () => {
+export interface DetailContentProps {
+  fileList: FileInfo[];
+  content: string;
+}
+
+const DetailContent = (props: DetailContentProps) => {
+  const { fileList, content } = props;
   const [textLength, setTextLength] = useState<number>(0);
 
-  const fileList = [
-    {
-      id: 1,
-      name: '기획 파일.pdf',
-      url: '파일 URL',
-      size: 2.1,
-    },
-    {
-      id: 2,
-      name: '웹 파일.pdf',
-      url: '파일2 URL',
-      size: 2.4,
-    },
-    {
-      id: 3,
-      name: '서버 파일.pdf',
-      url: '파일3 URL',
-      size: 2.5,
-    },
-  ];
-  const handleTextLength = () => {
-    // setTextLength(e.target.value.replace(/[\0-\x7f]|([0-\u07ff]|(.))/g, '$&$1$2').length);
-  };
+  // const handleTextLength = () => {
+  //   setTextLength(e.target.value.replace(/[\0-\x7f]|([0-\u07ff]|(.))/g, '$&$1$2').length);
+  // };
 
   return (
     <StDetailWrapper>
@@ -42,44 +31,8 @@ const DetailContent = () => {
           <h2>업무 내용</h2>
         </div>
 
-        <StDetailContent onChange={() => handleTextLength()}>
-          <p>
-            ABCDE업무를 할 땐 이케이케 하면 된다 뭐 여러기지 가능성을 열어두겠지만 아시다시피 지금 이렇게쓰는말은
-            졸린와중에 쓰는 말이라 상당히 아무말이나 하는 것이란 말이지 내가 지금 무슨말을 하는지도 모르겠고 경우의수가
-            왤케 많냐 이거 참 기능이 구현 가능한지도 생각해야하고 ABCDE업무를 할 땐 이케이케 하면 된다 뭐 여러기지
-            가능성을 열어두겠지만 아시다시피 지금 이렇게쓰는말은 졸린와중에 쓰는 말이라 상당히 아무말이나 하는 것이란
-            말이지 내가 지금 무슨말을 하는지도 모르겠고 경우의수가 왤케 많냐 이거 ABCDE업무를 지 가능성을 열어두겠지만
-            아시다시피 지금 이렇게쓰는말은 졸린와중에 쓰는 말이라 상당히 아무말이나 하는 것이란 말이지 내가 지금
-            무슨말을 하는지도 모르겠고 경우의수가 왤케 많냐 이거 참 기능이 구현 가능한지도 생각해야하고 ABCDE업무를 할
-            땐 이케이케 하면 된다 뭐 여러기지 가능성을 열어두겠지만 아시다시피 지금 이렇게쓰는말은 졸린와중에 쓰는
-            말이라 상당히 아무말이나 하는 것이란 말이지 내가 지금 무슨말을 하는지도 모르겠고 경우의수가 왤케 많냐 이거
-            참 기능이 구현 가능한지도 생각해야하고 ABCDE업무를 할 땐 이케이케 하면 된다 뭐 여러기지 가능성을
-            열어두겠지만 아시다시피 지금 이렇게쓰는말은 졸린와중에 쓰는 말이라 상당히 아무말이나 하는지 라 상당히
-            아무말이나 하는지 라 상당히 아무말이나 하는지 라 상당히 아무말이나 하는 ABCDE업무를 할 땐 이케이케 하면 된다
-            뭐 여러기지 가능성을 열어두겠지만 아시다시피 지금 이렇게쓰는말은 졸린와중에 쓰는 말이라 상당히 아무말이나
-            하는 것이란 말이지 내가 지금 무슨말을 하는지도 모르겠고 경우의수가 왤케 많냐 이거 참 기능이 구현 가능한지도
-            생각해야하고 ABCDE업무를 할 땐 이케이케 하면 된다 뭐 여러기지 가능성을 열어두겠지만 아시다시피 지금
-            이렇게쓰는말은 졸린와중에 쓰는 말이라 상당히 아무말이나 하는 것이란 말이지 내가 지금 무슨말을 하는지도
-            모르겠고 경우의수가 왤케 많냐 이거 ABCDE업무를 지 가능성을 열어두겠지만 아시다시피 지금 이렇게쓰는말은
-            졸린와중에 쓰는 말이라 상당히 아무말이나 하는 것이란 말이지 내가 지금 무슨말을 하는지도 모르겠고 경우의수가
-            왤케 많냐 이거 참 기능이 구현 가능한지도 생각해야하고 ABCDE업무를 할 땐 이케이케 하면 된다 뭐 여러기지
-            가능성을 열어두겠지만 아시다시피 지금 이렇게쓰는말은 졸린와중에 쓰는 말이라 상당히 아무말이나 하는 것이란
-            말이지 내가 지금 무슨말을 하는지도 모르겠고 경우의수가 왤케 많냐 이거 참 기능이 구현 가능한지도 생각해야하고
-            ABCDE업무를 할 땐 이케이케 하면 된다 뭐 여러기지 가능성을 열어두겠지만 아시다시피 지금 이렇게쓰는말은
-            졸린와중에 쓰는 말이라 상당히 아무말이나 하는지 라 상당히 아무말이나 하는지 라 상당히 아무말이나 하는지 라
-            상당히 아무말이나 하는 ABCDE업무를 할 땐 이케이케 하면 된다 뭐 여러기지 가능성을 열어두겠지만 아시다시피
-            지금 이렇게쓰는말은 졸린와중에 쓰는 말이라 상당히 아무말이나 하는 것이란 말이지 내가 지금 무슨말을 하는지도
-            모르겠고 경우의수가 왤케 많냐 이거 참 기능이 구현 가능한지도 생각해야하고 ABCDE업무를 할 땐 이케이케 하면
-            된다 뭐 여러기지 가능성을 열어두겠지만 아시다시피 지금 이렇게쓰는말은 졸린와중에 쓰는 말이라 상당히
-            아무말이나 하는 것이란 말이지 내가 지금 무슨말을 하는지도 모르겠고 경우의수가 왤케 많냐 이거 ABCDE업무를 지
-            가능성을 열어두겠지만 아시다시피 지금 이렇게쓰는말은 졸린와중에 쓰는 말이라 상당히 아무말이나 하는 것이란
-            말이지 내가 지금 무슨말을 하는지도 모르겠고 경우의수가 왤케 많냐 이거 참 기능이 구현 가능한지도 생각해야하고
-            ABCDE업무를 할 땐 이케이케 하면 된다 뭐 여러기지 가능성을 열어두겠지만 아시다시피 지금 이렇게쓰는말은
-            졸린와중에 쓰는 말이라 상당히 아무말이나 하는 것이란 말이지 내가 지금 무슨말을 하는지도 모르겠고 경우의수가
-            왤케 많냐 이거 참 기능이 구현 가능한지도 생각해야하고 ABCDE업무를 할 땐 이케이케 하면 된다 뭐 여러기지
-            가능성을 열어두겠지만 아시다시피 지금 이렇게쓰는말은 졸린와중에 쓰는 말이라 상당히 아무말이나 하는지 라
-            상당히 아무말이나 하는지 라 상당히 아무말이나 하는지 라 상당히 아무말이나 하는
-          </p>
+        <StDetailContent>
+          <p>{content}</p>
 
           <span>
             <p>343</p>/2000자
@@ -91,18 +44,17 @@ const DetailContent = () => {
           <h2>파일 첨부</h2>
         </div>
         <StFileWrapper>
-          {fileList.map((file) => (
-            <li>
+          {fileList?.map((file) => (
+            <li key={file.id}>
               <IcDeleteFile /> {file.name} <p>{file.size}MB</p>
             </li>
           ))}
         </StFileWrapper>
-
-        <StButtonWrapper>
-          <button type="button">삭제하기</button>
-          <button type="button">수정하기</button>
-        </StButtonWrapper>
       </StSectionDetail>
+      <StButtonWrapper>
+        <button type="button">삭제하기</button>
+        <button type="button">수정하기</button>
+      </StButtonWrapper>
     </StDetailWrapper>
   );
 };
@@ -171,8 +123,6 @@ const StDetailContent = styled.section`
     line-height: 2.8rem;
 
     color: ${({ theme }) => theme.colors.katchup_black};
-
-    overflow-y: scroll;
   }
 
   > span {
@@ -189,12 +139,13 @@ const StDetailContent = styled.section`
       color: ${({ theme }) => theme.colors.katchup_main};
     }
   }
+
+  overflow-y: scroll;
 `;
 
 const StFileWrapper = styled.ul`
-  padding: 1.3rem 2.2rem 0rem 2.2rem;
+  padding: 1.3rem 2.2rem 1.2rem 2.2rem;
   width: 75.2rem;
-  height: 11.4rem;
 
   border: 0.1rem solid ${({ theme }) => theme.colors.katchup_line_gray};
   border-radius: 0.8rem;

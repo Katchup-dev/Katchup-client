@@ -28,3 +28,16 @@ export interface KeywordInfo {
   keywordId: number;
   name: string;
 }
+
+export interface FileInfo {
+  id: number;
+  name: string;
+  url: string;
+  size: string;
+}
+
+export interface ScreenshotInfo {
+  id: number;
+  stickerOrder: number;
+  url: string;
+}
