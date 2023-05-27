@@ -1,7 +1,10 @@
+import useModal from 'lib/hooks/useModal';
 import { IcBtnDeleteFile, IcFileCheckbox, IcFileCheckboxAfter, IcKatchupLogo } from 'public/assets/icons';
 import { useRef, useState } from 'react';
 
 import styled from '@emotion/styled';
+
+import ModalIndex from './ModalIndex';
 
 const MainInput = () => {
   const [workInput, setWorkInput] = useState('');
@@ -9,6 +12,7 @@ const MainInput = () => {
   const [isChecked, setIsChecked] = useState(false);
   const [fileInput, setFileInput] = useState<File[]>([]);
   const fileInputRef = useRef(null);
+  const { isShowing, toggle } = useModal();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const inputText = e.target.value;
@@ -99,9 +103,10 @@ const MainInput = () => {
           )}
         </StFileInput>
       </StFileWrapper>
-      <StNextBtn type="button" disabled={!workInput.length} onClick={handleNext}>
+      <StNextBtn type="button" disabled={!workInput.length} onClick={toggle}>
         다음 단계
       </StNextBtn>
+      <ModalIndex isShowing={isShowing} handleHide={toggle} />
     </StMainInput>
   );
 };
