@@ -13,5 +13,6 @@ export { default as IcScreenshot } from './ic_screenshot.svg';
 export { default as IcBack } from './ic_back.svg';
 export { default as IcKatchupLogo } from './ic_katchupLogo.svg';
 export { default as IcBtnDeleteFile } from './ic_btn_deletefile.svg';
+export { default as IcBtnDeletePopup } from './ic_deletepopup.svg';
 export { default as IcFileCheckbox } from './Ic_file_checkbox.svg';
 export { default as IcFileCheckboxAfter } from './Ic_file_checkbox_after.svg';
