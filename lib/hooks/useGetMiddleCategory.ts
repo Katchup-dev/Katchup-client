@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { getMiddleCategoryList } from 'core/apis';
+import { getMiddleCategoryList } from 'core/apis/output';
 import { useEffect } from 'react';
 
 export const useGetMiddleCategoryList = (categoryId: number) => {

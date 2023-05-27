@@ -3,12 +3,14 @@ import { IcMore } from 'public/assets/icons';
 
 interface MiddleCategoryProps {
   categoryName: string;
+  folderId: number;
+  handleClick: (id: number) => void;
 }
 
 const MiddleCategory = (props: MiddleCategoryProps) => {
-  const { categoryName } = props;
+  const { categoryName, folderId, handleClick } = props;
   return (
-    <StMiddleFolder>
+    <StMiddleFolder onClick={() => handleClick(folderId)}>
       <IcMore />
       <div>
         <h2>{categoryName}</h2>
@@ -24,6 +26,8 @@ export const StMiddleFolder = styled.article`
 
   border: 0.1rem solid ${({ theme }) => theme.colors.katchup_line_gray};
   border-radius: 2.6rem;
+
+  cursor: pointer;
 
   > svg {
     position: absolute;

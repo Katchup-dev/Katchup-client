@@ -1,38 +1,51 @@
 import styled from '@emotion/styled';
 import { IcFileIcon, IcMoreDetail, IcScreenshotTag } from '../../public/assets/icons';
 import { keywordColors } from '../../constants/output';
+import { KeywordInfo } from 'types/output';
+import Link from 'next/link';
 
-const WorkCard = () => {
-  const keywordList = ['가나다라마바사아자차', 'NOTION', '아야어여', '케첩파이팅케첩이최고'];
+export interface WorkCardProps {
+  cardId: number;
+  keywordList: KeywordInfo[];
+  cardName: string;
+  content: string;
+  existFile: boolean;
+}
+
+const WorkCard = (props: WorkCardProps) => {
+  const { cardId, keywordList, cardName, content, existFile } = props;
   return (
     <StWorkCardWrapper>
-      <StCardNumber>1</StCardNumber>
+      <StCardNumber>{cardId}</StCardNumber>
 
       <StSmallCategory>
         <IcScreenshotTag />
-        <p>가나다라마바사아자차 가나다라마바사아자차</p>
+        <p>{cardName}</p>
       </StSmallCategory>
 
       <StKeywordWrapper>
-        {keywordList.map((keyword, idx) => (
+        {keywordList?.map((keyword: KeywordInfo, idx: number) => (
           <StKeyword idx={idx} key={idx}>
-            {keyword}
+            {keyword.name}
           </StKeyword>
         ))}
       </StKeywordWrapper>
 
-      <StContent>
-        ABCDE업무를 할 땐 이케이케 하면 된다 뭐 여러기지 가능성을 열어두겠지만 아시다시피 지금 이렇게쓰는말은 졸린와중에
-        쓰는 말이라 상당히 아무말이나 하는 것이란 말이지 내가 지금 무슨말을 하는지도 모르겠고 경우의수가 왤케 많냐 이거
-        참 기능이 구현 가능한지도 생각해야하고 구현이 불가능하다면 어떤 식으로 대응해야할지도 미리 생각하면 좋으
-        ABCDE업무를 ABCDE업무!
-      </StContent>
+      <StContent>{content}</StContent>
 
-      <IcFileIcon />
+      <StFileBtn isFileExists={existFile}>
+        <IcFileIcon />
+      </StFileBtn>
 
-      <StMoreDetailBtn>
-        <IcMoreDetail />
-      </StMoreDetailBtn>
+      <Link
+        href={{
+          pathname: `/output/middleCategory/detail/${cardId}`,
+          query: { content: content },
+        }}>
+        <StMoreDetailBtn>
+          <IcMoreDetail />
+        </StMoreDetailBtn>
+      </Link>
     </StWorkCardWrapper>
   );
 };
@@ -44,7 +57,7 @@ const StWorkCardWrapper = styled.section`
   width: 100%;
   height: auto;
 
-  border: 0.1rem solid ${({ theme }) => theme.colors.katchup_line_gray};
+  border: 1px solid ${({ theme }) => theme.colors.katchup_line_gray};
 
   > svg {
     cursor: pointer;
@@ -56,8 +69,8 @@ const StWorkCardWrapper = styled.section`
 `;
 
 const StCardNumber = styled.p`
-  margin-left: 5.5rem;
-  margin-right: 8.3rem;
+  margin-left: 3.824%;
+  margin-right: 5.772%;
   ${({ theme }) => theme.fonts.h2_smalltitle_eng};
 `;
 
@@ -67,9 +80,12 @@ const StSmallCategory = styled.div`
   justify-content: center;
   align-items: center;
 
-  margin-right: 10.7rem;
+  margin-right: 7.44%;
 
   > p {
+    display: flex;
+    justify-content: center;
+
     margin-top: 1rem;
 
     width: 15.6rem;
@@ -85,7 +101,7 @@ const StKeywordWrapper = styled.div`
   flex-wrap: wrap;
   align-items: center;
   gap: 0.4rem;
-  margin-right: 10.7rem;
+  margin-right: 7.44%;
 
   width: 15rem;
 `;
@@ -106,14 +122,27 @@ const StKeyword = styled.p<{ idx: number }>`
 const StContent = styled.div`
   padding-top: 2.4rem;
   padding-bottom: 2.4rem;
-  margin-right: 8.4rem;
+  margin-right: 5%;
 
-  width: 47.7rem;
+  width: 33.171%;
 
   ${({ theme }) => theme.fonts.p1_text};
   line-height: 2.8rem;
 
   color: ${({ theme }) => theme.colors.katchup_dark_gray};
+`;
+
+const StFileBtn = styled.button<{ isFileExists: boolean }>`
+  margin-right: 6%;
+  border: none;
+
+  background-color: transparent;
+
+  > svg {
+    ${({ isFileExists }) =>
+      isFileExists &&
+      `filter: invert(46%) sepia(13%) saturate(3880%) hue-rotate(318deg) brightness(92%) contrast(117%);`}
+  }
 `;
 
 const StMoreDetailBtn = styled.button`

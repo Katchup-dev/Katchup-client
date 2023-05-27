@@ -4,25 +4,36 @@ import { useGetMainCategoryList } from 'lib/hooks/useGetMainCategoryList';
 import { IcAddMain, IcTrash } from 'public/assets/icons';
 import React, { useEffect } from 'react';
 import { useRecoilState } from 'recoil';
-import { css } from '@emotion/react';
 import { mainCategoryInfo } from 'types/output';
+import { useRouter } from 'next/router';
 
-const MainCategoryList = () => {
+export interface MainCategoryListProps {
+  currentMain: string;
+  currentMainId: number;
+}
+
+const MainCategoryList = (props: MainCategoryListProps) => {
+  const { currentMain, currentMainId } = props;
   const { categoryList, isError } = useGetMainCategoryList();
 
   const [currentMainCategory, setCurrentMainCategory] = useRecoilState(currentMainCategoryAtom);
+  const router = useRouter();
 
   const handleChangeMainCategory = (e: React.MouseEvent<HTMLLIElement>, categoryId: number) => {
+    e.preventDefault();
+
     const selectedCategory = e.target as HTMLLIElement;
 
-    setCurrentMainCategory({ mainCategory: selectedCategory.innerText, categoryId: categoryId });
+    setCurrentMainCategory(() => {
+      const updatedCategory = { mainCategory: selectedCategory.innerText, categoryId: categoryId };
+      router.push(`/output/${categoryId}`);
+      return updatedCategory;
+    });
   };
 
   useEffect(() => {
-    if (categoryList?.length > 0) {
-      setCurrentMainCategory({ mainCategory: categoryList[0]?.name, categoryId: categoryList[0]?.categoryId });
-    }
-  }, []);
+    setCurrentMainCategory({ mainCategory: currentMain, categoryId: currentMainId });
+  }, [currentMain]);
 
   return (
     <>

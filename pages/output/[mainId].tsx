@@ -1,27 +1,27 @@
 import MiddleCategory from '../../components/output/MiddleCategory';
-
 import AddMiddleCategory from '../../components/output/AddMiddleCategory';
 import MainCategoryList from '../../components/output/MainCategoryList';
 import styled from '@emotion/styled';
 import { IcEditMain } from 'public/assets/icons';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { currentMainCategoryAtom } from 'core/atom';
 import { useGetMiddleCategoryList } from 'lib/hooks/useGetMiddleCategory';
 import { MiddleCategoryInfo } from 'types/output';
-import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 
 const OutputMain = () => {
-  const mainCategoryName = useRecoilValue(currentMainCategoryAtom);
-  const [mainCategory, setMainCategory] = useState<string>('');
-  const [categoryId, setCategoryId] = useState(mainCategoryName.categoryId);
+  const router = useRouter();
+  const { mainId } = router.query;
 
-  useEffect(() => {
-    setMainCategory(mainCategoryName.mainCategory);
-    setCategoryId(mainCategoryName.categoryId);
-  }, [mainCategoryName]);
+  const [mainCategoryName, setMainCategoryName] = useRecoilState(currentMainCategoryAtom);
 
   //쿼리 키를 바꿔주는 방식으로 mainCategoryName이 바뀔 때마다 커스텀훅 재호출
-  const { categoryList, isError } = useGetMiddleCategoryList(categoryId);
+  const { categoryList, isError } = useGetMiddleCategoryList(Number(mainId));
+
+  const handleGoToWorkCard = (folderId: number, categoryName: string) => {
+    const query = { middleCategory: categoryName };
+    router.push({ pathname: `/output/middleCategory/${folderId}`, query });
+  };
 
   if (isError) {
     console.log('error');
@@ -30,17 +30,23 @@ const OutputMain = () => {
   return (
     <>
       <StOutputMainWrapper>
-        <MainCategoryList />
+        <MainCategoryList currentMain={mainCategoryName.mainCategory} currentMainId={mainCategoryName.categoryId} />
 
         <StMiddleBoard>
           <header>
-            <StMainTitle isShouldWrap={true}>{mainCategory}</StMainTitle>
+            <StMainTitle isShouldWrap={true}>{mainCategoryName.mainCategory}</StMainTitle>
             <IcEditMain />
           </header>
-
           <div>
             {categoryList?.map((category: MiddleCategoryInfo, idx: number) => (
-              <MiddleCategory categoryName={category.name} key={idx} />
+              <MiddleCategory
+                categoryName={category.name}
+                key={idx}
+                folderId={category.folderId}
+                handleClick={() => {
+                  handleGoToWorkCard(category.folderId, category.name);
+                }}
+              />
             ))}
             <AddMiddleCategory />
           </div>
@@ -72,6 +78,10 @@ const StMiddleBoard = styled.section`
 
     width: 100%;
     padding-bottom: 5rem;
+
+    > svg {
+      cursor: pointer;
+    }
   }
 
   > div {

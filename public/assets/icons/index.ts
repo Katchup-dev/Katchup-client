@@ -17,3 +17,4 @@ export { default as IcMoreDetail } from './ic_moreDetail.svg';
 export { default as IcEditMiddleCategory } from './ic_editMiddleCategory.svg';
 export { default as IcDeleteWorkCard } from './ic_deleteWorkCard.svg';
 export { default as IcWorkCardFilter } from './ic_workCardFilter.svg';
+export { default as IcLogoBig } from './ic_logoBig.svg';
