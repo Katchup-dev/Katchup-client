@@ -18,7 +18,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <ThemeProvider theme={theme}>
           <Global styles={resetStyle} />
           <Global styles={globalStyle} />
-          <Header profileImgSrc="" />
+          <Header profileImgSrc="https://sitem.ssgcdn.com/17/01/59/item/1000053590117_i1_1100.jpg" />
           <Component {...pageProps} />
         </ThemeProvider>
       </RecoilRoot>
