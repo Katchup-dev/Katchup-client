@@ -111,7 +111,7 @@ const ModalIndex = (props: ModalProps) => {
                 placeholder="업무 대분류를 입력해주세요"
                 maxLength={20}
               />
-              {isCategoryFocused && <DropdownCategory options={categoryOptions} />}
+              {isCategoryFocused && <DropdownCategory options={categoryOptions} inputValue={category} />}
               <p>
                 <span>{categoryCount}</span>/20
               </p>
@@ -127,7 +127,7 @@ const ModalIndex = (props: ModalProps) => {
                 placeholder="업무 중분류를 입력해주세요"
                 maxLength={20}
               />
-              {isFolderFocused && <DropdownFolder options={folderOptions} />}
+              {isFolderFocused && <DropdownFolder options={folderOptions} inputValue={folder} />}
               <p>
                 <span>{folderCount}</span>/20
               </p>
@@ -143,7 +143,7 @@ const ModalIndex = (props: ModalProps) => {
                 placeholder="업무 소분류를 입력해주세요"
                 maxLength={20}
               />
-              {isTaskFocused && <DropdownTask options={taskOptions} />}
+              {isTaskFocused && <DropdownTask options={taskOptions} inputValue={task} />}
               <p>
                 <span>{taskCount}</span>/20
               </p>

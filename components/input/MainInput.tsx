@@ -155,7 +155,6 @@ const StMainInput = styled.section`
 
   width: 90rem;
   height: 85rem;
-  /* margin: 0rem 51rem; */
 
   border-radius: 2.6rem;
   background-color: ${({ theme }) => theme.colors.katchup_white};

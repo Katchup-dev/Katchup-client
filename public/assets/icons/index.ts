@@ -20,3 +20,4 @@ export { default as IcBtnScreenshot } from './ic_screenshotBtn.svg';
 export { default as IcBtnScreenshotHide } from './ic_screenshotHideBtn.svg';
 export { default as IcFileCheckbox } from './Ic_file_checkbox.svg';
 export { default as IcFileCheckboxAfter } from './Ic_file_checkbox_after.svg';
+export { default as IcBtnAddIndex } from './ic_btn_addIndex.svg';

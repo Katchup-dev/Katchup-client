@@ -1,4 +1,6 @@
-import { taskSelectState } from 'core/atom';
+import { postTasks } from 'core/apis/input';
+import { folderSelectState, taskSelectState } from 'core/atom';
+import { IcBtnAddIndex } from 'public/assets/icons';
 import { useRecoilState } from 'recoil';
 import { InputTaskInfo } from 'types/input';
 
@@ -6,19 +8,38 @@ import styled from '@emotion/styled';
 
 interface dropdownIndexProps {
   options: InputTaskInfo[];
+  inputValue: string;
 }
 
-const DropdownTask = ({ options }: dropdownIndexProps) => {
+const DropdownTask = ({ options, inputValue }: dropdownIndexProps) => {
+  const [folderSelect, setFolderSelect] = useRecoilState(folderSelectState);
   const [taskSelect, setTaskSelect] = useRecoilState(taskSelectState);
 
   const handleOptionClick = (option: InputTaskInfo) => {
     setTaskSelect(option);
   };
 
+  const handleAddIndex = (name: string) => {
+    postTasks({ folderId: folderSelect.folderId, name: inputValue }); // id 바꿔야함
+  };
+
   const displayOptions = () => {
-    return options.map((option) => (
+    const allOptions = [...options];
+
+    if (inputValue?.length > 0) {
+      allOptions.push({ taskId: allOptions.length, name: inputValue });
+    }
+
+    return allOptions.map((option) => (
       <li key={option.taskId} onMouseDown={() => handleOptionClick(option)}>
         {option.name}
+        {inputValue && (
+          <IcBtnAddIndex
+            onMouseDown={() => {
+              handleAddIndex(option.name);
+            }}
+          />
+        )}
       </li>
     ));
   };
@@ -43,10 +64,22 @@ const StDropdown = styled.ul`
   background-color: ${({ theme }) => theme.colors.katchup_white};
 
   & > li {
+    display: flex;
+    justify-content: space-between;
+
     margin-bottom: 1rem;
 
     ${({ theme }) => theme.fonts.h2_smalltitle};
 
     cursor: pointer;
+
+    & > svg {
+      display: none;
+
+      margin-bottom: -1rem;
+    }
+    :last-child > svg {
+      display: block;
+    }
   }
 `;

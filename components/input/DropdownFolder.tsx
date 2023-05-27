@@ -1,4 +1,6 @@
-import { folderSelectState } from 'core/atom';
+import { postFolders } from 'core/apis/input';
+import { categorySelectState, folderSelectState } from 'core/atom';
+import { IcBtnAddIndex } from 'public/assets/icons';
 import { useRecoilState } from 'recoil';
 import { InputFolderInfo } from 'types/input';
 
@@ -6,19 +8,38 @@ import styled from '@emotion/styled';
 
 interface dropdownIndexProps {
   options: InputFolderInfo[];
+  inputValue: string;
 }
 
-const DropdownFolder = ({ options }: dropdownIndexProps) => {
+const DropdownFolder = ({ options, inputValue }: dropdownIndexProps) => {
   const [folderSelect, setFolderSelect] = useRecoilState(folderSelectState);
+  const [categorySelect, setCategorySelect] = useRecoilState(categorySelectState);
 
   const handleOptionClick = (option: InputFolderInfo) => {
     setFolderSelect(option);
   };
 
+  const handleAddIndex = (name: string) => {
+    postFolders({ categoryId: categorySelect.categoryId, name: inputValue });
+  };
+
   const displayOptions = () => {
-    return options.map((option) => (
+    const allOptions = [...options];
+
+    if (inputValue?.length > 0) {
+      allOptions.push({ folderId: allOptions.length, name: inputValue });
+    }
+
+    return allOptions.map((option) => (
       <li key={option.folderId} onMouseDown={() => handleOptionClick(option)}>
         {option.name}
+        {inputValue && (
+          <IcBtnAddIndex
+            onMouseDown={() => {
+              handleAddIndex(option.name);
+            }}
+          />
+        )}
       </li>
     ));
   };
@@ -43,10 +64,22 @@ const StDropdown = styled.ul`
   background-color: ${({ theme }) => theme.colors.katchup_white};
 
   & > li {
+    display: flex;
+    justify-content: space-between;
+
     margin-bottom: 1rem;
 
     ${({ theme }) => theme.fonts.h2_smalltitle};
 
     cursor: pointer;
+
+    & > svg {
+      display: none;
+
+      margin-bottom: -1rem;
+    }
+    :last-child > svg {
+      display: block;
+    }
   }
 `;

@@ -20,3 +20,8 @@ export interface InputTaskInfo {
   taskId: number;
   name: string;
 }
+
+export interface postFolderInfo {
+  categoryId: number;
+  name: string;
+}

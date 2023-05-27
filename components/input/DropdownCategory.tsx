@@ -1,4 +1,6 @@
+import { postCategories } from 'core/apis/input';
 import { categorySelectState } from 'core/atom';
+import { IcBtnAddIndex } from 'public/assets/icons';
 import { useRecoilState } from 'recoil';
 import { InputCategoryInfo } from 'types/input';
 
@@ -6,19 +8,37 @@ import styled from '@emotion/styled';
 
 interface dropdownIndexProps {
   options: InputCategoryInfo[];
+  inputValue: string;
 }
 
-const DropdownCategory = ({ options }: dropdownIndexProps) => {
+const DropdownCategory = ({ options, inputValue }: dropdownIndexProps) => {
   const [categorySelect, setCategorySelect] = useRecoilState(categorySelectState);
 
   const handleOptionClick = (option: InputCategoryInfo) => {
     setCategorySelect(option);
   };
 
+  const handleAddIndex = (name: string) => {
+    postCategories(name);
+  };
+
   const displayOptions = () => {
-    return options.map((option) => (
+    const allOptions = [...options];
+
+    if (inputValue?.length > 0) {
+      allOptions.push({ categoryId: allOptions.length, name: inputValue, isShared: false });
+    }
+
+    return allOptions.map((option) => (
       <li key={option.categoryId} onMouseDown={() => handleOptionClick(option)}>
         {option.name}
+        {inputValue && (
+          <IcBtnAddIndex
+            onMouseDown={() => {
+              handleAddIndex(option.name);
+            }}
+          />
+        )}
       </li>
     ));
   };
@@ -43,10 +63,22 @@ const StDropdown = styled.ul`
   background-color: ${({ theme }) => theme.colors.katchup_white};
 
   & > li {
+    display: flex;
+    justify-content: space-between;
+
     margin-bottom: 1rem;
 
     ${({ theme }) => theme.fonts.h2_smalltitle};
 
     cursor: pointer;
+
+    & > svg {
+      display: none;
+
+      margin-bottom: -1rem;
+    }
+    :last-child > svg {
+      display: block;
+    }
   }
 `;
