@@ -1,4 +1,4 @@
-import { IcKatchupLogo, IcScreenshotEmpty } from 'public/assets/icons';
+import { IcBtnDeleteScreenshot, IcKatchupLogo, IcScreenshotEmpty } from 'public/assets/icons';
 import React, { useEffect, useRef, useState } from 'react';
 
 import styled from '@emotion/styled';
@@ -67,6 +67,9 @@ const ScreenshotInput = () => {
           screenshotInput.map((file, index) => (
             <StScreenshotWrapper>
               <StScreenshotImg key={index} src={URLThumbnails[index]} alt={`스크린샷 ${index + 1}`} />
+              <button onClick={() => handleDeleteFile(file)}>
+                <IcBtnDeleteScreenshot />
+              </button>
             </StScreenshotWrapper>
           ))
         ) : (
@@ -143,9 +146,19 @@ const StFileInput = styled.div`
 `;
 
 const StScreenshotWrapper = styled.div`
+  position: relative;
   width: 100%;
   padding: 0rem 5rem;
   margin-bottom: 1.2rem;
+
+  & > button {
+    position: absolute;
+    top: 1rem;
+    right: 5.5rem;
+
+    border: none;
+    background: transparent;
+  }
 `;
 
 const StScreenshotImg = styled.img`
