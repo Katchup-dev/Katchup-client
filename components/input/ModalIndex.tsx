@@ -1,8 +1,12 @@
-import { getCategories } from 'core/apis/input';
+import { getCategories, getFolders, getTasks } from 'core/apis/input';
+import { categorySelectState } from 'core/atom';
 import { IcBtnDeletePopup } from 'public/assets/icons';
 import React, { useEffect, useState } from 'react';
+import { useRecoilState } from 'recoil';
 
 import styled from '@emotion/styled';
+
+import DropdownCategory from './DropdownCategory';
 
 interface ModalProps {
   isShowing: boolean;
@@ -26,6 +30,16 @@ const ModalIndex = (props: ModalProps) => {
   const [isFolderFocused, setIsFolderFocused] = useState(false);
   const [isTaskFocused, setIsTaskFocused] = useState(false);
   const [isKeywordFocused, setIsKeywordFocused] = useState(false);
+  const [isEtcFocused, setIsEtcdFocused] = useState(false);
+
+  const [categoryOptions, setCategoryOptions] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useRecoilState(categorySelectState);
+  const [folderOptions, setFolderOptions] = useState([]);
+  const [selectedFolder, setSelectedFolder] = useState('');
+  const [taskOptions, setTaskOptions] = useState([]);
+  const [selectedTask, setSelectedTask] = useState('');
+
+  console.log(selectedCategory);
 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCategory(e.target.value);
@@ -51,10 +65,26 @@ const ModalIndex = (props: ModalProps) => {
 
   useEffect(() => {
     if (isCategoryFocused) {
-      getCategories();
-      setIsCategoryFocused(false);
+      getCategories().then((response) => {
+        setCategoryOptions(response);
+      });
     }
-  }, [isCategoryFocused]);
+    if (isFolderFocused) {
+      getFolders().then((response) => {
+        setFolderOptions(response);
+      });
+    }
+    if (isTaskFocused) {
+      getTasks().then((response) => {
+        setTaskOptions(response);
+      });
+    }
+  }, [isCategoryFocused, isFolderFocused, isTaskFocused]);
+
+  useEffect(() => {
+    setIsCategoryFocused(false);
+    console.log(isCategoryFocused);
+  }, [selectedCategory]);
 
   return (
     <>
@@ -63,27 +93,30 @@ const ModalIndex = (props: ModalProps) => {
           <StModalIndex>
             <IcBtnDeletePopup onClick={handleHide} />
             <h2>업무 카드 만들기</h2>
-            <StInputIndex>
+            <StInputIndex isFocused={isCategoryFocused}>
               업무 대분류
               <input
                 type="text"
                 value={category}
                 onChange={handleCategoryChange}
                 onFocus={() => setIsCategoryFocused(true)}
+                onBlur={() => setIsCategoryFocused(false)}
                 placeholder="업무 대분류를 입력해주세요"
                 maxLength={20}
               />
+              {isCategoryFocused && <DropdownCategory options={categoryOptions} />}
               <p>
                 <span>{categoryCount}</span>/20
               </p>
             </StInputIndex>
-            <StInputIndex>
+            <StInputIndex isFocused={isFolderFocused}>
               업무 중분류
               <input
                 type="text"
                 value={folder}
                 onChange={handleFolderChange}
                 onFocus={() => setIsFolderFocused(true)}
+                onBlur={() => setIsFolderFocused(false)}
                 placeholder="업무 중분류를 입력해주세요"
                 maxLength={20}
               />
@@ -91,13 +124,14 @@ const ModalIndex = (props: ModalProps) => {
                 <span>{folderCount}</span>/20
               </p>
             </StInputIndex>
-            <StInputIndex>
+            <StInputIndex isFocused={isTaskFocused}>
               업무 소분류
               <input
                 type="text"
                 value={task}
                 onChange={handleTaskChange}
                 onFocus={() => setIsTaskFocused(true)}
+                onBlur={() => setIsTaskFocused(false)}
                 placeholder="업무 소분류를 입력해주세요"
                 maxLength={20}
               />
@@ -105,17 +139,18 @@ const ModalIndex = (props: ModalProps) => {
                 <span>{taskCount}</span>/20
               </p>
             </StInputIndex>
-            <StInputIndex>
+            <StInputIndex isFocused={isKeywordFocused}>
               키워드
               <input
                 type="text"
                 value={keyword}
                 onChange={handleKeywordChange}
                 onFocus={() => setIsKeywordFocused(true)}
+                onBlur={() => setIsKeywordFocused(false)}
                 placeholder="키워드를 입력해주세요"
               />
             </StInputIndex>
-            <StInputEtc>
+            <StInputEtc isFocused={isEtcFocused}>
               비고
               <textarea
                 value={etc}
@@ -183,7 +218,7 @@ const StModalIndex = styled.section`
   }
 `;
 
-const StInputIndex = styled.label`
+const StInputIndex = styled.label<{ isFocused: boolean }>`
   display: flex;
   flex-direction: column;
   position: relative;
@@ -197,6 +232,17 @@ const StInputIndex = styled.label`
     padding: 1.4rem 11.1rem 1.2rem 1.4rem;
     border: 0.1rem solid ${({ theme }) => theme.colors.katchup_line_gray};
     border-radius: 0.8rem;
+    ${({ theme }) => theme.fonts.h2_smalltitle};
+
+    ${({ isFocused, theme }) =>
+      isFocused
+        ? `
+      background-color: ${theme.colors.katchup_light_gray};
+  `
+        : `
+      background-color: ${theme.colors.katchup_white};
+      
+    `}
 
     ::placeholder {
       color: ${({ theme }) => theme.colors.katchup_gray};
@@ -225,6 +271,7 @@ const StInputEtc = styled(StInputIndex)`
 
     border: 0.1rem solid ${({ theme }) => theme.colors.katchup_line_gray};
     border-radius: 0.8rem;
+    ${({ theme }) => theme.fonts.h2_smalltitle};
 
     outline: none;
     resize: none;

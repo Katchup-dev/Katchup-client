@@ -6,7 +6,7 @@ const colors = {
   katchup_dark_gray: '#8B8B8B',
   katchup_gray: '#C2C2C2',
   katchup_line_gray: '#E2E2E2',
-  katchup_light_gray: '#E2E2E2',
+  katchup_light_gray: '#F5F5F5',
   katchup_bg_gray: '#FAFAFA',
   katchup_white: '#FFFFFF',
 };
