@@ -10,3 +10,13 @@ export interface InputCategoryInfo {
   name: string;
   isShared: boolean;
 }
+
+export interface InputFolderInfo {
+  folderId: number;
+  name: string;
+}
+
+export interface InputTaskInfo {
+  taskId: number;
+  name: string;
+}

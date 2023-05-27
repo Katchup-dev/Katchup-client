@@ -1,5 +1,5 @@
 import { getCategories, getFolders, getTasks } from 'core/apis/input';
-import { categorySelectState } from 'core/atom';
+import { categorySelectState, folderSelectState, taskSelectState } from 'core/atom';
 import { IcBtnDeletePopup } from 'public/assets/icons';
 import React, { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
@@ -7,6 +7,7 @@ import { useRecoilState } from 'recoil';
 import styled from '@emotion/styled';
 
 import DropdownCategory from './DropdownCategory';
+import DropdownFolder from './DropdownFolder';
 
 interface ModalProps {
   isShowing: boolean;
@@ -35,11 +36,9 @@ const ModalIndex = (props: ModalProps) => {
   const [categoryOptions, setCategoryOptions] = useState([]);
   const [selectedCategory, setSelectedCategory] = useRecoilState(categorySelectState);
   const [folderOptions, setFolderOptions] = useState([]);
-  const [selectedFolder, setSelectedFolder] = useState('');
+  const [selectedFolder, setSelectedFolder] = useRecoilState(folderSelectState);
   const [taskOptions, setTaskOptions] = useState([]);
-  const [selectedTask, setSelectedTask] = useState('');
-
-  console.log(selectedCategory);
+  const [selectedTask, setSelectedTask] = useRecoilState(taskSelectState);
 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCategory(e.target.value);
@@ -120,6 +119,7 @@ const ModalIndex = (props: ModalProps) => {
                 placeholder="업무 중분류를 입력해주세요"
                 maxLength={20}
               />
+              {isFolderFocused && <DropdownFolder options={folderOptions} />}
               <p>
                 <span>{folderCount}</span>/20
               </p>
@@ -135,6 +135,7 @@ const ModalIndex = (props: ModalProps) => {
                 placeholder="업무 소분류를 입력해주세요"
                 maxLength={20}
               />
+              {isTaskFocused && <DropdownFolder options={taskOptions} />}
               <p>
                 <span>{taskCount}</span>/20
               </p>

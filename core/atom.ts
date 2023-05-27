@@ -1,7 +1,7 @@
 import { atom } from 'recoil';
 import { recoilPersist } from 'recoil-persist';
 import { UserProfileInfo } from 'types/auth';
-import { InputCategoryInfo } from 'types/input';
+import { InputCategoryInfo, InputFolderInfo, InputTaskInfo } from 'types/input';
 
 const { persistAtom } = recoilPersist();
 
@@ -20,5 +20,21 @@ export const categorySelectState = atom<InputCategoryInfo>({
     categoryId: 0,
     name: '',
     isShared: false,
+  },
+});
+
+export const folderSelectState = atom<InputFolderInfo>({
+  key: `folderSelect`,
+  default: {
+    folderId: 0,
+    name: '',
+  },
+});
+
+export const taskSelectState = atom<InputTaskInfo>({
+  key: `taskSelect`,
+  default: {
+    taskId: 0,
+    name: '',
   },
 });
