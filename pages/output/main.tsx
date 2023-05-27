@@ -25,8 +25,9 @@ const OutputMain = () => {
 
   const router = useRouter();
 
-  const handleGoToWorkCard = (folderId: number) => {
-    router.push(`/output/middleCategory/${folderId}`);
+  const handleGoToWorkCard = (folderId: number, categoryName: string) => {
+    const query = { middleCategory: categoryName };
+    router.push({ pathname: `/output/middleCategory/${folderId}`, query });
   };
 
   if (isError) {
@@ -51,7 +52,7 @@ const OutputMain = () => {
                 key={idx}
                 folderId={category.folderId}
                 handleClick={() => {
-                  handleGoToWorkCard(category.folderId);
+                  handleGoToWorkCard(category.folderId, category.name);
                 }}
               />
             ))}
