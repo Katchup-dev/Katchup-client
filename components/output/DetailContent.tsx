@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { useGetDetailPage } from 'lib/hooks/useGetDetailPage';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { IcBack, IcDeleteFile, IcSubLogo } from 'public/assets/icons';
 import { useState } from 'react';
@@ -47,9 +48,11 @@ const DetailContent = (props: DetailContentProps) => {
             </div>
             <StFileWrapper>
               {fileList?.map((file) => (
-                <li key={file.id}>
-                  <IcDeleteFile /> {file.name} <p>{file.size}MB</p>
-                </li>
+                <a href={file.url} download>
+                  <li key={file.id}>
+                    <IcDeleteFile /> {file.name} <p>{file.size}MB</p>
+                  </li>
+                </a>
               ))}
             </StFileWrapper>
           </>
@@ -154,26 +157,31 @@ const StFileWrapper = styled.ul`
   border: 0.1rem solid ${({ theme }) => theme.colors.katchup_line_gray};
   border-radius: 0.8rem;
 
-  > li {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-
-    ${({ theme }) => theme.fonts.p1_text};
-
-    color: ${({ theme }) => theme.colors.katchup_black};
+  > a {
     text-decoration: none;
+    > li {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
 
-    svg {
-      margin-right: 1.6rem;
-    }
+      ${({ theme }) => theme.fonts.p1_text};
 
-    > p {
-      margin-left: 1.4rem;
+      color: ${({ theme }) => theme.colors.katchup_black};
+      text-decoration: none;
 
-      ${({ theme }) => theme.fonts.caption};
+      cursor: pointer;
 
-      color: ${({ theme }) => theme.colors.katchup_dark_gray};
+      svg {
+        margin-right: 1.6rem;
+      }
+
+      > p {
+        margin-left: 1.4rem;
+
+        ${({ theme }) => theme.fonts.caption};
+
+        color: ${({ theme }) => theme.colors.katchup_dark_gray};
+      }
     }
   }
 `;
