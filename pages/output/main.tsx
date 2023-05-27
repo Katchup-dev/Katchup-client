@@ -1,5 +1,4 @@
 import MiddleCategory from '../../components/output/MiddleCategory';
-
 import AddMiddleCategory from '../../components/output/AddMiddleCategory';
 import MainCategoryList from '../../components/output/MainCategoryList';
 import styled from '@emotion/styled';
@@ -9,6 +8,7 @@ import { currentMainCategoryAtom } from 'core/atom';
 import { useGetMiddleCategoryList } from 'lib/hooks/useGetMiddleCategory';
 import { MiddleCategoryInfo } from 'types/output';
 import { useEffect, useState } from 'react';
+import Router, { useRouter } from 'next/router';
 
 const OutputMain = () => {
   const mainCategoryName = useRecoilValue(currentMainCategoryAtom);
@@ -22,6 +22,12 @@ const OutputMain = () => {
 
   //쿼리 키를 바꿔주는 방식으로 mainCategoryName이 바뀔 때마다 커스텀훅 재호출
   const { categoryList, isError } = useGetMiddleCategoryList(categoryId);
+
+  const router = useRouter();
+
+  const handleGoToWorkCard = (folderId: number) => {
+    router.push(`/output/middleCategory/${folderId}`);
+  };
 
   if (isError) {
     console.log('error');
@@ -40,7 +46,14 @@ const OutputMain = () => {
 
           <div>
             {categoryList?.map((category: MiddleCategoryInfo, idx: number) => (
-              <MiddleCategory categoryName={category.name} key={idx} />
+              <MiddleCategory
+                categoryName={category.name}
+                key={idx}
+                folderId={category.folderId}
+                handleClick={() => {
+                  handleGoToWorkCard(category.folderId);
+                }}
+              />
             ))}
             <AddMiddleCategory />
           </div>

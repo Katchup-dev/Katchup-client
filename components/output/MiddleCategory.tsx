@@ -3,12 +3,14 @@ import { IcMore } from 'public/assets/icons';
 
 interface MiddleCategoryProps {
   categoryName: string;
+  folderId: number;
+  handleClick: (id: number) => void;
 }
 
 const MiddleCategory = (props: MiddleCategoryProps) => {
-  const { categoryName } = props;
+  const { categoryName, folderId, handleClick } = props;
   return (
-    <StMiddleFolder>
+    <StMiddleFolder onClick={() => handleClick(folderId)}>
       <IcMore />
       <div>
         <h2>{categoryName}</h2>
