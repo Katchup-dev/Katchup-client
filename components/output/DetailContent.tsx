@@ -1,9 +1,7 @@
 import styled from '@emotion/styled';
-import { useGetDetailPage } from 'lib/hooks/useGetDetailPage';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
+
 import { IcBack, IcDeleteFile, IcSubLogo } from 'public/assets/icons';
-import { useState } from 'react';
+
 import { FileInfo } from 'types/output';
 
 export interface DetailContentProps {
@@ -13,11 +11,6 @@ export interface DetailContentProps {
 
 const DetailContent = (props: DetailContentProps) => {
   const { fileList, content } = props;
-  const [textLength, setTextLength] = useState<number>(0);
-
-  // const handleTextLength = () => {
-  //   setTextLength(e.target.value.replace(/[\0-\x7f]|([0-\u07ff]|(.))/g, '$&$1$2').length);
-  // };
 
   return (
     <StDetailWrapper>

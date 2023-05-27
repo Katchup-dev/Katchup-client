@@ -7,7 +7,6 @@ import { useRecoilState } from 'recoil';
 import { currentMainCategoryAtom } from 'core/atom';
 import { useGetMiddleCategoryList } from 'lib/hooks/useGetMiddleCategory';
 import { MiddleCategoryInfo } from 'types/output';
-import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 
 const OutputMain = () => {

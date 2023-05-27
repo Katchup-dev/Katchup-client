@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { client } from 'lib/axios';
 
 export const getMainCategoryList = async () => {

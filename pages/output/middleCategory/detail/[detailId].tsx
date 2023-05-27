@@ -3,7 +3,6 @@ import DetailContent from 'components/output/DetailContent';
 import ScreenshotOutput from 'components/output/ScreenshotOutput';
 import { useGetDetailPage } from 'lib/hooks/useGetDetailPage';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
 
 const detail = () => {
   const router = useRouter();

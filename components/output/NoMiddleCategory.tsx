@@ -1,7 +1,6 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
 import { IcLogoBig } from 'public/assets/icons';
-import React from 'react';
 
 const NoMiddleCategory = () => {
   return (

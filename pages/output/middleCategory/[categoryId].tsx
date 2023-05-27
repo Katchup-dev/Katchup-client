@@ -7,7 +7,6 @@ import useGetWorkCard from 'lib/hooks/useGetWorkCard';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { IcBack, IcDeleteWorkCard, IcEditMiddleCategory, IcWorkCardFilter } from 'public/assets/icons';
-import { useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
 import { WorkCardInfo } from 'types/output';
 

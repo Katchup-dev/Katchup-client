@@ -4,7 +4,6 @@ import { useGetMainCategoryList } from 'lib/hooks/useGetMainCategoryList';
 import { IcAddMain, IcTrash } from 'public/assets/icons';
 import React, { useEffect } from 'react';
 import { useRecoilState } from 'recoil';
-import { css } from '@emotion/react';
 import { mainCategoryInfo } from 'types/output';
 import { useRouter } from 'next/router';
 
@@ -25,7 +24,7 @@ const MainCategoryList = (props: MainCategoryListProps) => {
 
     const selectedCategory = e.target as HTMLLIElement;
 
-    setCurrentMainCategory((prevCategory) => {
+    setCurrentMainCategory(() => {
       const updatedCategory = { mainCategory: selectedCategory.innerText, categoryId: categoryId };
       router.push(`/output/${categoryId}`);
       return updatedCategory;
