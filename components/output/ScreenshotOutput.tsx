@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
 import { IcScreenshot } from 'public/assets/icons';
-import React from 'react';
 
 const ScreenshotOutput = () => {
   return (

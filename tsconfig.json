@@ -18,7 +18,6 @@
     "isolatedModules": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitAny": true,
-    "jsx": "preserve",
     "incremental": true
   },
   "include": ["public/assets/asset.d.ts", "**/*.d.ts", "next-env.d.ts", "**/*.ts", "**/*.tsx"],
