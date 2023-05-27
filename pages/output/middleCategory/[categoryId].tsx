@@ -1,8 +1,10 @@
 import styled from '@emotion/styled';
 import MainCategoryList from 'components/output/MainCategoryList';
+import NoMiddleCategory from 'components/output/NoMiddleCategory';
 import WorkCard from 'components/output/WorkCard';
 import { currentMainCategoryAtom } from 'core/atom';
 import useGetWorkCard from 'lib/hooks/useGetWorkCard';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { IcBack, IcDeleteWorkCard, IcEditMiddleCategory, IcWorkCardFilter } from 'public/assets/icons';
 import { useEffect } from 'react';
@@ -23,10 +25,12 @@ const WorkCardPage = () => {
         <MainCategoryList />
 
         <StMiddleBoard>
-          <button>
-            <IcBack />
-            <p>{currentMainCategory.mainCategory}</p>
-          </button>
+          <Link href={`/output/main`}>
+            <button>
+              <IcBack />
+              <p>{currentMainCategory.mainCategory}</p>
+            </button>
+          </Link>
 
           <StSettingButtonWrapper>
             <button>
@@ -85,25 +89,29 @@ const StMiddleBoard = styled.section`
 
   overflow-y: scroll;
 
-  > button {
-    display: flex;
-    align-items: center;
-    gap: 0.2rem;
+  > a {
+    text-decoration: none;
 
-    position: absolute;
-    top: 2.8rem;
-    left: 4.1rem;
+    > button {
+      display: flex;
+      align-items: center;
+      gap: 0.2rem;
 
-    border: none;
+      position: absolute;
+      top: 2.8rem;
+      left: 4.1rem;
 
-    background-color: transparent;
+      border: none;
 
-    cursor: pointer;
+      background-color: transparent;
 
-    > p {
-      ${({ theme }) => theme.fonts.h3_title_eng};
+      cursor: pointer;
 
-      color: ${({ theme }) => theme.colors.katchup_gray};
+      > p {
+        ${({ theme }) => theme.fonts.h3_title_eng};
+
+        color: ${({ theme }) => theme.colors.katchup_gray};
+      }
     }
   }
 
