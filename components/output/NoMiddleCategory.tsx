@@ -20,6 +20,8 @@ const NoMiddleCategory = () => {
 };
 
 const StWrapper = styled.article`
+  margin-top: 13.7rem;
+
   display: flex;
   flex-direction: column;
   justify-content: center;

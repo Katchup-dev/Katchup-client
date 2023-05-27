@@ -48,24 +48,30 @@ const WorkCardPage = () => {
             </button>
           </header>
 
-          <StMiddleBoardNav>
-            <p>#</p>
-            <p>소분류</p>
-            <p>키워드</p>
-            <p>내용</p>
-            <p>파일</p>
-            <p>더보기</p>
-          </StMiddleBoardNav>
+          {workCardList.length ? (
+            <>
+              <StMiddleBoardNav>
+                <p>#</p>
+                <p>소분류</p>
+                <p>키워드</p>
+                <p>내용</p>
+                <p>파일</p>
+                <p>더보기</p>
+              </StMiddleBoardNav>
 
-          {workCardList?.map((card: WorkCardInfo) => (
-            <WorkCard
-              cardId={card.cardId}
-              content={card.content}
-              keywordList={card.keywordList}
-              cardName={card.cardName}
-              existFile={card.existFile}
-            />
-          ))}
+              {workCardList?.map((card: WorkCardInfo) => (
+                <WorkCard
+                  cardId={card.cardId}
+                  content={card.content}
+                  keywordList={card.keywordList}
+                  cardName={card.cardName}
+                  existFile={card.existFile}
+                />
+              ))}
+            </>
+          ) : (
+            <NoMiddleCategory />
+          )}
         </StMiddleBoard>
       </StOutputMainWrapper>
     </>

@@ -45,23 +45,20 @@ const OutputMain = () => {
             <StMainTitle isShouldWrap={true}>{mainCategory}</StMainTitle>
             <IcEditMain />
           </header>
-          {categoryList?.length ? (
-            <div>
-              {categoryList?.map((category: MiddleCategoryInfo, idx: number) => (
-                <MiddleCategory
-                  categoryName={category.name}
-                  key={idx}
-                  folderId={category.folderId}
-                  handleClick={() => {
-                    handleGoToWorkCard(category.folderId, category.name);
-                  }}
-                />
-              ))}
-              <AddMiddleCategory />
-            </div>
-          ) : (
-            <NoMiddleCategory />
-          )}
+          <div>
+            {categoryList?.map((category: MiddleCategoryInfo, idx: number) => (
+              <MiddleCategory
+                categoryName={category.name}
+                key={idx}
+                folderId={category.folderId}
+                handleClick={() => {
+                  handleGoToWorkCard(category.folderId, category.name);
+                }}
+              />
+            ))}
+            <AddMiddleCategory />
+          </div>
+          )
         </StMiddleBoard>
       </StOutputMainWrapper>
     </>
