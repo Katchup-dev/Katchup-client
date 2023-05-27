@@ -5,7 +5,6 @@ import { useEffect } from 'react';
 export const useGetMiddleCategoryList = (categoryId: number) => {
   const { data, error } = useQuery(['middle-category', categoryId], () => getMiddleCategoryList(categoryId));
 
-  useEffect(() => {}, [categoryId]);
   return {
     categoryList: data?.data,
     isError: error,
