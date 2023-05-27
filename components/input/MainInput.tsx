@@ -38,18 +38,30 @@ const MainInput = () => {
     setFileInput((prev) => prev.filter((selectedFile) => selectedFile !== file));
   };
 
+  const handleDeleteAll = (e: React.MouseEvent<HTMLButtonElement>) => {
+    console.log('모두 지우기');
+  };
+
   const handleNext = (e: React.MouseEvent<HTMLButtonElement>) => {
     console.log('다음');
   };
 
   return (
     <StMainInput>
+      <StDeleteAllBtn type="button" onClick={handleDeleteAll}>
+        모든 내용 지우기
+      </StDeleteAllBtn>
       <StInputWrapper>
         <h2>
           <IcKatchupLogo /> 업무 내용
         </h2>
         <StWorkInput>
-          <textarea maxLength={2000} value={workInput} onChange={handleInputChange} />
+          <textarea
+            maxLength={2000}
+            value={workInput}
+            onChange={handleInputChange}
+            placeholder="업무 내용을 입력해주세요"
+          />
           <p>
             <span>{letterCount}</span>/2000자
           </p>
@@ -95,11 +107,25 @@ const MainInput = () => {
 };
 
 const StMainInput = styled.section`
+  position: relative;
+
   width: 90rem;
   height: 85rem;
 
   border-radius: 2.6rem;
   background-color: ${({ theme }) => theme.colors.katchup_white};
+`;
+
+const StDeleteAllBtn = styled.button`
+  position: absolute;
+  top: 5rem;
+  right: 7.5rem;
+
+  border: none;
+  background: transparent;
+  color: ${({ theme }) => theme.colors.katchup_gray};
+  ${({ theme }) => theme.fonts.p2_text};
+  text-decoration: underline;
 `;
 
 const StInputWrapper = styled.div`
@@ -137,6 +163,10 @@ const StWorkInput = styled.div`
 
     scrollbar-width: 0.5rem;
     scrollbar-color: ${({ theme }) => theme.colors.katchup_gray};
+
+    ::placeholder {
+      color: ${({ theme }) => theme.colors.katchup_gray};
+    }
 
     ::-webkit-scrollbar {
       width: 0.5rem;
