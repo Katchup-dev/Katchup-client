@@ -229,3 +229,6 @@ const StNextBtn = styled.button<{ disabled: boolean }>`
   color: ${({ theme }) => theme.colors.katchup_white};
   background-color: ${({ theme, disabled }) => (disabled ? theme.colors.katchup_gray : theme.colors.katchup_main)};
 `;
+function useGetCategories(): { data: any; isLoading: any } {
+  throw new Error('Function not implemented.');
+}
