@@ -39,17 +39,21 @@ const DetailContent = (props: DetailContentProps) => {
           </span>
         </StDetailContent>
 
-        <div>
-          <IcSubLogo />
-          <h2>파일 첨부</h2>
-        </div>
-        <StFileWrapper>
-          {fileList?.map((file) => (
-            <li key={file.id}>
-              <IcDeleteFile /> {file.name} <p>{file.size}MB</p>
-            </li>
-          ))}
-        </StFileWrapper>
+        {fileList.length > 0 && (
+          <>
+            <div>
+              <IcSubLogo />
+              <h2>파일 첨부</h2>
+            </div>
+            <StFileWrapper>
+              {fileList?.map((file) => (
+                <li key={file.id}>
+                  <IcDeleteFile /> {file.name} <p>{file.size}MB</p>
+                </li>
+              ))}
+            </StFileWrapper>
+          </>
+        )}
       </StSectionDetail>
       <StButtonWrapper>
         <button type="button">삭제하기</button>
@@ -176,11 +180,10 @@ const StFileWrapper = styled.ul`
 
 const StButtonWrapper = styled.div`
   display: flex;
+  justify-content: flex-end;
   gap: 1.6rem;
 
-  position: absolute;
-  bottom: 3.2rem;
-  right: 7.4rem;
+  margin-top: 3.2rem;
 
   > button {
     padding: 0;
