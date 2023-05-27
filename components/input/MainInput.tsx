@@ -1,5 +1,11 @@
 import useModal from 'lib/hooks/useModal';
-import { IcBtnDeleteFile, IcFileCheckbox, IcFileCheckboxAfter, IcKatchupLogo } from 'public/assets/icons';
+import {
+  IcBtnDeleteFile,
+  IcBtnScreenshot,
+  IcFileCheckbox,
+  IcFileCheckboxAfter,
+  IcKatchupLogo,
+} from 'public/assets/icons';
 import { useRef, useState } from 'react';
 
 import styled from '@emotion/styled';
@@ -52,6 +58,7 @@ const MainInput = () => {
 
   return (
     <StMainInput>
+      <IcBtnScreenshot />
       <StDeleteAllBtn type="button" onClick={handleDeleteAll}>
         모든 내용 지우기
       </StDeleteAllBtn>
@@ -73,11 +80,13 @@ const MainInput = () => {
       </StInputWrapper>
       <StFileWrapper>
         <StFileSelect>
-          <h2>
-            <IcKatchupLogo /> 파일 첨부
-          </h2>
-          <input ref={fileInputRef} type="file" onChange={handleFileSelect} />
-          <button onClick={handleFileBtnClick}>파일선택</button>
+          <StFileBtnWrapper>
+            <h2>
+              <IcKatchupLogo /> 파일 첨부
+            </h2>
+            <input ref={fileInputRef} type="file" onChange={handleFileSelect} />
+            <button onClick={handleFileBtnClick}>파일선택</button>
+          </StFileBtnWrapper>
           <label>
             <input type="checkbox" checked={isChecked} onChange={handleCheckboxChange} />
             {isChecked ? <IcFileCheckboxAfter /> : <IcFileCheckbox />}
@@ -103,8 +112,10 @@ const MainInput = () => {
           )}
         </StFileInput>
       </StFileWrapper>
-      <StNextBtn type="button" disabled={!workInput.length} onClick={toggle}>
-        다음 단계
+      <StNextBtn>
+        <button type="button" disabled={!workInput.length} onClick={toggle}>
+          다음 단계
+        </button>
       </StNextBtn>
       <ModalIndex isShowing={isShowing} handleHide={toggle} />
     </StMainInput>
@@ -116,9 +127,18 @@ const StMainInput = styled.section`
 
   width: 90rem;
   height: 85rem;
+  /* margin: 0rem 51rem; */
 
   border-radius: 2.6rem;
   background-color: ${({ theme }) => theme.colors.katchup_white};
+
+  & > svg {
+    position: absolute;
+    top: 3rem;
+    left: 90rem;
+
+    cursor: pointer;
+  }
 `;
 
 const StDeleteAllBtn = styled.button`
@@ -150,7 +170,7 @@ const StInputWrapper = styled.div`
 const StWorkInput = styled.div`
   position: relative;
 
-  width: 75.2rem;
+  width: 100%;
   height: 45.8rem;
   padding: 4rem;
 
@@ -158,7 +178,7 @@ const StWorkInput = styled.div`
   border-radius: 0.8rem;
 
   & > textarea {
-    width: 67.2rem;
+    width: 100%;
     height: 32.7rem;
 
     border: none;
@@ -223,32 +243,13 @@ const StEmpty = styled.div`
 
 const StFileSelect = styled.div`
   display: flex;
+  justify-content: space-between;
   align-items: center;
 
   margin-bottom: 1.4rem;
 
   input {
     display: none;
-  }
-
-  & > h2 {
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-
-    margin-right: 1.4rem;
-
-    ${({ theme }) => theme.fonts.h1_title};
-  }
-
-  & > button {
-    padding: 0.5rem 1.5rem;
-    margin-right: 43.8rem;
-
-    border: 0.1rem solid ${({ theme }) => theme.colors.katchup_line_gray};
-    border-radius: 0.8rem;
-    background-color: ${({ theme }) => theme.colors.katchup_white};
-    ${({ theme }) => theme.fonts.p3_text};
   }
 
   & > label {
@@ -260,11 +261,35 @@ const StFileSelect = styled.div`
   }
 `;
 
+const StFileBtnWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  & > h2 {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+
+    margin-right: 1.4rem;
+
+    ${({ theme }) => theme.fonts.h1_title};
+  }
+  & > button {
+    padding: 0.5rem 1.5rem;
+
+    border: 0.1rem solid ${({ theme }) => theme.colors.katchup_line_gray};
+    border-radius: 0.8rem;
+    background-color: ${({ theme }) => theme.colors.katchup_white};
+    ${({ theme }) => theme.fonts.p3_text};
+  }
+`;
+
 const StFileInput = styled.div`
   position: relative;
   overflow-y: scroll;
 
-  width: 75.2rem;
+  width: 100%;
   height: 11.4rem;
   padding: 1.2rem 2.2rem;
 
@@ -301,18 +326,23 @@ const StFileInput = styled.div`
   }
 `;
 
-const StNextBtn = styled.button<{ disabled: boolean }>`
-  width: 11.8rem;
-  height: 4.2rem;
+const StNextBtn = styled.div<{ disabled: boolean }>`
+  display: flex;
+  justify-content: flex-end;
 
-  margin-top: 1.6rem;
-  margin-left: 70.7rem;
+  & > button {
+    width: 11.8rem;
+    height: 4.2rem;
 
-  border: none;
-  border-radius: 0.8rem;
-  color: ${({ theme }) => theme.colors.katchup_white};
-  background-color: ${({ theme, disabled }) => (disabled ? theme.colors.katchup_gray : theme.colors.katchup_main)};
-  ${({ theme }) => theme.fonts.h3_title};
+    margin-top: 1.6rem;
+    margin-right: 7.4rem;
+
+    border: none;
+    border-radius: 0.8rem;
+    color: ${({ theme }) => theme.colors.katchup_white};
+    background-color: ${({ theme, disabled }) => (disabled ? theme.colors.katchup_gray : theme.colors.katchup_main)};
+    ${({ theme }) => theme.fonts.h3_title};
+  }
 `;
 
 export default MainInput;
