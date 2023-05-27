@@ -8,7 +8,7 @@ export const getMainCategoryList = async () => {
 };
 
 export const getMiddleCategoryList = async (categoryId: number) => {
-  const { data } = await client.get(`~/api/v1/folders/categories/${categoryId}`);
-  console.log(data);
+  const { data } = await client.get(`/api/v1/folders/categories/${categoryId}`);
+
   return data;
 };

@@ -13,12 +13,15 @@ import { useEffect, useState } from 'react';
 const OutputMain = () => {
   const mainCategoryName = useRecoilValue(currentMainCategoryAtom);
   const [mainCategory, setMainCategory] = useState<string>('');
-
-  let { categoryList, isError } = useGetMiddleCategoryList(mainCategoryName.categoryId);
+  const [categoryId, setCategoryId] = useState(mainCategoryName.categoryId);
 
   useEffect(() => {
     setMainCategory(mainCategoryName.mainCategory);
+    setCategoryId(mainCategoryName.categoryId);
   }, [mainCategoryName]);
+
+  //쿼리 키를 바꿔주는 방식으로 mainCategoryName이 바뀔 때마다 커스텀훅 재호출
+  const { categoryList, isError } = useGetMiddleCategoryList(categoryId);
 
   if (isError) {
     console.log('error');

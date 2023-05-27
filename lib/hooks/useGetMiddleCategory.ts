@@ -1,9 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 import { getMiddleCategoryList } from 'core/apis';
+import { useEffect } from 'react';
 
-export const useGetMainCategoryList = (categoryId: number) => {
-  const { data, error } = useQuery(['main-category'], () => getMiddleCategoryList(categoryId));
+export const useGetMiddleCategoryList = (categoryId: number) => {
+  const { data, error } = useQuery(['middle-category', categoryId], () => getMiddleCategoryList(categoryId));
 
+  useEffect(() => {}, [categoryId]);
   return {
     categoryList: data?.data,
     isError: error,
