@@ -18,3 +18,4 @@ export { default as IcEditMiddleCategory } from './ic_editMiddleCategory.svg';
 export { default as IcDeleteWorkCard } from './ic_deleteWorkCard.svg';
 export { default as IcWorkCardFilter } from './ic_workCardFilter.svg';
 export { default as IcLogoBig } from './ic_logoBig.svg';
+export { default as IcDeleteModal } from './ic_deleteModal.svg';
