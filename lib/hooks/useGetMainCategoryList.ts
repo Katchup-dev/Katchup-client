@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { getMainCategoryList } from 'core/apis';
+import { getMainCategoryList } from 'core/apis/output';
 
 export const useGetMainCategoryList = () => {
   const { data, error } = useQuery(['main-category'], () => getMainCategoryList(), {
