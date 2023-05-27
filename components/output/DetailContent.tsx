@@ -33,7 +33,7 @@ const DetailContent = (props: DetailContentProps) => {
           </span>
         </StDetailContent>
 
-        {fileList.length > 0 && (
+        {fileList?.length > 0 && (
           <>
             <div>
               <IcSubLogo />

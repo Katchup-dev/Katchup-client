@@ -2,10 +2,11 @@ import styled from '@emotion/styled';
 import { currentMainCategoryAtom } from 'core/atom';
 import { useGetMainCategoryList } from 'lib/hooks/useGetMainCategoryList';
 import { IcAddMain, IcTrash } from 'public/assets/icons';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { mainCategoryInfo } from 'types/output';
 import { useRouter } from 'next/router';
+import AddCategoryModal from 'components/Modal/AddCategoryModal';
 
 export interface MainCategoryListProps {
   currentMain: string;
@@ -15,6 +16,7 @@ export interface MainCategoryListProps {
 const MainCategoryList = (props: MainCategoryListProps) => {
   const { currentMain, currentMainId } = props;
   const { categoryList, isError } = useGetMainCategoryList();
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const [currentMainCategory, setCurrentMainCategory] = useRecoilState(currentMainCategoryAtom);
   const router = useRouter();
@@ -37,10 +39,11 @@ const MainCategoryList = (props: MainCategoryListProps) => {
 
   return (
     <>
-      <StWrapper>
+      {isModalOpen && <AddCategoryModal isMainCategory={true} setIsOpen={setIsModalOpen} />}
+      <StMainWrapper>
         <header>
           <h1>워크 스페이스</h1>
-          <IcAddMain />
+          <IcAddMain onClick={() => setIsModalOpen(true)} />
         </header>
         <StMainCategoryWrapper>
           {categoryList?.map((category: mainCategoryInfo, idx: number) => (
@@ -57,12 +60,12 @@ const MainCategoryList = (props: MainCategoryListProps) => {
           <IcTrash />
           <span>휴지통</span>
         </button>
-      </StWrapper>
+      </StMainWrapper>
     </>
   );
 };
 
-const StWrapper = styled.aside`
+const StMainWrapper = styled.aside`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -74,6 +77,12 @@ const StWrapper = styled.aside`
 
   border: 0.1rem solid ${({ theme }) => theme.colors.katchup_line_gray};
   border-radius: 2.6rem;
+
+  overflow-y: scroll;
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
 
   > header {
     display: flex;
