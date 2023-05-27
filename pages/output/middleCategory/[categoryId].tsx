@@ -1,9 +1,22 @@
 import styled from '@emotion/styled';
 import MainCategoryList from 'components/output/MainCategoryList';
 import WorkCard from 'components/output/WorkCard';
+import { currentMainCategoryAtom } from 'core/atom';
+import useGetWorkCard from 'lib/hooks/useGetWorkCard';
+import { useRouter } from 'next/router';
 import { IcBack, IcDeleteWorkCard, IcEditMiddleCategory, IcWorkCardFilter } from 'public/assets/icons';
+import { useEffect } from 'react';
+import { useRecoilValue } from 'recoil';
+import { WorkCardInfo } from 'types/output';
 
 const WorkCardPage = () => {
+  const currentMainCategory = useRecoilValue(currentMainCategoryAtom);
+
+  const router = useRouter();
+  const { categoryId, middleCategory } = router.query;
+
+  const { workCardList, isError } = useGetWorkCard(Number(categoryId));
+
   return (
     <>
       <StOutputMainWrapper>
@@ -12,7 +25,7 @@ const WorkCardPage = () => {
         <StMiddleBoard>
           <button>
             <IcBack />
-            <p>대분류 제목</p>
+            <p>{currentMainCategory.mainCategory}</p>
           </button>
 
           <StSettingButtonWrapper>
@@ -25,7 +38,7 @@ const WorkCardPage = () => {
           </StSettingButtonWrapper>
 
           <header>
-            <h1>중분류 제목</h1>
+            <h1>{middleCategory}</h1>
             <button>
               <IcEditMiddleCategory />
             </button>
@@ -40,7 +53,15 @@ const WorkCardPage = () => {
             <p>더보기</p>
           </StMiddleBoardNav>
 
-          <WorkCard />
+          {workCardList?.map((card: WorkCardInfo) => (
+            <WorkCard
+              cardId={card.cardId}
+              content={card.content}
+              keywordList={card.keywordList}
+              cardName={card.cardName}
+              existFile={card.existFile}
+            />
+          ))}
         </StMiddleBoard>
       </StOutputMainWrapper>
     </>
@@ -135,28 +156,29 @@ const StMiddleBoardNav = styled.nav`
   border-radius: 0.8rem;
 
   > p {
-    ${({ theme }) => theme.fonts.h2_smalltitle_eng};
+    ${({ theme }) => theme.fonts.h2_smalltitle};
+    color: ${({ theme }) => theme.colors.katchup_dark_gray};
   }
 
   p:nth-of-type(1) {
-    margin-left: 5rem;
-    margin-right: 13.4rem;
+    margin-left: 3.477%;
+    margin-right: 9.318%;
   }
 
   p:nth-of-type(2) {
-    margin-right: 21.4rem;
+    margin-right: 14.882%;
   }
 
   p:nth-of-type(3) {
-    margin-right: 38.1rem;
+    margin-right: 26.495%;
   }
 
   p:nth-of-type(4) {
-    margin-right: 30.3rem;
+    margin-right: 21.07%;
   }
 
   p:nth-of-type(5) {
-    margin-right: 8.8rem;
+    margin-right: 6.12%;
   }
 `;
 
