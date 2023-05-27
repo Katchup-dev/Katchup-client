@@ -10,6 +10,7 @@ export { default as IcFilter } from './Ic_filter.svg';
 export { default as IcSubLogo } from './Ic_subLogo.svg';
 export { default as IcDeleteFile } from './ic_deleteFile.svg';
 export { default as IcScreenshot } from './ic_screenshot.svg';
+export { default as IcScreenshotEmpty } from './ic_screenshot_empty.svg';
 export { default as IcBack } from './ic_back.svg';
 export { default as IcKatchupLogo } from './ic_katchupLogo.svg';
 export { default as IcBtnDeleteFile } from './ic_btn_deletefile.svg';
