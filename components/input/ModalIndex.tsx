@@ -1,5 +1,6 @@
+import { getCategories } from 'core/apis/input';
 import { IcBtnDeletePopup } from 'public/assets/icons';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import styled from '@emotion/styled';
 
@@ -20,6 +21,11 @@ const ModalIndex = (props: ModalProps) => {
   const [folderCount, setFolderCount] = useState(0);
   const [taskCount, setTaskCount] = useState(0);
   const [etcCount, setEtcCount] = useState(0);
+
+  const [isCategoryFocused, setIsCategoryFocused] = useState(false);
+  const [isFolderFocused, setIsFolderFocused] = useState(false);
+  const [isTaskFocused, setIsTaskFocused] = useState(false);
+  const [isKeywordFocused, setIsKeywordFocused] = useState(false);
 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCategory(e.target.value);
@@ -43,6 +49,13 @@ const ModalIndex = (props: ModalProps) => {
 
   const handleNext = (e: React.MouseEvent<HTMLButtonElement>) => {};
 
+  useEffect(() => {
+    if (isCategoryFocused) {
+      getCategories();
+      setIsCategoryFocused(false);
+    }
+  }, [isCategoryFocused]);
+
   return (
     <>
       {isShowing && (
@@ -56,6 +69,7 @@ const ModalIndex = (props: ModalProps) => {
                 type="text"
                 value={category}
                 onChange={handleCategoryChange}
+                onFocus={() => setIsCategoryFocused(true)}
                 placeholder="업무 대분류를 입력해주세요"
                 maxLength={20}
               />
@@ -69,6 +83,7 @@ const ModalIndex = (props: ModalProps) => {
                 type="text"
                 value={folder}
                 onChange={handleFolderChange}
+                onFocus={() => setIsFolderFocused(true)}
                 placeholder="업무 중분류를 입력해주세요"
                 maxLength={20}
               />
@@ -82,6 +97,7 @@ const ModalIndex = (props: ModalProps) => {
                 type="text"
                 value={task}
                 onChange={handleTaskChange}
+                onFocus={() => setIsTaskFocused(true)}
                 placeholder="업무 소분류를 입력해주세요"
                 maxLength={20}
               />
@@ -91,7 +107,13 @@ const ModalIndex = (props: ModalProps) => {
             </StInputIndex>
             <StInputIndex>
               키워드
-              <input type="text" value={keyword} onChange={handleKeywordChange} placeholder="키워드를 입력해주세요" />
+              <input
+                type="text"
+                value={keyword}
+                onChange={handleKeywordChange}
+                onFocus={() => setIsKeywordFocused(true)}
+                placeholder="키워드를 입력해주세요"
+              />
             </StInputIndex>
             <StInputEtc>
               비고
