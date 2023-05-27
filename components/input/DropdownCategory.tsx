@@ -1,6 +1,5 @@
 import { categorySelectState } from 'core/atom';
-import { useState } from 'react';
-import { RecoilState, useRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { InputCategoryInfo } from 'types/input';
 
 import styled from '@emotion/styled';
@@ -18,7 +17,7 @@ const DropdownCategory = ({ options }: dropdownIndexProps) => {
 
   const displayOptions = () => {
     return options.map((option) => (
-      <li key={option.categoryId} onClick={() => handleOptionClick(option)}>
+      <li key={option.categoryId} onMouseDown={() => handleOptionClick(option)}>
         {option.name}
       </li>
     ));
@@ -47,5 +46,7 @@ const StDropdown = styled.ul`
     margin-bottom: 1rem;
 
     ${({ theme }) => theme.fonts.h2_smalltitle};
+
+    cursor: pointer;
   }
 `;

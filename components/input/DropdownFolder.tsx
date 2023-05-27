@@ -17,7 +17,7 @@ const DropdownFolder = ({ options }: dropdownIndexProps) => {
 
   const displayOptions = () => {
     return options.map((option) => (
-      <li key={option.folderId} onClick={() => handleOptionClick(option)}>
+      <li key={option.folderId} onMouseDown={() => handleOptionClick(option)}>
         {option.name}
       </li>
     ));
@@ -46,5 +46,7 @@ const StDropdown = styled.ul`
     margin-bottom: 1rem;
 
     ${({ theme }) => theme.fonts.h2_smalltitle};
+
+    cursor: pointer;
   }
 `;

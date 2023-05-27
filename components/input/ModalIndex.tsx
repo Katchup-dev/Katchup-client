@@ -8,6 +8,7 @@ import styled from '@emotion/styled';
 
 import DropdownCategory from './DropdownCategory';
 import DropdownFolder from './DropdownFolder';
+import DropdownTask from './DropdownTask';
 
 interface ModalProps {
   isShowing: boolean;
@@ -81,9 +82,16 @@ const ModalIndex = (props: ModalProps) => {
   }, [isCategoryFocused, isFolderFocused, isTaskFocused]);
 
   useEffect(() => {
-    setIsCategoryFocused(false);
-    console.log(isCategoryFocused);
+    setCategory(selectedCategory.name);
   }, [selectedCategory]);
+
+  useEffect(() => {
+    setFolder(selectedFolder.name);
+  }, [selectedFolder]);
+
+  useEffect(() => {
+    setTask(selectedTask.name);
+  }, [selectedTask]);
 
   return (
     <>
@@ -135,7 +143,7 @@ const ModalIndex = (props: ModalProps) => {
                 placeholder="업무 소분류를 입력해주세요"
                 maxLength={20}
               />
-              {isTaskFocused && <DropdownFolder options={taskOptions} />}
+              {isTaskFocused && <DropdownTask options={taskOptions} />}
               <p>
                 <span>{taskCount}</span>/20
               </p>
