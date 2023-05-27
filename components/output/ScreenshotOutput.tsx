@@ -1,7 +1,13 @@
 import styled from '@emotion/styled';
 import { IcScreenshot } from 'public/assets/icons';
+import { ScreenshotInfo } from 'types/output';
 
-const ScreenshotOutput = () => {
+export interface ScreenshotOutputProps {
+  screenshotList: ScreenshotInfo[];
+}
+
+const ScreenshotOutput = (props: ScreenshotOutputProps) => {
+  const { screenshotList } = props;
   return (
     <StScreenshotWrapper>
       <div>
@@ -14,8 +20,9 @@ const ScreenshotOutput = () => {
       </StScreenshotGuide>
 
       <StScreenshot>
-        <img src="https://i.ytimg.com/vi/NFeSbHSSbHU/maxresdefault.jpg" />
-        <img src="https://media.bunjang.co.kr/product/220137559_1_1680616138_w360.jpg" />
+        {screenshotList?.map((screenshot: ScreenshotInfo) => (
+          <img src={screenshot.url} key={screenshot.id} />
+        ))}
       </StScreenshot>
     </StScreenshotWrapper>
   );
