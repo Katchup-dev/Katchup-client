@@ -53,7 +53,12 @@ const ScreenshotInput = () => {
           <h2>
             <IcKatchupLogo /> 스크린샷
           </h2>
-          <input ref={screenshotInputRef} type="file" onChange={handleFileSelect} />
+          <input
+            ref={screenshotInputRef}
+            type="file"
+            onChange={handleFileSelect}
+            accept=".jpg,.png,.jpeg,.gif,.tiff,.tif"
+          />
           <button onClick={handleFileBtnClick}>파일선택</button>
         </StFileBtnWrapper>
       </StFileSelect>
