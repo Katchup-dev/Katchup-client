@@ -38,6 +38,10 @@ const MainInput = () => {
     setFileInput((prev) => prev.filter((selectedFile) => selectedFile !== file));
   };
 
+  const handleNext = (e: React.MouseEvent<HTMLButtonElement>) => {
+    console.log('다음');
+  };
+
   return (
     <StMainInput>
       <StInputWrapper>
@@ -83,6 +87,9 @@ const MainInput = () => {
           )}
         </StFileInput>
       </StFileWrapper>
+      <StNextBtn type="button" disabled={!workInput.length} onClick={handleNext}>
+        다음 단계
+      </StNextBtn>
     </StMainInput>
   );
 };
@@ -257,6 +264,20 @@ const StFileInput = styled.div`
     background-color: ${({ theme }) => theme.colors.katchup_gray};
     border-radius: 3rem;
   }
+`;
+
+const StNextBtn = styled.button<{ disabled: boolean }>`
+  width: 11.8rem;
+  height: 4.2rem;
+
+  margin-top: 1.6rem;
+  margin-left: 70.7rem;
+
+  border: none;
+  border-radius: 0.8rem;
+  color: ${({ theme }) => theme.colors.katchup_white};
+  background-color: ${({ theme, disabled }) => (disabled ? theme.colors.katchup_gray : theme.colors.katchup_main)};
+  ${({ theme }) => theme.fonts.h3_title};
 `;
 
 export default MainInput;
