@@ -2,19 +2,25 @@ import styled from '@emotion/styled';
 import { currentMainCategoryAtom } from 'core/atom';
 import { useGetMainCategoryList } from 'lib/hooks/useGetMainCategoryList';
 import { IcAddMain, IcTrash } from 'public/assets/icons';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 import { css } from '@emotion/react';
 import { mainCategoryInfo } from 'types/output';
 
 const MainCategoryList = () => {
   const { categoryList, isError } = useGetMainCategoryList();
-  console.log(categoryList);
+
   const [currentMainCategory, setCurrentMainCategory] = useRecoilState(currentMainCategoryAtom);
+
+  const handleChangeMainCategory = (e: React.MouseEvent<HTMLLIElement>, categoryId: number) => {
+    const selectedCategory = e.target as HTMLLIElement;
+
+    setCurrentMainCategory({ mainCategory: selectedCategory.innerText, categoryId: categoryId });
+  };
 
   useEffect(() => {
     if (categoryList?.length > 0) {
-      setCurrentMainCategory(categoryList[0]?.name);
+      setCurrentMainCategory({ mainCategory: categoryList[0]?.name, categoryId: categoryList[0]?.categoryId });
     }
   }, []);
 
@@ -27,7 +33,10 @@ const MainCategoryList = () => {
         </header>
         <StMainCategoryWrapper>
           {categoryList?.map((category: mainCategoryInfo, idx: number) => (
-            <StMainCategory isCurrentCategory={category.name === currentMainCategory.mainCategory} key={idx}>
+            <StMainCategory
+              isCurrentCategory={category.name === currentMainCategory.mainCategory}
+              key={idx}
+              onClick={(e) => handleChangeMainCategory(e, category.categoryId)}>
               {category.name}
             </StMainCategory>
           ))}
@@ -108,18 +117,15 @@ const StMainCategory = styled.li<{ isCurrentCategory: boolean }>`
   width: 21.2rem;
   height: 5rem;
 
-  color: ${({ theme }) => theme.colors.katchup_dark_gray};
-
   ${({ theme }) => theme.fonts.h2_smalltitle};
 
-  cursor: pointer;
+  color: ${({ isCurrentCategory, theme }) =>
+    isCurrentCategory ? theme.colors.katchup_main : theme.colors.katchup_dark_gray};
+  background-color: ${({ isCurrentCategory, theme }) => isCurrentCategory && `${theme.colors.katchup_main}33`};
 
-  ${({ theme, isCurrentCategory }) =>
-    isCurrentCategory &&
-    `
-      background-color: ${theme.colors.katchup_main};
-      opacity: 0.1;
-    `}
+  border-radius: 0.8rem;
+
+  cursor: pointer;
 `;
 
 export default MainCategoryList;

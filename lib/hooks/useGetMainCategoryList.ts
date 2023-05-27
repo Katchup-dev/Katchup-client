@@ -6,8 +6,6 @@ export const useGetMainCategoryList = () => {
     retry: 3,
   });
 
-  console.log(data);
-
   return {
     categoryList: data?.data,
     isError: error,

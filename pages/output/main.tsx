@@ -4,9 +4,26 @@ import AddMiddleCategory from '../../components/output/AddMiddleCategory';
 import MainCategoryList from '../../components/output/MainCategoryList';
 import styled from '@emotion/styled';
 import { IcEditMain } from 'public/assets/icons';
-import { css } from '@emotion/react';
+import { useRecoilValue } from 'recoil';
+import { currentMainCategoryAtom } from 'core/atom';
+import { useGetMiddleCategoryList } from 'lib/hooks/useGetMiddleCategory';
+import { MiddleCategoryInfo } from 'types/output';
+import { useEffect, useState } from 'react';
 
 const OutputMain = () => {
+  const mainCategoryName = useRecoilValue(currentMainCategoryAtom);
+  const [mainCategory, setMainCategory] = useState<string>('');
+
+  let { categoryList, isError } = useGetMiddleCategoryList(mainCategoryName.categoryId);
+
+  useEffect(() => {
+    setMainCategory(mainCategoryName.mainCategory);
+  }, [mainCategoryName]);
+
+  if (isError) {
+    console.log('error');
+  }
+
   return (
     <>
       <StOutputMainWrapper>
@@ -14,26 +31,13 @@ const OutputMain = () => {
 
         <StMiddleBoard>
           <header>
-            <StMainTitle isShouldWrap={true}>Katchup Design</StMainTitle>
+            <StMainTitle isShouldWrap={true}>{mainCategory}</StMainTitle>
             <IcEditMain />
           </header>
 
           <div>
-            {[
-              'Team managing',
-              'Team managing',
-              '가나다라마바사아자차',
-              '가나다라마바사아자차',
-              '가나다라마바',
-              '아아ㅏ아아ㅏ아ㅏ아아',
-              '중분류1',
-              ' 중분류2',
-              '중분류1',
-              ' 중분류2',
-              '중분류1',
-              ' 중분류2',
-            ].map((category, idx) => (
-              <MiddleCategory categoryName={category} key={idx} />
+            {categoryList?.map((category: MiddleCategoryInfo, idx: number) => (
+              <MiddleCategory categoryName={category.name} key={idx} />
             ))}
             <AddMiddleCategory />
           </div>

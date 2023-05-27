@@ -9,6 +9,7 @@ export const currentMainCategoryAtom = atom<SelectMainCategoryInfo>({
   key: `currentMainCategory`,
   default: {
     mainCategory: '',
+    categoryId: 0,
   },
   effects_UNSTABLE: [persistAtom],
 });
