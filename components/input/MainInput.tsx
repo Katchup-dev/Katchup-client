@@ -6,7 +6,7 @@ import styled from '@emotion/styled';
 const MainInput = () => {
   const [workInput, setWorkInput] = useState('');
   const [letterCount, setLetterCount] = useState(0);
-  const [fileInput, setFileInput] = useState<File>();
+  const [fileInput, setFileInput] = useState<File[]>([]);
   const fileInputRef = useRef(null);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -21,7 +21,7 @@ const MainInput = () => {
     const files = e.target.files;
     if (files && files.length > 0) {
       const file = files[0];
-      setFileInput(file);
+      setFileInput((prev) => [...prev, file]);
     }
   };
 
@@ -29,7 +29,9 @@ const MainInput = () => {
     fileInputRef.current?.click();
   };
 
-  const handleDeleteFile = () => {};
+  const handleDeleteFile = (file: File) => {
+    setFileInput((prev) => prev.filter((selectedFile) => selectedFile !== file));
+  };
 
   return (
     <StMainInput>
@@ -51,17 +53,15 @@ const MainInput = () => {
           <button onClick={handleFileBtnClick}>파일선택</button>
         </h2>
         <div>
-          {fileInput && (
-            <>
-              <p>
-                <button onClick={handleDeleteFile}>
-                  <IcBtnDeleteFile />
-                </button>
-                {fileInput.name}
-                <span>{`${(fileInput.size / (1024 * 1024)).toFixed(2)}MB`}</span>
-              </p>
-            </>
-          )}
+          {fileInput.map((file, index) => (
+            <p key={index}>
+              <button onClick={() => handleDeleteFile(file)}>
+                <IcBtnDeleteFile />
+              </button>
+              {file.name}
+              <span>{`${(file.size / (1024 * 1024)).toFixed(2)}MB`}</span>
+            </p>
+          ))}
         </div>
       </StFileWrapper>
     </StMainInput>
