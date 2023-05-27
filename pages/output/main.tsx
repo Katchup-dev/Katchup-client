@@ -9,6 +9,7 @@ import { useGetMiddleCategoryList } from 'lib/hooks/useGetMiddleCategory';
 import { MiddleCategoryInfo } from 'types/output';
 import { useEffect, useState } from 'react';
 import Router, { useRouter } from 'next/router';
+import NoMiddleCategory from 'components/output/NoMiddleCategory';
 
 const OutputMain = () => {
   const mainCategoryName = useRecoilValue(currentMainCategoryAtom);
@@ -44,20 +45,23 @@ const OutputMain = () => {
             <StMainTitle isShouldWrap={true}>{mainCategory}</StMainTitle>
             <IcEditMain />
           </header>
-
-          <div>
-            {categoryList?.map((category: MiddleCategoryInfo, idx: number) => (
-              <MiddleCategory
-                categoryName={category.name}
-                key={idx}
-                folderId={category.folderId}
-                handleClick={() => {
-                  handleGoToWorkCard(category.folderId, category.name);
-                }}
-              />
-            ))}
-            <AddMiddleCategory />
-          </div>
+          {categoryList?.length ? (
+            <div>
+              {categoryList?.map((category: MiddleCategoryInfo, idx: number) => (
+                <MiddleCategory
+                  categoryName={category.name}
+                  key={idx}
+                  folderId={category.folderId}
+                  handleClick={() => {
+                    handleGoToWorkCard(category.folderId, category.name);
+                  }}
+                />
+              ))}
+              <AddMiddleCategory />
+            </div>
+          ) : (
+            <NoMiddleCategory />
+          )}
         </StMiddleBoard>
       </StOutputMainWrapper>
     </>
@@ -86,6 +90,10 @@ const StMiddleBoard = styled.section`
 
     width: 100%;
     padding-bottom: 5rem;
+
+    > svg {
+      cursor: pointer;
+    }
   }
 
   > div {
