@@ -2,6 +2,7 @@ import useModal from 'lib/hooks/useModal';
 import {
   IcBtnDeleteFile,
   IcBtnScreenshot,
+  IcBtnScreenshotHide,
   IcFileCheckbox,
   IcFileCheckboxAfter,
   IcKatchupLogo,
@@ -11,6 +12,7 @@ import { useRef, useState } from 'react';
 import styled from '@emotion/styled';
 
 import ModalIndex from './ModalIndex';
+import ScreenshotInput from './ScreenshotInput';
 
 const MainInput = () => {
   const [workInput, setWorkInput] = useState('');
@@ -19,6 +21,11 @@ const MainInput = () => {
   const [fileInput, setFileInput] = useState<File[]>([]);
   const fileInputRef = useRef(null);
   const { isShowing, toggle } = useModal();
+  const [isScreenshotShowing, setIsScreenshotShowing] = useState(false);
+
+  const handleScreenshotShowing = (e: React.MouseEvent<HTMLButtonElement>) => {
+    setIsScreenshotShowing((prev) => !prev);
+  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const inputText = e.target.value;
@@ -57,70 +64,91 @@ const MainInput = () => {
   };
 
   return (
-    <StMainInput>
-      <IcBtnScreenshot />
-      <StDeleteAllBtn type="button" onClick={handleDeleteAll}>
-        모든 내용 지우기
-      </StDeleteAllBtn>
-      <StInputWrapper>
-        <h2>
-          <IcKatchupLogo /> 업무 내용
-        </h2>
-        <StWorkInput>
-          <textarea
-            maxLength={2000}
-            value={workInput}
-            onChange={handleInputChange}
-            placeholder="업무 내용을 입력해주세요"
-          />
-          <p>
-            <span>{letterCount}</span>/2000자
-          </p>
-        </StWorkInput>
-      </StInputWrapper>
-      <StFileWrapper>
-        <StFileSelect>
-          <StFileBtnWrapper>
-            <h2>
-              <IcKatchupLogo /> 파일 첨부
-            </h2>
-            <input ref={fileInputRef} type="file" onChange={handleFileSelect} />
-            <button onClick={handleFileBtnClick}>파일선택</button>
-          </StFileBtnWrapper>
-          <label>
-            <input type="checkbox" checked={isChecked} onChange={handleCheckboxChange} />
-            {isChecked ? <IcFileCheckboxAfter /> : <IcFileCheckbox />}
-            파일명 자동 변경
-          </label>
-        </StFileSelect>
-        <StFileInput>
-          {fileInput.length ? (
-            fileInput.map((file, index) => (
-              <p key={index}>
-                <button onClick={() => handleDeleteFile(file)}>
-                  <IcBtnDeleteFile />
-                </button>
-                {file.name}
-                <span>{`${(file.size / (1024 * 1024)).toFixed(2)}MB`}</span>
-              </p>
-            ))
-          ) : (
-            <StEmpty>
-              <p>파일을 선택하거나 드래그하세요</p>
-              <p>파일당 최대 크기: 10MB</p>
-            </StEmpty>
-          )}
-        </StFileInput>
-      </StFileWrapper>
-      <StNextBtn>
-        <button type="button" disabled={!workInput.length} onClick={toggle}>
-          다음 단계
-        </button>
-      </StNextBtn>
-      <ModalIndex isShowing={isShowing} handleHide={toggle} />
-    </StMainInput>
+    <StMainInputWrapper>
+      <StMainInput>
+        <StDeleteAllBtn type="button" onClick={handleDeleteAll}>
+          모든 내용 지우기
+        </StDeleteAllBtn>
+        <StInputWrapper>
+          <h2>
+            <IcKatchupLogo /> 업무 내용
+          </h2>
+          <StWorkInput>
+            <textarea
+              maxLength={2000}
+              value={workInput}
+              onChange={handleInputChange}
+              placeholder="업무 내용을 입력해주세요"
+            />
+            <p>
+              <span>{letterCount}</span>/2000자
+            </p>
+          </StWorkInput>
+        </StInputWrapper>
+        <StFileWrapper>
+          <StFileSelect>
+            <StFileBtnWrapper>
+              <h2>
+                <IcKatchupLogo /> 파일 첨부
+              </h2>
+              <input ref={fileInputRef} type="file" onChange={handleFileSelect} />
+              <button onClick={handleFileBtnClick}>파일선택</button>
+            </StFileBtnWrapper>
+            <label>
+              <input type="checkbox" checked={isChecked} onChange={handleCheckboxChange} />
+              {isChecked ? <IcFileCheckboxAfter /> : <IcFileCheckbox />}
+              파일명 자동 변경
+            </label>
+          </StFileSelect>
+          <StFileInput>
+            {fileInput.length ? (
+              fileInput.map((file, index) => (
+                <p key={index}>
+                  <button onClick={() => handleDeleteFile(file)}>
+                    <IcBtnDeleteFile />
+                  </button>
+                  {file.name}
+                  <span>{`${(file.size / (1024 * 1024)).toFixed(2)}MB`}</span>
+                </p>
+              ))
+            ) : (
+              <StEmpty>
+                <p>파일을 선택하거나 드래그하세요</p>
+                <p>파일당 최대 크기: 10MB</p>
+              </StEmpty>
+            )}
+          </StFileInput>
+        </StFileWrapper>
+        <StNextBtn disabled={!workInput.length}>
+          <button type="button" onClick={toggle}>
+            다음 단계
+          </button>
+        </StNextBtn>
+        <ModalIndex isShowing={isShowing} handleHide={toggle} />
+      </StMainInput>
+      {isScreenshotShowing ? (
+        <>
+          <ScreenshotInput />
+          <IcBtnScreenshotHide onClick={handleScreenshotShowing} />
+        </>
+      ) : (
+        <IcBtnScreenshot onClick={handleScreenshotShowing} />
+      )}
+    </StMainInputWrapper>
   );
 };
+
+const StMainInputWrapper = styled.section`
+  display: flex;
+  gap: 1.8rem;
+  position: relative;
+
+  & > svg {
+    margin: 1.1rem -1.8rem -1.8rem -1.8rem;
+
+    cursor: pointer;
+  }
+`;
 
 const StMainInput = styled.section`
   position: relative;
@@ -131,14 +159,6 @@ const StMainInput = styled.section`
 
   border-radius: 2.6rem;
   background-color: ${({ theme }) => theme.colors.katchup_white};
-
-  & > svg {
-    position: absolute;
-    top: 3rem;
-    left: 90rem;
-
-    cursor: pointer;
-  }
 `;
 
 const StDeleteAllBtn = styled.button`
