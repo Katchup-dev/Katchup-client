@@ -49,9 +49,9 @@ const CardModal = (props: ModalProps) => {
   const [taskOptions, setTaskOptions] = useState([]);
   const [selectedTask, setSelectedTask] = useRecoilState(taskSelectState);
 
-  const { categories, isLoading, isError } = useGetCategories();
-  const { folders, isLoading, isError } = useGetFolders();
-  const { tasks, isLoading, isError } = useGetTasks();
+  const { categories, isCategoriesLoading, isCategoriesError } = useGetCategories();
+  const { folders, isFoldersLoading, isFoldersError } = useGetFolders();
+  const { tasks, isTasksLoading, isTasksError } = useGetTasks();
 
 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -106,11 +106,11 @@ const CardModal = (props: ModalProps) => {
     setTask(selectedTask.name);
   }, [selectedTask]);
 
-  if (isLoading) {
+  if (isCategoriesLoading || isFoldersLoading || isTasksLoading) {
     return <div>로딩중</div>;
   }
 
-  if (isError) {
+  if (isCategoriesError || isFoldersError || isTasksError) {
     return <div>에러</div>;
   }
 
