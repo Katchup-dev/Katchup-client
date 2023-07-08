@@ -1,4 +1,3 @@
-import { getCategories, getFolders, getTasks } from "core/apis/input";
 import {
   categorySelectState,
   folderSelectState,
@@ -10,6 +9,11 @@ import { useRecoilState } from "recoil";
 
 import styled from "@emotion/styled";
 
+import {
+  useGetCategories,
+  useGetFolders,
+  useGetTasks
+} from "../../lib/hooks/useGetIndex";
 import DropdownCategory from "./DropdownCategory";
 import DropdownFolder from "./DropdownFolder";
 import DropdownTask from "./DropdownTask";
@@ -44,6 +48,11 @@ const CardModal = (props: ModalProps) => {
   const [selectedFolder, setSelectedFolder] = useRecoilState(folderSelectState);
   const [taskOptions, setTaskOptions] = useState([]);
   const [selectedTask, setSelectedTask] = useRecoilState(taskSelectState);
+
+  const { categories, isLoading, isError } = useGetCategories();
+  const { folders, isLoading, isError } = useGetFolders();
+  const { tasks, isLoading, isError } = useGetTasks();
+
 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCategory(e.target.value);
@@ -96,6 +105,14 @@ const CardModal = (props: ModalProps) => {
   useEffect(() => {
     setTask(selectedTask.name);
   }, [selectedTask]);
+
+  if (isLoading) {
+    return <div>로딩중</div>;
+  }
+
+  if (isError) {
+    return <div>에러</div>;
+  }
 
   return (
     <>
