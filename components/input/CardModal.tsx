@@ -15,7 +15,7 @@ interface ModalProps {
   handleHide: React.MouseEventHandler;
 }
 
-const ModalIndex = (props: ModalProps) => {
+const CardModal = (props: ModalProps) => {
   const { isShowing, handleHide } = props;
   const [category, setCategory] = useState('');
   const [folder, setFolder] = useState('');
@@ -97,7 +97,7 @@ const ModalIndex = (props: ModalProps) => {
     <>
       {isShowing && (
         <StModalWrapper>
-          <StModalIndex>
+          <StCardModal>
             <IcBtnDeletePopup onClick={handleHide} />
             <h2>업무 카드 만들기</h2>
             <StInputIndex isFocused={isCategoryFocused}>
@@ -174,14 +174,14 @@ const ModalIndex = (props: ModalProps) => {
             <StNextBtn type="button" disabled={!category.length || !folder.length} onClick={handleNext}>
               다음 단계
             </StNextBtn>
-          </StModalIndex>
+          </StCardModal>
         </StModalWrapper>
       )}
     </>
   );
 };
 
-export default ModalIndex;
+export default CardModal;
 
 const StModalWrapper = styled.div`
   display: flex;
@@ -198,7 +198,7 @@ const StModalWrapper = styled.div`
   background-color: rgba(47, 52, 56, 0.4);
 `;
 
-const StModalIndex = styled.section`
+const StCardModal = styled.section`
   display: flex;
   flex-direction: column;
   position: relative;
