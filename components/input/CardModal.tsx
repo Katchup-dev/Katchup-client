@@ -83,19 +83,13 @@ const CardModal = (props: ModalProps) => {
 
   useEffect(() => {
     if (isCategoryFocused) {
-      getCategories().then((response) => {
-        setCategoryOptions(response);
-      });
+      setCategoryOptions(categories);
     }
     if (isFolderFocused) {
-      getFolders().then((response) => {
-        setFolderOptions(response);
-      });
+      setFolderOptions(folders);
     }
     if (isTaskFocused) {
-      getTasks().then((response) => {
-        setTaskOptions(response);
-      });
+      setTaskOptions(tasks);
     }
   }, [isCategoryFocused, isFolderFocused, isTaskFocused]);
 
