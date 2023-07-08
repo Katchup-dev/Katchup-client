@@ -24,7 +24,7 @@ const DropdownTask = ({ options, inputValue }: dropdownIndexProps) => {
   };
 
   const displayOptions = () => {
-    const allOptions = [...options];
+    let allOptions = Array.isArray(options) ? options : [];
 
     if (inputValue?.length > 0) {
       allOptions.push({ taskId: allOptions.length, name: inputValue });
