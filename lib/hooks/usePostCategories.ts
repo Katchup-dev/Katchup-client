@@ -1,25 +1,15 @@
 import { postCategories } from 'core/apis/input';
 
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
+
+import { postCategoryInfo } from '../../types/input';
 
 export const usePostCategory = () => {
-  const queryClient = useQueryClient();
-
-  const createCategory = async (name: string) => {
-    try {
-      const data = await postCategories(name);
-      queryClient.invalidateQueries(['categorires']);
-      return data.data;
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const mutation = useMutation(createCategory);
+  const { mutate, isLoading, isError } = useMutation(postCategories);
 
   return {
-    createCategory: mutation.mutate,
-    isLoading: mutation.isLoading,
-    error: mutation.error,
+    createCategory: mutate,
+    isLoading: isLoading,
+    error: error,
   };
 };

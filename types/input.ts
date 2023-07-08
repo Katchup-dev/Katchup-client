@@ -21,10 +21,6 @@ export interface InputTaskInfo {
   name: string;
 }
 
-export interface postCategoryInfo {
-  name: string;
-}
-
 export interface postFolderInfo {
   categoryId: number;
   name: string;
