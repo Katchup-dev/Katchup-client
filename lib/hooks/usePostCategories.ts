@@ -1,14 +1,32 @@
-import { postCategories } from 'core/apis/input';
+import { postCategories, postFolders, postTasks } from 'core/apis/input';
 
 import { useMutation } from '@tanstack/react-query';
-
-import { postCategoryInfo } from '../../types/input';
 
 export const usePostCategory = () => {
   const { mutate, isLoading, isError } = useMutation(postCategories);
 
   return {
     createCategory: mutate,
+    isLoading: isLoading,
+    error: error,
+  };
+};
+
+export const usePostFolder = () => {
+  const { mutate, isLoading, isError } = useMutation(postFolders);
+
+  return {
+    createFolder: mutate,
+    isLoading: isLoading,
+    error: error,
+  };
+};
+
+export const usePostTask = () => {
+  const { mutate, isLoading, isError } = useMutation(postTasks);
+
+  return {
+    createTask: mutate,
     isLoading: isLoading,
     error: error,
   };
