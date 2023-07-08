@@ -1,14 +1,18 @@
-import { getCategories, getFolders, getTasks } from 'core/apis/input';
-import { categorySelectState, folderSelectState, taskSelectState } from 'core/atom';
-import { IcBtnDeletePopup } from 'public/assets/icons';
-import React, { useEffect, useState } from 'react';
-import { useRecoilState } from 'recoil';
+import { getCategories, getFolders, getTasks } from "core/apis/input";
+import {
+  categorySelectState,
+  folderSelectState,
+  taskSelectState
+} from "core/atom";
+import { IcBtnDeletePopup } from "public/assets/icons";
+import React, { useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
 
-import styled from '@emotion/styled';
+import styled from "@emotion/styled";
 
-import DropdownCategory from './DropdownCategory';
-import DropdownFolder from './DropdownFolder';
-import DropdownTask from './DropdownTask';
+import DropdownCategory from "./DropdownCategory";
+import DropdownFolder from "./DropdownFolder";
+import DropdownTask from "./DropdownTask";
 
 interface ModalProps {
   isShowing: boolean;
@@ -307,6 +311,3 @@ const StNextBtn = styled.button<{ disabled: boolean }>`
   color: ${({ theme }) => theme.colors.katchup_white};
   background-color: ${({ theme, disabled }) => (disabled ? theme.colors.katchup_gray : theme.colors.katchup_main)};
 `;
-function useGetCategories(): { data: any; isLoading: any } {
-  throw new Error('Function not implemented.');
-}
