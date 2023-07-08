@@ -53,25 +53,30 @@ const CardModal = (props: ModalProps) => {
   const { folders, isFoldersLoading, isFoldersError } = useGetFolders();
   const { tasks, isTasksLoading, isTasksError } = useGetTasks();
 
-
-  const handleCategoryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCategory(e.target.value);
-    setCategoryCount(e.target.value.length);
-  };
-  const handleFolderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFolder(e.target.value);
-    setFolderCount(e.target.value.length);
-  };
-  const handleTaskChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTask(e.target.value);
-    setTaskCount(e.target.value.length);
-  };
-  const handleKeywordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setKeyword(e.target.value);
-  };
-  const handleEtcChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setEtc(e.target.value);
-    setEtcCount(e.target.value.length);
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    switch (name) {
+      case "category":
+        setCategory(value);
+        setCategoryCount(value.length);
+        break;
+      case "folder":
+        setFolder(value);
+        setFolderCount(value.length);
+        break;
+      case "task":
+        setTask(value);
+        break;
+      case "keyword":
+        setKeyword(value);
+        break;
+      case "etc":
+        setEtc(value);
+        setEtcCount(value.length);
+        break;
+      default:
+        break;
+    }
   };
 
   const handleNext = (e: React.MouseEvent<HTMLButtonElement>) => {};
@@ -96,15 +101,9 @@ const CardModal = (props: ModalProps) => {
 
   useEffect(() => {
     setCategory(selectedCategory.name);
-  }, [selectedCategory]);
-
-  useEffect(() => {
     setFolder(selectedFolder.name);
-  }, [selectedFolder]);
-
-  useEffect(() => {
     setTask(selectedTask.name);
-  }, [selectedTask]);
+  }, [selectedCategory, selectedFolder, selectedTask]);
 
   if (isCategoriesLoading || isFoldersLoading || isTasksLoading) {
     return <div>로딩중</div>;
@@ -126,7 +125,7 @@ const CardModal = (props: ModalProps) => {
               <input
                 type="text"
                 value={category}
-                onChange={handleCategoryChange}
+                onChange={handleInputChange}
                 onFocus={() => setIsCategoryFocused(true)}
                 onBlur={() => setIsCategoryFocused(false)}
                 placeholder="업무 대분류를 입력해주세요"
@@ -142,7 +141,7 @@ const CardModal = (props: ModalProps) => {
               <input
                 type="text"
                 value={folder}
-                onChange={handleFolderChange}
+                onChange={handleInputChange}
                 onFocus={() => setIsFolderFocused(true)}
                 onBlur={() => setIsFolderFocused(false)}
                 placeholder="업무 중분류를 입력해주세요"
@@ -158,7 +157,7 @@ const CardModal = (props: ModalProps) => {
               <input
                 type="text"
                 value={task}
-                onChange={handleTaskChange}
+                onChange={handleInputChange}
                 onFocus={() => setIsTaskFocused(true)}
                 onBlur={() => setIsTaskFocused(false)}
                 placeholder="업무 소분류를 입력해주세요"
@@ -174,7 +173,7 @@ const CardModal = (props: ModalProps) => {
               <input
                 type="text"
                 value={keyword}
-                onChange={handleKeywordChange}
+                onChange={handleInputChange}
                 onFocus={() => setIsKeywordFocused(true)}
                 onBlur={() => setIsKeywordFocused(false)}
                 placeholder="키워드를 입력해주세요"
@@ -184,7 +183,7 @@ const CardModal = (props: ModalProps) => {
               비고
               <textarea
                 value={etc}
-                onChange={handleEtcChange}
+                onChange={handleInputChange}
                 placeholder="업무에 관한 꿀팁이나 특이사항을 자유롭게 입력해 주세요"
                 maxLength={200}
               />
