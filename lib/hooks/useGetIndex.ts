@@ -13,8 +13,8 @@ export const useGetCategories = () => {
 
   return {
     categories: data?.data,
-    isLoading: isLoading,
-    isError: error,
+    isCategoriesLoading: isLoading,
+    isCategoriesError: error,
   };
 };
 
@@ -23,8 +23,8 @@ export const useGetFolders = () => {
 
   return {
     folders: data?.data,
-    isLoading: isLoading,
-    isError: error,
+    isFoldersLoading: isLoading,
+    isFoldersError: error,
   };
 };
 
@@ -34,8 +34,8 @@ export const useGetTasks = () => {
 
   return {
     tasks: data?.data,
-    isLoading: isLoading,
-    isError: error,
+    isTasksLoading: isLoading,
+    isTasksError: error,
   };
 };
 
