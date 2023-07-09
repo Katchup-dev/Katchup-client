@@ -8,7 +8,7 @@ export const usePostCategory = () => {
   return {
     createCategory: mutate,
     isLoading: isLoading,
-    error: error,
+    error: isError,
   };
 };
 
@@ -18,7 +18,7 @@ export const usePostFolder = () => {
   return {
     createFolder: mutate,
     isLoading: isLoading,
-    error: error,
+    error: isError,
   };
 };
 
@@ -28,6 +28,6 @@ export const usePostTask = () => {
   return {
     createTask: mutate,
     isLoading: isLoading,
-    error: error,
+    error: isError,
   };
 };

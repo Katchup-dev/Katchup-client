@@ -27,7 +27,7 @@ const DropdownCategory = ({ options, inputValue }: dropdownIndexProps) => {
   };
 
   const displayOptions = () => {
-    const allOptions = [...options];
+    let allOptions = Array.isArray(options) ? options : [];
 
     if (inputValue?.length > 0) {
       allOptions.push({ categoryId: allOptions.length, name: inputValue, isShared: false });
