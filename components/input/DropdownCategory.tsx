@@ -1,4 +1,3 @@
-import { postCategories } from 'core/apis/input';
 import { categorySelectState } from 'core/atom';
 import { IcBtnAddIndex } from 'public/assets/icons';
 import { useRecoilState } from 'recoil';

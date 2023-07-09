@@ -1,10 +1,11 @@
-import { postFolders } from 'core/apis/input';
 import { categorySelectState, folderSelectState } from 'core/atom';
 import { IcBtnAddIndex } from 'public/assets/icons';
 import { useRecoilState } from 'recoil';
 import { InputFolderInfo } from 'types/input';
 
 import styled from '@emotion/styled';
+
+import { usePostFolders } from '../../lib/hooks/usePostIndex';
 
 interface dropdownIndexProps {
   options: InputFolderInfo[];
@@ -20,7 +21,8 @@ const DropdownFolder = ({ options, inputValue }: dropdownIndexProps) => {
   };
 
   const handleAddIndex = (name: string) => {
-    postFolders({ categoryId: categorySelect.categoryId, name: inputValue });
+    const folderData = { categoryId: categorySelect.categoryId, name: inputValue };
+    postFolder.createFolder(folderData);
   };
 
   const displayOptions = () => {
