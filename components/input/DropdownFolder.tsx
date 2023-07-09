@@ -5,7 +5,7 @@ import { InputFolderInfo } from 'types/input';
 
 import styled from '@emotion/styled';
 
-import { usePostFolders } from '../../lib/hooks/usePostIndex';
+import { usePostFolder } from '../../lib/hooks/usePostIndex';
 
 interface dropdownIndexProps {
   options: InputFolderInfo[];
@@ -15,6 +15,7 @@ interface dropdownIndexProps {
 const DropdownFolder = ({ options, inputValue }: dropdownIndexProps) => {
   const [folderSelect, setFolderSelect] = useRecoilState(folderSelectState);
   const [categorySelect, setCategorySelect] = useRecoilState(categorySelectState);
+  const postFolder = usePostFolder();
 
   const handleOptionClick = (option: InputFolderInfo) => {
     setFolderSelect(option);
