@@ -1,10 +1,11 @@
-import { postTasks } from 'core/apis/input';
 import { folderSelectState, taskSelectState } from 'core/atom';
 import { IcBtnAddIndex } from 'public/assets/icons';
 import { useRecoilState } from 'recoil';
 import { InputTaskInfo } from 'types/input';
 
 import styled from '@emotion/styled';
+
+import { usePostTask } from '../../lib/hooks/usePostIndex';
 
 interface dropdownIndexProps {
   options: InputTaskInfo[];
@@ -14,13 +15,15 @@ interface dropdownIndexProps {
 const DropdownTask = ({ options, inputValue }: dropdownIndexProps) => {
   const [folderSelect, setFolderSelect] = useRecoilState(folderSelectState);
   const [taskSelect, setTaskSelect] = useRecoilState(taskSelectState);
+  const postTask = usePostTask();
 
   const handleOptionClick = (option: InputTaskInfo) => {
     setTaskSelect(option);
   };
 
   const handleAddIndex = (name: string) => {
-    postTasks({ folderId: folderSelect.folderId, name: inputValue }); // id 바꿔야함
+    const taskData = { folderId: folderSelect.folderId, name: inputValue };
+    postTask.createTask(taskData);
   };
 
   const displayOptions = () => {
