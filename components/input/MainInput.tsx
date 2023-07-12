@@ -11,7 +11,7 @@ import { useRef, useState } from 'react';
 
 import styled from '@emotion/styled';
 
-import ModalIndex from './ModalIndex';
+import CardModal from './CardModal';
 import ScreenshotInput from './ScreenshotInput';
 
 const MainInput = () => {
@@ -124,7 +124,7 @@ const MainInput = () => {
             다음 단계
           </button>
         </StNextBtn>
-        <ModalIndex isShowing={isShowing} handleHide={toggle} />
+        <CardModal isShowing={isShowing} handleHide={toggle} />
       </StMainInput>
       {isScreenshotShowing ? (
         <>
