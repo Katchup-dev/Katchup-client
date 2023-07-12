@@ -15,9 +15,6 @@ interface ModalProps {
   handleHide: React.MouseEventHandler;
 }
 
-// FIX : onChange 이벤트 발생시마다 드롭다운에 추가되는 이슈
-// Dropdown~에 inputValue를 category를 넘겨줘야 되는게 아니라 최종값을 넘겨줘야함
-
 const ModalIndex = (props: ModalProps) => {
   const { isShowing, handleHide } = props;
   const [category, setCategory] = useState('');
@@ -45,7 +42,6 @@ const ModalIndex = (props: ModalProps) => {
   const [selectedTask, setSelectedTask] = useRecoilState(taskSelectState);
 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(category);
     setCategory(e.target.value);
     setCategoryCount(e.target.value.length);
   };
