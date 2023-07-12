@@ -29,7 +29,7 @@ const DropdownCategory = ({ options, inputValue }: dropdownIndexProps) => {
     let allOptions = Array.isArray(options) ? options : [];
 
     if (inputValue?.length > 0) {
-      allOptions.push({ categoryId: allOptions.length, name: inputValue, isShared: false });
+      allOptions = [...allOptions, { categoryId: allOptions.length, name: inputValue, isShared: false }];
     }
 
     return allOptions.map((option, idx) => (

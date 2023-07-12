@@ -30,7 +30,7 @@ const DropdownFolder = ({ options, inputValue }: dropdownIndexProps) => {
     let allOptions = Array.isArray(options) ? options : [];
 
     if (inputValue?.length > 0) {
-      allOptions.push({ folderId: allOptions.length, name: inputValue });
+      allOptions = [...allOptions, { folderId: allOptions.length, name: inputValue }];
     }
 
     return allOptions.map((option, idx) => (

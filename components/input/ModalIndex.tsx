@@ -15,6 +15,9 @@ interface ModalProps {
   handleHide: React.MouseEventHandler;
 }
 
+// FIX : onChange 이벤트 발생시마다 드롭다운에 추가되는 이슈
+// Dropdown~에 inputValue를 category를 넘겨줘야 되는게 아니라 최종값을 넘겨줘야함
+
 const ModalIndex = (props: ModalProps) => {
   const { isShowing, handleHide } = props;
   const [category, setCategory] = useState('');
@@ -308,6 +311,3 @@ const StNextBtn = styled.button<{ disabled: boolean }>`
   color: ${({ theme }) => theme.colors.katchup_white};
   background-color: ${({ theme, disabled }) => (disabled ? theme.colors.katchup_gray : theme.colors.katchup_main)};
 `;
-function useGetCategories(): { data: any; isLoading: any } {
-  throw new Error('Function not implemented.');
-}

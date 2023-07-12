@@ -30,7 +30,7 @@ const DropdownTask = ({ options, inputValue }: dropdownIndexProps) => {
     let allOptions = Array.isArray(options) ? options : [];
 
     if (inputValue?.length > 0) {
-      allOptions.push({ taskId: allOptions.length, name: inputValue });
+      allOptions = [...allOptions, { taskId: allOptions.length, name: inputValue }];
     }
 
     return allOptions.map((option, idx) => (
