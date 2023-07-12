@@ -25,3 +25,8 @@ export interface postFolderInfo {
   categoryId: number;
   name: string;
 }
+
+export interface postTaskInfo {
+  folderId: number;
+  name: string;
+}
