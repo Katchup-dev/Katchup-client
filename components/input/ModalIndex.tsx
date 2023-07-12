@@ -42,6 +42,7 @@ const ModalIndex = (props: ModalProps) => {
   const [selectedTask, setSelectedTask] = useRecoilState(taskSelectState);
 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(category);
     setCategory(e.target.value);
     setCategoryCount(e.target.value.length);
   };

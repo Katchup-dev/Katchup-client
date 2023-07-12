@@ -33,8 +33,8 @@ const DropdownFolder = ({ options, inputValue }: dropdownIndexProps) => {
       allOptions.push({ folderId: allOptions.length, name: inputValue });
     }
 
-    return allOptions.map((option) => (
-      <li key={option.folderId} onMouseDown={() => handleOptionClick(option)}>
+    return allOptions.map((option, idx) => (
+      <li key={idx} onMouseDown={() => handleOptionClick(option)}>
         {option.name}
         {inputValue && (
           <IcBtnAddIndex

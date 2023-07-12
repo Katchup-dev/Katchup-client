@@ -21,7 +21,7 @@ const DropdownCategory = ({ options, inputValue }: dropdownIndexProps) => {
   };
 
   const handleAddIndex = (name: string) => {
-    const categoryData = { name: inputValue };
+    const categoryData = inputValue;
     postCategory.createCategory(categoryData);
   };
 
@@ -32,8 +32,8 @@ const DropdownCategory = ({ options, inputValue }: dropdownIndexProps) => {
       allOptions.push({ categoryId: allOptions.length, name: inputValue, isShared: false });
     }
 
-    return allOptions.map((option) => (
-      <li key={option.categoryId} onMouseDown={() => handleOptionClick(option)}>
+    return allOptions.map((option, idx) => (
+      <li key={idx} onMouseDown={() => handleOptionClick(option)}>
         {option.name}
         {inputValue && (
           <IcBtnAddIndex

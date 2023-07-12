@@ -33,8 +33,8 @@ const DropdownTask = ({ options, inputValue }: dropdownIndexProps) => {
       allOptions.push({ taskId: allOptions.length, name: inputValue });
     }
 
-    return allOptions.map((option) => (
-      <li key={option.taskId} onMouseDown={() => handleOptionClick(option)}>
+    return allOptions.map((option, idx) => (
+      <li key={idx} onMouseDown={() => handleOptionClick(option)}>
         {option.name}
         {inputValue && (
           <IcBtnAddIndex
