@@ -1,10 +1,11 @@
-import { postFolders } from 'core/apis/input';
 import { categorySelectState, folderSelectState } from 'core/atom';
 import { IcBtnAddIndex } from 'public/assets/icons';
 import { useRecoilState } from 'recoil';
 import { InputFolderInfo } from 'types/input';
 
 import styled from '@emotion/styled';
+
+import { usePostFolder } from '../../lib/hooks/usePostIndex';
 
 interface dropdownIndexProps {
   options: InputFolderInfo[];
@@ -14,24 +15,26 @@ interface dropdownIndexProps {
 const DropdownFolder = ({ options, inputValue }: dropdownIndexProps) => {
   const [folderSelect, setFolderSelect] = useRecoilState(folderSelectState);
   const [categorySelect, setCategorySelect] = useRecoilState(categorySelectState);
+  const postFolder = usePostFolder();
 
   const handleOptionClick = (option: InputFolderInfo) => {
     setFolderSelect(option);
   };
 
   const handleAddIndex = (name: string) => {
-    postFolders({ categoryId: categorySelect.categoryId, name: inputValue });
+    const folderData = { categoryId: categorySelect.categoryId, name: inputValue };
+    postFolder.createFolder(folderData);
   };
 
   const displayOptions = () => {
     let allOptions = Array.isArray(options) ? options : [];
 
     if (inputValue?.length > 0) {
-      allOptions.push({ folderId: allOptions.length, name: inputValue });
+      allOptions = [...allOptions, { folderId: allOptions.length, name: inputValue }];
     }
 
-    return allOptions.map((option) => (
-      <li key={option.folderId} onMouseDown={() => handleOptionClick(option)}>
+    return allOptions.map((option, idx) => (
+      <li key={idx} onMouseDown={() => handleOptionClick(option)}>
         {option.name}
         {inputValue && (
           <IcBtnAddIndex

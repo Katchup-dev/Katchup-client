@@ -1,22 +1,14 @@
-import {
-  categorySelectState,
-  folderSelectState,
-  taskSelectState
-} from "core/atom";
-import { IcBtnDeletePopup } from "public/assets/icons";
-import React, { useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
+import { categorySelectState, folderSelectState, taskSelectState } from 'core/atom';
+import { IcBtnDeletePopup } from 'public/assets/icons';
+import React, { useEffect, useState } from 'react';
+import { useRecoilState } from 'recoil';
 
-import styled from "@emotion/styled";
+import styled from '@emotion/styled';
 
-import {
-  useGetCategories,
-  useGetFolders,
-  useGetTasks
-} from "../../lib/hooks/useGetIndex";
-import DropdownCategory from "./DropdownCategory";
-import DropdownFolder from "./DropdownFolder";
-import DropdownTask from "./DropdownTask";
+import { useGetCategories, useGetFolders, useGetTasks } from '../../lib/hooks/useGetIndex';
+import DropdownCategory from './DropdownCategory';
+import DropdownFolder from './DropdownFolder';
+import DropdownTask from './DropdownTask';
 
 interface ModalProps {
   isShowing: boolean;
@@ -56,21 +48,21 @@ const CardModal = (props: ModalProps) => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     switch (name) {
-      case "category":
+      case 'category':
         setCategory(value);
         setCategoryCount(value.length);
         break;
-      case "folder":
+      case 'folder':
         setFolder(value);
         setFolderCount(value.length);
         break;
-      case "task":
+      case 'task':
         setTask(value);
         break;
-      case "keyword":
+      case 'keyword':
         setKeyword(value);
         break;
-      case "etc":
+      case 'etc':
         setEtc(value);
         setEtcCount(value.length);
         break;
