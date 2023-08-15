@@ -1,22 +1,25 @@
 import styled from '@emotion/styled';
-import { currentMainCategoryAtom } from 'core/atom';
+import { currentMainCategoryAtom, firstMainCategoryAtom } from 'core/atom';
 import { useGetMainCategoryList } from 'lib/hooks/useGetMainCategoryList';
 import { IcAddMain, IcTrash } from 'public/assets/icons';
 import React, { useEffect } from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { mainCategoryInfo } from 'types/output';
 import { useRouter } from 'next/router';
 
-export interface MainCategoryListProps {
-  currentMain: string;
-  currentMainId: number;
-}
+const MainCategoryList = () => {
+  const [currentMainCategory, setCurrentMainCategory] = useRecoilState(currentMainCategoryAtom);
+  const firstMainCategoryInfo = useRecoilValue(firstMainCategoryAtom);
 
-const MainCategoryList = (props: MainCategoryListProps) => {
-  const { currentMain, currentMainId } = props;
+  useEffect(() => {
+    setCurrentMainCategory({
+      mainCategory: firstMainCategoryInfo.firstMainCategory,
+      categoryId: firstMainCategoryInfo.categoryId,
+    });
+  }, []);
+
   const { categoryList, isError } = useGetMainCategoryList();
 
-  const [currentMainCategory, setCurrentMainCategory] = useRecoilState(currentMainCategoryAtom);
   const router = useRouter();
 
   const handleChangeMainCategory = (e: React.MouseEvent<HTMLLIElement>, categoryId: number) => {
@@ -27,13 +30,10 @@ const MainCategoryList = (props: MainCategoryListProps) => {
     setCurrentMainCategory(() => {
       const updatedCategory = { mainCategory: selectedCategory.innerText, categoryId: categoryId };
       router.push(`/output/${categoryId}`);
+      console.log(updatedCategory);
       return updatedCategory;
     });
   };
-
-  useEffect(() => {
-    setCurrentMainCategory({ mainCategory: currentMain, categoryId: currentMainId });
-  }, [currentMain]);
 
   return (
     <>
@@ -45,7 +45,7 @@ const MainCategoryList = (props: MainCategoryListProps) => {
         <StMainCategoryWrapper>
           {categoryList?.map((category: mainCategoryInfo, idx: number) => (
             <StMainCategory
-              isCurrentCategory={category.name === currentMainCategory.mainCategory}
+              isCurrentCategory={category.categoryId === currentMainCategory.categoryId}
               key={idx}
               onClick={(e) => handleChangeMainCategory(e, category.categoryId)}>
               {category.name}
