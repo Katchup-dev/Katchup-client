@@ -19,7 +19,7 @@ const MainInput = () => {
   const [letterCount, setLetterCount] = useState(0);
   const [isChecked, setIsChecked] = useState(false);
   const [fileInput, setFileInput] = useState<File[]>([]);
-  const fileInputRef = useRef(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const { isShowing, toggle } = useModal();
   const [isScreenshotShowing, setIsScreenshotShowing] = useState(false);
 
@@ -156,8 +156,11 @@ const StMainInput = styled.section`
   width: 90rem;
   height: 85rem;
 
+  border: 0.1rem solid ${({ theme }) => theme.colors.katchup_line_gray};
   border-radius: 2.6rem;
   background-color: ${({ theme }) => theme.colors.katchup_white};
+
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.05);
 `;
 
 const StDeleteAllBtn = styled.button`
