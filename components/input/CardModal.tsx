@@ -9,6 +9,7 @@ import { useGetCategories, useGetFolders, useGetTasks } from '../../lib/hooks/us
 import DropdownCategory from './DropdownCategory';
 import DropdownFolder from './DropdownFolder';
 import DropdownTask from './DropdownTask';
+import { css } from '@emotion/react';
 
 interface ModalProps {
   isShowing: boolean;
@@ -41,9 +42,9 @@ const CardModal = (props: ModalProps) => {
   const [taskOptions, setTaskOptions] = useState([]);
   const [selectedTask, setSelectedTask] = useRecoilState(taskSelectState);
 
-  const { categories, isCategoriesLoading, isCategoriesError } = useGetCategories();
-  const { folders, isFoldersLoading, isFoldersError } = useGetFolders();
-  const { tasks, isTasksLoading, isTasksError } = useGetTasks();
+  // const { categories, isCategoriesLoading, isCategoriesError } = useGetCategories();
+  // const { folders, isFoldersLoading, isFoldersError } = useGetFolders();
+  // const { tasks, isTasksLoading, isTasksError } = useGetTasks();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -74,30 +75,18 @@ const CardModal = (props: ModalProps) => {
   const handleNext = (e: React.MouseEvent<HTMLButtonElement>) => {};
 
   useEffect(() => {
-    if (isCategoryFocused) {
-      setCategoryOptions(categories);
-    }
-    if (isFolderFocused) {
-      setFolderOptions(folders);
-    }
-    if (isTaskFocused) {
-      setTaskOptions(tasks);
-    }
-  }, [isCategoryFocused, isFolderFocused, isTaskFocused]);
-
-  useEffect(() => {
     setCategory(selectedCategory.name);
     setFolder(selectedFolder.name);
     setTask(selectedTask.name);
   }, [selectedCategory, selectedFolder, selectedTask]);
 
-  if (isCategoriesLoading || isFoldersLoading || isTasksLoading) {
-    return <div>로딩중</div>;
-  }
+  // if (isCategoriesLoading || isFoldersLoading || isTasksLoading) {
+  //   return <div>로딩중</div>;
+  // }
 
-  if (isCategoriesError || isFoldersError || isTasksError) {
-    return <div>에러</div>;
-  }
+  // if (isCategoriesError || isFoldersError || isTasksError) {
+  //   return <div>에러</div>;
+  // }
 
   return (
     <>
@@ -105,51 +94,58 @@ const CardModal = (props: ModalProps) => {
         <StModalWrapper>
           <StCardModal>
             <IcBtnDeletePopup onClick={handleHide} />
-            <h2>업무 카드 만들기</h2>
+            <h2>업무 카드 작성</h2>
             <StInputIndex isFocused={isCategoryFocused}>
-              업무 대분류
+              카테고리
               <input
                 type="text"
+                name="category"
                 value={category}
                 onChange={handleInputChange}
                 onFocus={() => setIsCategoryFocused(true)}
                 onBlur={() => setIsCategoryFocused(false)}
                 placeholder="업무 대분류를 입력해주세요"
                 maxLength={20}
+                autoComplete="off"
               />
-              {isCategoryFocused && <DropdownCategory options={categoryOptions} inputValue={category} />}
+              {isCategoryFocused && <DropdownCategory inputValue={category} />}
               <p>
                 <span>{categoryCount}</span>/20
               </p>
             </StInputIndex>
             <StInputIndex isFocused={isFolderFocused}>
-              업무 중분류
+              업무
               <input
                 type="text"
+                name="folder"
                 value={folder}
                 onChange={handleInputChange}
                 onFocus={() => setIsFolderFocused(true)}
                 onBlur={() => setIsFolderFocused(false)}
                 placeholder="업무 중분류를 입력해주세요"
                 maxLength={20}
+                disabled={!category.length}
+                autoComplete="off"
               />
-              {isFolderFocused && <DropdownFolder options={folderOptions} inputValue={folder} />}
+              {isFolderFocused && <DropdownFolder inputValue={folder} setIsTaskFocused={setIsTaskFocused} />}
               <p>
                 <span>{folderCount}</span>/20
               </p>
             </StInputIndex>
             <StInputIndex isFocused={isTaskFocused}>
-              업무 소분류
+              세부 업무
               <input
                 type="text"
+                name="task"
                 value={task}
                 onChange={handleInputChange}
                 onFocus={() => setIsTaskFocused(true)}
                 onBlur={() => setIsTaskFocused(false)}
                 placeholder="업무 소분류를 입력해주세요"
                 maxLength={20}
+                autoComplete="off"
               />
-              {isTaskFocused && <DropdownTask options={taskOptions} inputValue={task} />}
+              {isTaskFocused && <DropdownTask inputValue={task} />}
               <p>
                 <span>{taskCount}</span>/20
               </p>
@@ -158,17 +154,20 @@ const CardModal = (props: ModalProps) => {
               키워드
               <input
                 type="text"
+                name="keyword"
                 value={keyword}
                 onChange={handleInputChange}
                 onFocus={() => setIsKeywordFocused(true)}
                 onBlur={() => setIsKeywordFocused(false)}
                 placeholder="키워드를 입력해주세요"
+                autoComplete="off"
               />
             </StInputIndex>
             <StInputEtc isFocused={isEtcFocused}>
               비고
               <textarea
                 value={etc}
+                name="etc"
                 onChange={handleInputChange}
                 placeholder="업무에 관한 꿀팁이나 특이사항을 자유롭게 입력해 주세요"
                 maxLength={200}
@@ -178,7 +177,7 @@ const CardModal = (props: ModalProps) => {
               </p>
             </StInputEtc>
             <StNextBtn type="button" disabled={!category.length || !folder.length} onClick={handleNext}>
-              다음 단계
+              작성 완료
             </StNextBtn>
           </StCardModal>
         </StModalWrapper>
@@ -251,17 +250,19 @@ const StInputIndex = styled.label<{ isFocused: boolean }>`
 
     ${({ isFocused, theme }) =>
       isFocused
-        ? `
-      background-color: ${theme.colors.katchup_light_gray};
-  `
-        : `
-      background-color: ${theme.colors.katchup_white};
-      
-    `}
+        ? css`
+            background-color: ${theme.colors.katchup_light_gray};
+            box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.23);
+          `
+        : css`
+            background-color: ${theme.colors.katchup_white};
+          `}
 
     ::placeholder {
       color: ${({ theme }) => theme.colors.katchup_gray};
     }
+
+    outline: none;
   }
 
   & > p {

@@ -6,13 +6,17 @@ import { InputFolderInfo } from 'types/input';
 import styled from '@emotion/styled';
 
 import { usePostFolder } from '../../lib/hooks/usePostIndex';
+import { useGetFolders } from 'lib/hooks/useGetIndex';
 
 interface dropdownIndexProps {
-  options: InputFolderInfo[];
   inputValue: string;
+  setIsTaskFocused: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const DropdownFolder = ({ options, inputValue }: dropdownIndexProps) => {
+const DropdownFolder = ({ inputValue, setIsTaskFocused }: dropdownIndexProps) => {
+  let isAdd = true;
+  let addArr: InputFolderInfo[] = [];
+  const { folders, isFoldersLoading, isFoldersError } = useGetFolders();
   const [folderSelect, setFolderSelect] = useRecoilState(folderSelectState);
   const [categorySelect, setCategorySelect] = useRecoilState(categorySelectState);
   const postFolder = usePostFolder();
@@ -24,30 +28,42 @@ const DropdownFolder = ({ options, inputValue }: dropdownIndexProps) => {
   const handleAddIndex = (name: string) => {
     const folderData = { categoryId: categorySelect.categoryId, name: inputValue };
     postFolder.createFolder(folderData);
+    setIsTaskFocused(false);
   };
 
   const displayOptions = () => {
-    let allOptions = Array.isArray(options) ? options : [];
-
-    if (inputValue?.length > 0) {
-      allOptions = [...allOptions, { folderId: allOptions.length, name: inputValue }];
+    if (inputValue?.length > 0 && folders) {
+      if (!folders?.find((option) => option.name === inputValue)) {
+        addArr = [...addArr, { folderId: folders.length, name: inputValue }];
+      } else {
+        isAdd = false;
+      }
     }
 
-    return allOptions.map((option, idx) => (
+    return folders?.map((option, idx) => (
       <li key={idx} onMouseDown={() => handleOptionClick(option)}>
         {option.name}
-        {inputValue && (
-          <IcBtnAddIndex
-            onMouseDown={() => {
-              handleAddIndex(option.name);
-            }}
-          />
-        )}
       </li>
     ));
   };
 
-  return <StDropdown>{displayOptions()}</StDropdown>;
+  return (
+    <StDropdown>
+      {displayOptions()}
+      {addArr.map((option, idx) => (
+        <li>
+          {option.name}
+          {isAdd && inputValue && (
+            <IcBtnAddIndex
+              onMouseDown={() => {
+                handleAddIndex(option.name);
+              }}
+            />
+          )}
+        </li>
+      ))}
+    </StDropdown>
+  );
 };
 
 export default DropdownFolder;
@@ -55,6 +71,9 @@ export default DropdownFolder;
 const StDropdown = styled.ul`
   position: absolute;
   top: 7.2rem;
+
+  height: 28rem;
+  overflow: scroll;
 
   z-index: 1;
 

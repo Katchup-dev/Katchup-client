@@ -6,13 +6,16 @@ import { InputTaskInfo } from 'types/input';
 import styled from '@emotion/styled';
 
 import { usePostTask } from '../../lib/hooks/usePostIndex';
+import { useGetTasks } from 'lib/hooks/useGetIndex';
 
 interface dropdownIndexProps {
-  options: InputTaskInfo[];
   inputValue: string;
 }
 
-const DropdownTask = ({ options, inputValue }: dropdownIndexProps) => {
+const DropdownTask = ({ inputValue }: dropdownIndexProps) => {
+  let isAdd = true;
+  let addArr: InputTaskInfo[] = [];
+  const { tasks, isTasksLoading, isTasksError } = useGetTasks();
   const [folderSelect, setFolderSelect] = useRecoilState(folderSelectState);
   const [taskSelect, setTaskSelect] = useRecoilState(taskSelectState);
   const postTask = usePostTask();
@@ -27,27 +30,38 @@ const DropdownTask = ({ options, inputValue }: dropdownIndexProps) => {
   };
 
   const displayOptions = () => {
-    let allOptions = Array.isArray(options) ? options : [];
-
-    if (inputValue?.length > 0) {
-      allOptions = [...allOptions, { taskId: allOptions.length, name: inputValue }];
+    if (inputValue?.length > 0 && tasks) {
+      if (!tasks.find((option) => option.name === inputValue)) {
+        addArr = [...addArr, { taskId: tasks.length, name: inputValue }];
+      } else {
+        isAdd = false;
+      }
     }
 
-    return allOptions.map((option, idx) => (
+    return tasks?.map((option, idx) => (
       <li key={idx} onMouseDown={() => handleOptionClick(option)}>
         {option.name}
-        {inputValue && (
-          <IcBtnAddIndex
-            onMouseDown={() => {
-              handleAddIndex(option.name);
-            }}
-          />
-        )}
       </li>
     ));
   };
 
-  return <StDropdown>{displayOptions()}</StDropdown>;
+  return (
+    <StDropdown>
+      {displayOptions()}
+      {addArr.map((option, idx) => (
+        <li>
+          {option.name}
+          {isAdd && inputValue && (
+            <IcBtnAddIndex
+              onMouseDown={() => {
+                handleAddIndex(option.name);
+              }}
+            />
+          )}
+        </li>
+      ))}
+    </StDropdown>
+  );
 };
 
 export default DropdownTask;
@@ -55,6 +69,9 @@ export default DropdownTask;
 const StDropdown = styled.ul`
   position: absolute;
   top: 7.2rem;
+
+  height: 28rem;
+  overflow: scroll;
 
   z-index: 1;
 
