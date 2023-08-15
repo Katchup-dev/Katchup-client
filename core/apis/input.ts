@@ -5,7 +5,7 @@ import { InputFolderInfo, postFolderInfo } from 'types/input';
 export const getCategories = async () => {
   try {
     const { data } = await client.get(`/categories`);
-    return data.data;
+    return data;
   } catch (error) {
     console.error(error);
   }
@@ -14,7 +14,7 @@ export const getCategories = async () => {
 export const getFolders = async () => {
   try {
     const { data } = await client.get(`/folders`);
-    return data.data;
+    return data;
   } catch (error) {
     console.error(error);
   }
@@ -23,7 +23,7 @@ export const getFolders = async () => {
 export const getTasks = async () => {
   try {
     const { data } = await client.get(`/tasks`);
-    return data.data;
+    return data;
   } catch (error) {
     console.error(error);
   }
@@ -41,6 +41,7 @@ export const postCategories = async (name: string) => {
 export const postFolders = async (folderInfo: postFolderInfo) => {
   try {
     const { data } = await client.post(`/folders`, folderInfo);
+    console.log(data);
     return data;
   } catch (error) {
     console.error(error);
