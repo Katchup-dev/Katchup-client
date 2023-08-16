@@ -6,7 +6,7 @@ export const useGetMiddleCategoryList = (categoryId: number) => {
   const { data, error } = useQuery(['middle-category', categoryId], () => getMiddleCategoryList(categoryId));
 
   return {
-    categoryList: data?.data,
+    middleCategoryList: data?.data,
     isError: error,
   };
 };
