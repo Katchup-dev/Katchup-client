@@ -1,5 +1,4 @@
 import styled from '@emotion/styled';
-import { currentMainCategoryAtom } from 'core/atom';
 import { useGetMainCategoryList } from 'lib/hooks/useGetMainCategoryList';
 import { IcAddMain, IcTrash } from 'public/assets/icons';
 import React, { useEffect, useState } from 'react';

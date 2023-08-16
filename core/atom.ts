@@ -1,15 +1,15 @@
 import { atom } from 'recoil';
 import { recoilPersist } from 'recoil-persist';
-import { UserProfileInfo } from 'types/auth';
 import { InputCategoryInfo, InputFolderInfo, InputTaskInfo } from 'types/input';
+import { SelectMainCategoryInfo, SelectMiddleCategoryInfo } from 'types/output';
 
 const { persistAtom } = recoilPersist();
 
-export const currentMainCategoryAtom = atom<SelectMainCategoryInfo>({
-  key: `currentMainCategory`,
+export const currentMiddleCategoryAtom = atom<SelectMiddleCategoryInfo>({
+  key: `currentMiddleCategory`,
   default: {
-    mainCategory: '',
-    categoryId: 0,
+    middleCategory: '',
+    folderId: 0,
   },
   effects_UNSTABLE: [persistAtom],
 });
