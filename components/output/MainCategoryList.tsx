@@ -8,42 +8,40 @@ import { mainCategoryInfo } from 'types/output';
 import { useRouter } from 'next/router';
 
 const MainCategoryList = () => {
-  const [currentMainCategory, setCurrentMainCategory] = useRecoilState(currentMainCategoryAtom);
+  const router = useRouter();
+  const [currentMainCategoryId, setCurrentMainCategoryId] = useState(Number(router.query.mainId));
+  const { mainCategoryList, isError } = useGetMainCategoryList();
 
-  const { categoryList, isError } = useGetMainCategoryList();
+  useEffect(() => {
+    setCurrentMainCategoryId(Number(router.query.mainId));
+  }, [router.query.mainId]);
+
+  useEffect(() => {
+    if (mainCategoryList?.length > 0) {
+      setIsCurrentCategoryArray(initializeArray(mainCategoryList.length));
+    }
+  }, [mainCategoryList, currentMainCategoryId]);
 
   function initializeArray(arrSize: number) {
     const arr = new Array(arrSize).fill(false);
     if (arrSize > 0) {
-      arr[0] = true;
+      arr[currentMainCategoryId] = true;
     }
     return arr;
   }
 
-  const [isCurrentCategoryArray, setIsCurrentCategoryArray] = useState(initializeArray(categoryList?.length));
-  useEffect(() => {
-    if (categoryList?.length > 0) {
-      setIsCurrentCategoryArray(initializeArray(categoryList.length));
-    }
-  }, [categoryList]);
-
-  const router = useRouter();
+  const [isCurrentCategoryArray, setIsCurrentCategoryArray] = useState(initializeArray(mainCategoryList?.length));
 
   const handleChangeMainCategory = (e: React.MouseEvent<HTMLLIElement>, categoryId: number, idx: number) => {
     e.preventDefault();
 
-    const selectedCategory = e.target as HTMLLIElement;
-
-    const tempIsCurrentCategoryArray = Array(categoryList?.length).fill(false);
+    const tempIsCurrentCategoryArray = Array(mainCategoryList?.length).fill(false);
     tempIsCurrentCategoryArray[idx] = true;
 
     setIsCurrentCategoryArray(tempIsCurrentCategoryArray);
 
-    setCurrentMainCategory(() => {
-      const updatedCategory = { mainCategory: selectedCategory.innerText, categoryId: categoryId };
-      router.push(`/output/${idx}`);
-      return updatedCategory;
-    });
+    setCurrentMainCategoryId(mainCategoryList[idx].folderId);
+    router.push(`/output/${idx}`);
   };
 
   return (
@@ -54,7 +52,7 @@ const MainCategoryList = () => {
           <IcAddMain />
         </header>
         <StMainCategoryWrapper>
-          {categoryList?.map((category: mainCategoryInfo, idx: number) => (
+          {mainCategoryList?.map((category: mainCategoryInfo, idx: number) => (
             <StMainCategory
               isCurrentCategory={isCurrentCategoryArray[idx]}
               key={idx}
