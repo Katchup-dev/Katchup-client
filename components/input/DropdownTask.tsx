@@ -29,7 +29,7 @@ const DropdownTask = ({ inputValue }: dropdownIndexProps) => {
     postTask.createTask(taskData);
   };
 
-  const displayOptions = () => {
+  const displayNewOptions = () => {
     if (inputValue?.length > 0 && tasks) {
       if (!tasks.find((option) => option.name === inputValue)) {
         addArr = [...addArr, { taskId: tasks.length, name: inputValue }];
@@ -37,27 +37,24 @@ const DropdownTask = ({ inputValue }: dropdownIndexProps) => {
         isAdd = false;
       }
     }
-
-    return tasks?.map((option, idx) => (
-      <li key={idx} onMouseDown={() => handleOptionClick(option)}>
+    return addArr.map((option, idx) => (
+      <li>
         {option.name}
+        <IcBtnAddIndex
+          onMouseDown={() => {
+            handleAddIndex(option.name);
+          }}
+        />
       </li>
     ));
   };
 
   return (
     <StDropdown>
-      {displayOptions()}
-      {addArr.map((option, idx) => (
-        <li>
+      {displayNewOptions()}
+      {tasks?.map((option, idx) => (
+        <li key={idx} onMouseDown={() => handleOptionClick(option)}>
           {option.name}
-          {isAdd && inputValue && (
-            <IcBtnAddIndex
-              onMouseDown={() => {
-                handleAddIndex(option.name);
-              }}
-            />
-          )}
         </li>
       ))}
     </StDropdown>
@@ -75,7 +72,7 @@ const StDropdown = styled.ul`
 
   z-index: 1;
 
-  width: 53.4rem;
+  width: 100%;
   padding: 1.2rem 1.4rem;
 
   border: 0.1rem solid #e2e2e2;
@@ -94,12 +91,9 @@ const StDropdown = styled.ul`
     cursor: pointer;
 
     & > svg {
-      display: none;
+      display: block;
 
       margin-bottom: -1rem;
-    }
-    :last-child > svg {
-      display: block;
     }
   }
 `;

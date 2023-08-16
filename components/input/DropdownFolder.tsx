@@ -31,7 +31,7 @@ const DropdownFolder = ({ inputValue, setIsTaskFocused }: dropdownIndexProps) =>
     setIsTaskFocused(false);
   };
 
-  const displayOptions = () => {
+  const displayNewOptions = () => {
     if (inputValue?.length > 0 && folders) {
       if (!folders?.find((option) => option.name === inputValue)) {
         addArr = [...addArr, { folderId: folders.length, name: inputValue }];
@@ -40,26 +40,26 @@ const DropdownFolder = ({ inputValue, setIsTaskFocused }: dropdownIndexProps) =>
       }
     }
 
-    return folders?.map((option, idx) => (
-      <li key={idx} onMouseDown={() => handleOptionClick(option)}>
+    return addArr.map((option, idx) => (
+      <li>
         {option.name}
+        {isAdd && inputValue && (
+          <IcBtnAddIndex
+            onMouseDown={() => {
+              handleAddIndex(option.name);
+            }}
+          />
+        )}
       </li>
     ));
   };
 
   return (
     <StDropdown>
-      {displayOptions()}
-      {addArr.map((option, idx) => (
-        <li>
+      {displayNewOptions()}
+      {folders?.map((option, idx) => (
+        <li key={idx} onMouseDown={() => handleOptionClick(option)}>
           {option.name}
-          {isAdd && inputValue && (
-            <IcBtnAddIndex
-              onMouseDown={() => {
-                handleAddIndex(option.name);
-              }}
-            />
-          )}
         </li>
       ))}
     </StDropdown>
@@ -77,7 +77,7 @@ const StDropdown = styled.ul`
 
   z-index: 1;
 
-  width: 53.4rem;
+  width: 100%;
   padding: 1.2rem 1.4rem;
 
   border: 0.1rem solid #e2e2e2;
@@ -96,12 +96,9 @@ const StDropdown = styled.ul`
     cursor: pointer;
 
     & > svg {
-      display: none;
+      display: block;
 
       margin-bottom: -1rem;
-    }
-    :last-child > svg {
-      display: block;
     }
   }
 `;

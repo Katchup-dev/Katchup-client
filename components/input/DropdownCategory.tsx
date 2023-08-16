@@ -29,7 +29,7 @@ const DropdownCategory = ({ inputValue }: dropdownIndexProps) => {
     postCategory.createCategory(categoryData);
   };
 
-  const displayOptions = () => {
+  const displayNewOptions = () => {
     if (inputValue?.length > 0 && categories) {
       if (!categories.find((option) => option.name === inputValue)) {
         addArr = [...addArr, { categoryId: categories.length, name: inputValue, isShared: false }];
@@ -37,26 +37,26 @@ const DropdownCategory = ({ inputValue }: dropdownIndexProps) => {
         isAdd = false;
       }
     }
-    return categories?.map((option, idx) => (
-      <li key={idx} onMouseDown={() => handleOptionClick(option)}>
+    return addArr.map((option, idx) => (
+      <li>
         {option.name}
+        {isAdd && inputValue && (
+          <IcBtnAddIndex
+            onMouseDown={() => {
+              handleAddIndex(option.name);
+            }}
+          />
+        )}
       </li>
     ));
   };
 
   return (
     <StDropdown>
-      {displayOptions()}
-      {addArr.map((option, idx) => (
-        <li>
+      {displayNewOptions()}
+      {categories?.map((option, idx) => (
+        <li key={idx} onMouseDown={() => handleOptionClick(option)}>
           {option.name}
-          {isAdd && inputValue && (
-            <IcBtnAddIndex
-              onMouseDown={() => {
-                handleAddIndex(option.name);
-              }}
-            />
-          )}
         </li>
       ))}
     </StDropdown>
@@ -71,7 +71,7 @@ const StDropdown = styled.ul`
 
   z-index: 1;
 
-  width: 53.4rem;
+  width: 100%;
   height: 28rem;
 
   overflow: scroll;
@@ -93,12 +93,9 @@ const StDropdown = styled.ul`
     cursor: pointer;
 
     & > svg {
-      display: none;
+      display: block;
 
       margin-bottom: -1rem;
-    }
-    :last-child > svg {
-      display: block;
     }
   }
 `;

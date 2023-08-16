@@ -10,6 +10,8 @@ import DropdownCategory from './DropdownCategory';
 import DropdownFolder from './DropdownFolder';
 import DropdownTask from './DropdownTask';
 import { css } from '@emotion/react';
+import { ColorKey, KEYWORDS_COLOR } from 'constants/keywords';
+import DropdownKeyword from './DropdownKeyword';
 
 interface ModalProps {
   isShowing: boolean;
@@ -41,6 +43,10 @@ const CardModal = (props: ModalProps) => {
   const [selectedFolder, setSelectedFolder] = useRecoilState(folderSelectState);
   const [taskOptions, setTaskOptions] = useState([]);
   const [selectedTask, setSelectedTask] = useRecoilState(taskSelectState);
+  const [keywordColor, setKeywordColor] = useState({
+    background: '',
+    color: '',
+  });
 
   // const { categories, isCategoriesLoading, isCategoriesError } = useGetCategories();
   // const { folders, isFoldersLoading, isFoldersError } = useGetFolders();
@@ -74,6 +80,16 @@ const CardModal = (props: ModalProps) => {
 
   const handleNext = (e: React.MouseEvent<HTMLButtonElement>) => {};
 
+  const handleSettingColor = () => {
+    const colorKeys: ColorKey[] = Object.keys(KEYWORDS_COLOR) as ColorKey[];
+    const randomIndex = Math.floor(Math.random() * colorKeys.length);
+    const randomColorKey = colorKeys[randomIndex];
+    setKeywordColor({
+      background: KEYWORDS_COLOR[randomColorKey].background,
+      color: KEYWORDS_COLOR[randomColorKey].color,
+    });
+  };
+
   useEffect(() => {
     setCategory(selectedCategory.name);
     setFolder(selectedFolder.name);
@@ -87,6 +103,12 @@ const CardModal = (props: ModalProps) => {
   // if (isCategoriesError || isFoldersError || isTasksError) {
   //   return <div>에러</div>;
   // }
+
+  useEffect(() => {
+    setCategoryCount(category.length);
+    setFolderCount(folder.length);
+    setTaskCount(task.length);
+  }, [category, folder, task]);
 
   return (
     <>
@@ -157,11 +179,13 @@ const CardModal = (props: ModalProps) => {
                 name="keyword"
                 value={keyword}
                 onChange={handleInputChange}
+                onClick={handleSettingColor}
                 onFocus={() => setIsKeywordFocused(true)}
                 onBlur={() => setIsKeywordFocused(false)}
                 placeholder="키워드를 입력해주세요"
                 autoComplete="off"
               />
+              {isKeywordFocused && <DropdownKeyword inputValue={keyword} keywordColor={keywordColor} />}
             </StInputIndex>
             <StInputEtc isFocused={isEtcFocused}>
               비고
@@ -210,7 +234,7 @@ const StCardModal = styled.section`
 
   width: 63.8rem;
   height: 83.8rem;
-  padding: 4rem 6rem 4rem 4.4rem;
+  padding: 4rem 6rem 4rem 6rem;
 
   border-radius: 2.6rem;
   background-color: ${({ theme }) => theme.colors.katchup_white};
