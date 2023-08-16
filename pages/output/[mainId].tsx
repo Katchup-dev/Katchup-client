@@ -3,42 +3,48 @@ import AddMiddleCategory from '../../components/output/AddMiddleCategory';
 import MainCategoryList from '../../components/output/MainCategoryList';
 import styled from '@emotion/styled';
 import { IcEditMain } from 'public/assets/icons';
-import { useRecoilState } from 'recoil';
-import { currentMainCategoryAtom } from 'core/atom';
+import { useRecoilState, useSetRecoilState } from 'recoil';
+import { currentMainCategoryAtom, currentMiddleCategoryAtom } from 'core/atom';
 import { useGetMiddleCategoryList } from 'lib/hooks/useGetMiddleCategory';
 import { MiddleCategoryInfo } from 'types/output';
 import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+import { useGetMainCategoryList } from 'lib/hooks/useGetMainCategoryList';
 
 const OutputMain = () => {
   const router = useRouter();
-  const { mainId } = router.query;
+  const [currentMainCategoryId, setCurrentMainCategoryId] = useState(Number(router.query.mainId));
 
-  const [mainCategoryName, setMainCategoryName] = useRecoilState(currentMainCategoryAtom);
+  useEffect(() => {
+    setCurrentMainCategoryId(Number(router.query.mainId));
+  }, [router.query.mainId]);
+
+  const setMiddleCategoryName = useSetRecoilState(currentMiddleCategoryAtom);
 
   //쿼리 키를 바꿔주는 방식으로 mainCategoryName이 바뀔 때마다 커스텀훅 재호출
-  const { categoryList, isError } = useGetMiddleCategoryList(Number(mainId));
+  const { middleCategoryList, isError } = useGetMiddleCategoryList(currentMainCategoryId);
+  const { mainCategoryList } = useGetMainCategoryList();
 
   const handleGoToWorkCard = (folderId: number, categoryName: string) => {
-    const query = { middleCategory: categoryName };
-    router.push({ pathname: `/output/middleCategory/${folderId}`, query });
+    setMiddleCategoryName({ middleCategory: categoryName, folderId: folderId });
+    router.push({ pathname: `/output/middleCategory/${folderId}` });
   };
-
-  if (isError) {
-    console.log('error');
-  }
 
   return (
     <>
       <StOutputMainWrapper>
-        <MainCategoryList currentMain={mainCategoryName.mainCategory} currentMainId={mainCategoryName.categoryId} />
+        <MainCategoryList />
 
         <StMiddleBoard>
           <header>
-            <StMainTitle isShouldWrap={true}>{mainCategoryName.mainCategory}</StMainTitle>
+            <StMainTitle isShouldWrap={true}>
+              {mainCategoryList && mainCategoryList[currentMainCategoryId]?.name}
+            </StMainTitle>
             <IcEditMain />
           </header>
+
           <div>
-            {categoryList?.map((category: MiddleCategoryInfo, idx: number) => (
+            {middleCategoryList?.map((category: MiddleCategoryInfo, idx: number) => (
               <MiddleCategory
                 categoryName={category.name}
                 key={idx}
