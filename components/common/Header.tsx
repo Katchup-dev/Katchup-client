@@ -12,6 +12,7 @@ const Header = (props: HeaderProps) => {
   const { profileImgSrc } = props;
 
   const router = useRouter();
+  const { asPath } = router;
 
   const handleNavigate = (e: React.MouseEvent) => {
     const target = e.target as HTMLLIElement;
@@ -21,7 +22,7 @@ const Header = (props: HeaderProps) => {
 
   return (
     <>
-      <StHeaderWrapper>
+      <StHeaderWrapper path={asPath}>
         <div>
           <IcLogo />
 
@@ -50,7 +51,7 @@ const Header = (props: HeaderProps) => {
   );
 };
 
-const StHeaderWrapper = styled.header`
+const StHeaderWrapper = styled.header<{ path: string }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -75,6 +76,12 @@ const StHeaderWrapper = styled.header`
 
     margin-right: 5rem;
   }
+
+  ${({ path }) =>
+    path === '/' &&
+    css`
+      display: none;
+    `}
 `;
 
 const StMenuNav = styled.nav`
