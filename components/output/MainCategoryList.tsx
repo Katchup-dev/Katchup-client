@@ -24,7 +24,8 @@ const MainCategoryList = ({ mainId }: { mainId: string }) => {
 
   useEffect(() => {
     setIsCurrentCategoryArray(initializeArray(mainCategoryList?.length));
-  }, []);
+    console.log(isCurrentCategoryArray);
+  }, [mainCategoryList, mainId]);
 
   const handleChangeMainCategory = (e: React.MouseEvent<HTMLLIElement>, idx: number) => {
     e.preventDefault();
