@@ -7,19 +7,13 @@ import { useGetMainCategoryList } from 'lib/hooks/useGetMainCategoryList';
 import { useGetMiddleCategoryList } from 'lib/hooks/useGetMiddleCategory';
 import useGetWorkCard from 'lib/hooks/useGetWorkCard';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { IcBack, IcDeleteWorkCard, IcEditMiddleCategory, IcWorkCardFilter } from 'public/assets/icons';
-import { useEffect } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { WorkCardInfo } from 'types/output';
 
 const WorkCardPage = () => {
   const currentMainCategoryIdx = useRecoilValue(currentMainCategoryIdxAtom);
   const [currentMiddleCategoryId, setCurrentMiddleCategoryId] = useRecoilState(currentMiddleCategoryIdAtom);
-
-  // useEffect(() => {
-  //   setCurrentMiddleCategoryId(Number(router.query.folderId));
-  // }, []);
 
   const { mainCategoryList } = useGetMainCategoryList();
   const { middleCategoryList } = useGetMiddleCategoryList(mainCategoryList[currentMainCategoryIdx]?.categoryId);
@@ -29,7 +23,7 @@ const WorkCardPage = () => {
   return (
     <>
       <StOutputMainWrapper>
-        <MainCategoryList />
+        {/* <MainCategoryList mainId/> */}
 
         <StMiddleBoard>
           <Link href={`/output/${currentMainCategoryIdx}`}>
