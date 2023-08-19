@@ -4,9 +4,19 @@ export interface mainCategoryInfo {
   isShared: boolean;
 }
 
+export interface ctxType {
+  query: {
+    mainId: string;
+  };
+}
 export interface SelectMainCategoryInfo {
   mainCategory: string;
   categoryId: number;
+}
+
+export interface SelectMiddleCategoryInfo {
+  middleCategory: string;
+  folderId: number;
 }
 
 export interface MiddleCategoryInfo {
