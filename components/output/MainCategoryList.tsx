@@ -8,30 +8,26 @@ import { useRouter } from 'next/router';
 import { currentMainCategoryIdxAtom } from 'core/atom';
 
 const MainCategoryList = ({ mainId }: { mainId: string }) => {
-  console.log(mainId);
   const router = useRouter();
-  const [currentMainCategoryIdx, setCurrentMainCategoryIdx] = useRecoilState(currentMainCategoryIdxAtom);
 
   const { mainCategoryList } = useGetMainCategoryList();
 
   function initializeArray(arrSize: number) {
     const arr = new Array(arrSize).fill(false);
     if (arrSize > 0) {
-      arr[currentMainCategoryIdx] = true;
+      arr[Number(mainId)] = true;
     }
     return arr;
   }
 
   const [isCurrentCategoryArray, setIsCurrentCategoryArray] = useState(initializeArray(mainCategoryList?.length));
 
-  // useEffect(() => {
-  //   setCurrentMainCategoryIdx(mainId);
-  // }, []);
+  useEffect(() => {
+    setIsCurrentCategoryArray(initializeArray(mainCategoryList?.length));
+  }, []);
 
   const handleChangeMainCategory = (e: React.MouseEvent<HTMLLIElement>, idx: number) => {
     e.preventDefault();
-
-    setCurrentMainCategoryIdx(Number(mainId));
 
     const tempIsCurrentCategoryArray = Array(mainCategoryList?.length).fill(false);
     tempIsCurrentCategoryArray[idx] = true;
