@@ -1,24 +1,18 @@
-import MiddleCategory from '../../components/output/MiddleCategory';
-import AddMiddleCategory from '../../components/output/AddMiddleCategory';
-import MainCategoryList from '../../components/output/MainCategoryList';
 import styled from '@emotion/styled';
 import { IcEditMain } from 'public/assets/icons';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { currentMainCategoryIdxAtom, currentMiddleCategoryIdAtom } from 'core/atom';
 import { useGetMiddleCategoryList } from 'lib/hooks/useGetMiddleCategory';
 import { MiddleCategoryInfo, ctxType } from 'types/output';
 import { useRouter } from 'next/router';
 import { useGetMainCategoryList } from 'lib/hooks/useGetMainCategoryList';
+import MainCategoryList from 'components/output/MainCategoryList';
+import MiddleCategory from 'components/output/MiddleCategory';
+import AddMiddleCategory from 'components/output/AddMiddleCategory';
+import { useEffect } from 'react';
 
 const OutputMain = ({ mainId }: { mainId: string }) => {
-  console.log(mainId);
   const router = useRouter();
-  const currentMainCategoryIdx = useRecoilValue(currentMainCategoryIdxAtom);
-
   const { mainCategoryList } = useGetMainCategoryList();
-  const categoryId = mainCategoryList && mainCategoryList[currentMainCategoryIdx]?.categoryId;
-
-  const { middleCategoryList } = useGetMiddleCategoryList(categoryId);
+  const { middleCategoryList } = useGetMiddleCategoryList(Number(mainId));
 
   const handleGoToWorkCard = (folderId: number) => {
     router.push({ pathname: `/output/middleCategory/${folderId}` });
@@ -31,9 +25,7 @@ const OutputMain = ({ mainId }: { mainId: string }) => {
 
         <StMiddleBoard>
           <header>
-            <StMainTitle isShouldWrap={true}>
-              {mainCategoryList && mainCategoryList[currentMainCategoryIdx]?.name}
-            </StMainTitle>
+            <StMainTitle isShouldWrap={true}>{mainCategoryList && mainCategoryList[Number(mainId)].name}</StMainTitle>
             <IcEditMain />
           </header>
 
@@ -58,7 +50,6 @@ const OutputMain = ({ mainId }: { mainId: string }) => {
 
 export const getServerSideProps = async (ctx: ctxType) => {
   const mainId = ctx.query.mainId;
-  console.log(ctx);
 
   return { props: { mainId } };
 };
