@@ -5,12 +5,14 @@ import { SelectMainCategoryInfo, SelectMiddleCategoryInfo } from 'types/output';
 
 const { persistAtom } = recoilPersist();
 
-export const currentMiddleCategoryAtom = atom<SelectMiddleCategoryInfo>({
+export const currentMainCategoryIdxAtom = atom<number>({
+  key: `currentMainCategory`,
+  default: 0,
+});
+
+export const currentMiddleCategoryIdAtom = atom<number>({
   key: `currentMiddleCategory`,
-  default: {
-    middleCategory: '',
-    folderId: 0,
-  },
+  default: 0,
   effects_UNSTABLE: [persistAtom],
 });
 

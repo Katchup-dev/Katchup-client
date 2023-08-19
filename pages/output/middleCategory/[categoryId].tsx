@@ -2,35 +2,40 @@ import styled from '@emotion/styled';
 import MainCategoryList from 'components/output/MainCategoryList';
 import NoMiddleCategory from 'components/output/NoMiddleCategory';
 import WorkCard from 'components/output/WorkCard';
-import { currentMainCategoryAtom } from 'core/atom';
+import { currentMainCategoryIdxAtom, currentMiddleCategoryIdAtom } from 'core/atom';
+import { useGetMainCategoryList } from 'lib/hooks/useGetMainCategoryList';
+import { useGetMiddleCategoryList } from 'lib/hooks/useGetMiddleCategory';
 import useGetWorkCard from 'lib/hooks/useGetWorkCard';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { IcBack, IcDeleteWorkCard, IcEditMiddleCategory, IcWorkCardFilter } from 'public/assets/icons';
-import { useRecoilValue } from 'recoil';
+import { useEffect } from 'react';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { WorkCardInfo } from 'types/output';
 
 const WorkCardPage = () => {
-  const currentMainCategory = useRecoilValue(currentMainCategoryAtom);
+  const currentMainCategoryIdx = useRecoilValue(currentMainCategoryIdxAtom);
+  const [currentMiddleCategoryId, setCurrentMiddleCategoryId] = useRecoilState(currentMiddleCategoryIdAtom);
 
-  const router = useRouter();
-  const { categoryId, middleCategory } = router.query;
+  // useEffect(() => {
+  //   setCurrentMiddleCategoryId(Number(router.query.folderId));
+  // }, []);
 
-  const { workCardList, isError } = useGetWorkCard(Number(categoryId));
+  const { mainCategoryList } = useGetMainCategoryList();
+  const { middleCategoryList } = useGetMiddleCategoryList(mainCategoryList[currentMainCategoryIdx]?.categoryId);
+
+  const { workCardList, isError } = useGetWorkCard(currentMiddleCategoryId);
 
   return (
     <>
       <StOutputMainWrapper>
-        <MainCategoryList
-          currentMain={currentMainCategory.mainCategory}
-          currentMainId={currentMainCategory.categoryId}
-        />
+        <MainCategoryList />
 
         <StMiddleBoard>
-          <Link href={`/output/${currentMainCategory.categoryId}`}>
+          <Link href={`/output/${currentMainCategoryIdx}`}>
             <button>
               <IcBack />
-              <p>{currentMainCategory.mainCategory}</p>
+              <p>{mainCategoryList[currentMainCategoryIdx].name}</p>
             </button>
           </Link>
 
@@ -44,7 +49,7 @@ const WorkCardPage = () => {
           </StSettingButtonWrapper>
 
           <header>
-            <h1>{middleCategory}</h1>
+            {/* <h1>{middleCategoryList[]}</h1> */}
             <button>
               <IcEditMiddleCategory />
             </button>
