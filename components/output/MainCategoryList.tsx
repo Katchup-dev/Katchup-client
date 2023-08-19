@@ -1,45 +1,43 @@
 import styled from '@emotion/styled';
 import { useGetMainCategoryList } from 'lib/hooks/useGetMainCategoryList';
 import { IcAddMain, IcTrash } from 'public/assets/icons';
-import React, { useEffect, useState } from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { mainCategoryInfo } from 'types/output';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useRecoilState } from 'recoil';
+import { ctxType, mainCategoryInfo } from 'types/output';
 import { useRouter } from 'next/router';
+import { currentMainCategoryIdxAtom } from 'core/atom';
 
-const MainCategoryList = () => {
+const MainCategoryList = ({ mainId }: { mainId: string }) => {
+  console.log(mainId);
   const router = useRouter();
-  const [currentMainCategoryId, setCurrentMainCategoryId] = useState(Number(router.query.mainId));
-  const { mainCategoryList, isError } = useGetMainCategoryList();
+  const [currentMainCategoryIdx, setCurrentMainCategoryIdx] = useRecoilState(currentMainCategoryIdxAtom);
 
-  useEffect(() => {
-    setCurrentMainCategoryId(Number(router.query.mainId));
-  }, [router.query.mainId]);
-
-  useEffect(() => {
-    if (mainCategoryList?.length > 0) {
-      setIsCurrentCategoryArray(initializeArray(mainCategoryList.length));
-    }
-  }, [mainCategoryList, currentMainCategoryId]);
+  const { mainCategoryList } = useGetMainCategoryList();
 
   function initializeArray(arrSize: number) {
     const arr = new Array(arrSize).fill(false);
     if (arrSize > 0) {
-      arr[currentMainCategoryId] = true;
+      arr[currentMainCategoryIdx] = true;
     }
     return arr;
   }
 
   const [isCurrentCategoryArray, setIsCurrentCategoryArray] = useState(initializeArray(mainCategoryList?.length));
 
-  const handleChangeMainCategory = (e: React.MouseEvent<HTMLLIElement>, categoryId: number, idx: number) => {
+  // useEffect(() => {
+  //   setCurrentMainCategoryIdx(mainId);
+  // }, []);
+
+  const handleChangeMainCategory = (e: React.MouseEvent<HTMLLIElement>, idx: number) => {
     e.preventDefault();
+
+    setCurrentMainCategoryIdx(Number(mainId));
 
     const tempIsCurrentCategoryArray = Array(mainCategoryList?.length).fill(false);
     tempIsCurrentCategoryArray[idx] = true;
 
     setIsCurrentCategoryArray(tempIsCurrentCategoryArray);
 
-    setCurrentMainCategoryId(mainCategoryList[idx].folderId);
     router.push(`/output/${idx}`);
   };
 
@@ -55,7 +53,7 @@ const MainCategoryList = () => {
             <StMainCategory
               isCurrentCategory={isCurrentCategoryArray[idx]}
               key={idx}
-              onClick={(e) => handleChangeMainCategory(e, category.categoryId, idx)}>
+              onClick={(e) => handleChangeMainCategory(e, idx)}>
               {category.name}
             </StMainCategory>
           ))}

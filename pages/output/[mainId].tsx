@@ -3,42 +3,36 @@ import AddMiddleCategory from '../../components/output/AddMiddleCategory';
 import MainCategoryList from '../../components/output/MainCategoryList';
 import styled from '@emotion/styled';
 import { IcEditMain } from 'public/assets/icons';
-import { useRecoilState, useSetRecoilState } from 'recoil';
-import { currentMainCategoryAtom, currentMiddleCategoryAtom } from 'core/atom';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { currentMainCategoryIdxAtom, currentMiddleCategoryIdAtom } from 'core/atom';
 import { useGetMiddleCategoryList } from 'lib/hooks/useGetMiddleCategory';
-import { MiddleCategoryInfo } from 'types/output';
+import { MiddleCategoryInfo, ctxType } from 'types/output';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
 import { useGetMainCategoryList } from 'lib/hooks/useGetMainCategoryList';
 
-const OutputMain = () => {
+const OutputMain = ({ mainId }: { mainId: string }) => {
+  console.log(mainId);
   const router = useRouter();
-  const [currentMainCategoryId, setCurrentMainCategoryId] = useState(Number(router.query.mainId));
+  const currentMainCategoryIdx = useRecoilValue(currentMainCategoryIdxAtom);
 
-  useEffect(() => {
-    setCurrentMainCategoryId(Number(router.query.mainId));
-  }, [router.query.mainId]);
-
-  const setMiddleCategoryName = useSetRecoilState(currentMiddleCategoryAtom);
-
-  //쿼리 키를 바꿔주는 방식으로 mainCategoryName이 바뀔 때마다 커스텀훅 재호출
-  const { middleCategoryList, isError } = useGetMiddleCategoryList(currentMainCategoryId);
   const { mainCategoryList } = useGetMainCategoryList();
+  const categoryId = mainCategoryList && mainCategoryList[currentMainCategoryIdx]?.categoryId;
 
-  const handleGoToWorkCard = (folderId: number, categoryName: string) => {
-    setMiddleCategoryName({ middleCategory: categoryName, folderId: folderId });
+  const { middleCategoryList } = useGetMiddleCategoryList(categoryId);
+
+  const handleGoToWorkCard = (folderId: number) => {
     router.push({ pathname: `/output/middleCategory/${folderId}` });
   };
 
   return (
     <>
       <StOutputMainWrapper>
-        <MainCategoryList />
+        <MainCategoryList mainId={mainId} />
 
         <StMiddleBoard>
           <header>
             <StMainTitle isShouldWrap={true}>
-              {mainCategoryList && mainCategoryList[currentMainCategoryId]?.name}
+              {mainCategoryList && mainCategoryList[currentMainCategoryIdx]?.name}
             </StMainTitle>
             <IcEditMain />
           </header>
@@ -50,7 +44,7 @@ const OutputMain = () => {
                 key={idx}
                 folderId={category.folderId}
                 handleClick={() => {
-                  handleGoToWorkCard(category.folderId, category.name);
+                  handleGoToWorkCard(category.folderId);
                 }}
               />
             ))}
@@ -60,6 +54,13 @@ const OutputMain = () => {
       </StOutputMainWrapper>
     </>
   );
+};
+
+export const getServerSideProps = async (ctx: ctxType) => {
+  const mainId = ctx.query.mainId;
+  console.log(ctx);
+
+  return { props: { mainId } };
 };
 
 const StOutputMainWrapper = styled.main`
