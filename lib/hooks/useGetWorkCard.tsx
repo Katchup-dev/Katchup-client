@@ -6,8 +6,6 @@ const useGetWorkCard = (folderId: number) => {
     retry: 3,
   });
 
-  console.log(data);
-
   return {
     workCardList: data?.data,
     isError: error,
