@@ -7,7 +7,7 @@ export const useGetMainCategoryList = () => {
   });
 
   return {
-    categoryList: data?.data,
+    mainCategoryList: data?.data,
     isError: error,
   };
 };

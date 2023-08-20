@@ -15,6 +15,10 @@ const nextConfig = {
     recoil: true,
     recoilPersist: true,
   },
+  swcMinify: false,
+  experimental: {
+    appDir: false,
+  },
 };
 
 module.exports = nextConfig;

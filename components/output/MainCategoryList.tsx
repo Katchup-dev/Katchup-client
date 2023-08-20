@@ -1,71 +1,65 @@
 import styled from '@emotion/styled';
-import { currentMainCategoryAtom } from 'core/atom';
 import { useGetMainCategoryList } from 'lib/hooks/useGetMainCategoryList';
 import { IcAddMain, IcTrash } from 'public/assets/icons';
 import React, { useEffect, useState } from 'react';
-import { useRecoilState } from 'recoil';
 import { mainCategoryInfo } from 'types/output';
 import { useRouter } from 'next/router';
-import AddCategoryModal from 'components/Modal/AddCategoryModal';
 
 export interface MainCategoryListProps {
   currentMain: string;
   currentMainId: number;
 }
 
-const MainCategoryList = (props: MainCategoryListProps) => {
-  const { currentMain, currentMainId } = props;
-  const { categoryList, isError } = useGetMainCategoryList();
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-
-  const [currentMainCategory, setCurrentMainCategory] = useRecoilState(currentMainCategoryAtom);
+const MainCategoryList = ({ mainId }: { mainId: string }) => {
   const router = useRouter();
-
-  const handleChangeMainCategory = (e: React.MouseEvent<HTMLLIElement>, categoryId: number) => {
-    e.preventDefault();
-
-    const selectedCategory = e.target as HTMLLIElement;
-
-    setCurrentMainCategory(() => {
-      const updatedCategory = { mainCategory: selectedCategory.innerText, categoryId: categoryId };
-      router.push(`/output/${categoryId}`);
-      return updatedCategory;
-    });
-  };
+  const { mainCategoryList } = useGetMainCategoryList();
+  function initializeArray(arrSize: number) {
+    const arr = new Array(arrSize).fill(false);
+    if (arrSize > 0) {
+      arr[Number(mainId)] = true;
+    }
+    return arr;
+  }
+  const [isCurrentCategoryArray, setIsCurrentCategoryArray] = useState(initializeArray(mainCategoryList?.length));
 
   useEffect(() => {
-    setCurrentMainCategory({ mainCategory: currentMain, categoryId: currentMainId });
-  }, [currentMain]);
+    setIsCurrentCategoryArray(initializeArray(mainCategoryList?.length));
+    console.log(isCurrentCategoryArray);
+  }, [mainCategoryList, mainId]);
 
+  const handleChangeMainCategory = (e: React.MouseEvent<HTMLLIElement>, idx: number) => {
+    e.preventDefault();
+    const tempIsCurrentCategoryArray = Array(mainCategoryList?.length).fill(false);
+    tempIsCurrentCategoryArray[idx] = true;
+    setIsCurrentCategoryArray(tempIsCurrentCategoryArray);
+    router.push(`/output/${idx}`);
+  };
   return (
     <>
-      {isModalOpen && <AddCategoryModal isMainCategory={true} setIsOpen={setIsModalOpen} />}
-      <StMainWrapper>
+      <StWrapper>
         <header>
           <h1>워크 스페이스</h1>
-          <IcAddMain onClick={() => setIsModalOpen(true)} />
+          <IcAddMain />
         </header>
         <StMainCategoryWrapper>
-          {categoryList?.map((category: mainCategoryInfo, idx: number) => (
+          {mainCategoryList?.map((category: mainCategoryInfo, idx: number) => (
             <StMainCategory
-              isCurrentCategory={category.name === currentMainCategory.mainCategory}
+              isCurrentCategory={isCurrentCategoryArray[idx]}
               key={idx}
-              onClick={(e) => handleChangeMainCategory(e, category.categoryId)}>
+              onClick={(e) => handleChangeMainCategory(e, idx)}>
               {category.name}
             </StMainCategory>
           ))}
         </StMainCategoryWrapper>
-
         <button type="button">
           <IcTrash />
           <span>휴지통</span>
         </button>
-      </StMainWrapper>
+      </StWrapper>
     </>
   );
 };
-
-const StMainWrapper = styled.aside`
+const StWrapper = styled.aside`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -77,12 +71,6 @@ const StMainWrapper = styled.aside`
 
   border: 0.1rem solid ${({ theme }) => theme.colors.katchup_line_gray};
   border-radius: 2.6rem;
-
-  overflow-y: scroll;
-
-  ::-webkit-scrollbar {
-    display: none;
-  }
 
   > header {
     display: flex;
@@ -124,10 +112,8 @@ const StMainWrapper = styled.aside`
 
 const StMainCategoryWrapper = styled.ul`
   padding-top: 1.6rem;
-
   list-style: none;
 `;
-
 const StMainCategory = styled.li<{ isCurrentCategory: boolean }>`
   display: flex;
   align-items: center;
@@ -142,10 +128,8 @@ const StMainCategory = styled.li<{ isCurrentCategory: boolean }>`
   color: ${({ isCurrentCategory, theme }) =>
     isCurrentCategory ? theme.colors.katchup_main : theme.colors.katchup_dark_gray};
   background-color: ${({ isCurrentCategory, theme }) => isCurrentCategory && `${theme.colors.katchup_main}33`};
-
   border-radius: 0.8rem;
 
   cursor: pointer;
 `;
-
 export default MainCategoryList;
