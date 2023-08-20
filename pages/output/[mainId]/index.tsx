@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { IcEditMain } from 'public/assets/icons';
 import { useGetMiddleCategoryList } from 'lib/hooks/useGetMiddleCategory';
-import { MiddleCategoryInfo, ctxType } from 'types/output';
+import { MiddleCategoryInfo, mainCtxType } from 'types/output';
 import { useRouter } from 'next/router';
 import { useGetMainCategoryList } from 'lib/hooks/useGetMainCategoryList';
 import MainCategoryList from 'components/output/MainCategoryList';
@@ -14,8 +14,8 @@ const OutputMain = ({ mainId }: { mainId: string }) => {
   const { mainCategoryList } = useGetMainCategoryList();
   const { middleCategoryList } = useGetMiddleCategoryList(Number(mainId));
 
-  const handleGoToWorkCard = (folderId: number) => {
-    router.push({ pathname: `/output/middleCategory/${folderId}` });
+  const handleGoToWorkCard = (middleId: number) => {
+    router.push({ pathname: `/output/${mainId}/middleCategory/${middleId}` });
   };
 
   return (
@@ -48,7 +48,7 @@ const OutputMain = ({ mainId }: { mainId: string }) => {
   );
 };
 
-export const getServerSideProps = async (ctx: ctxType) => {
+export const getServerSideProps = async (ctx: mainCtxType) => {
   const mainId = ctx.query.mainId;
 
   return { props: { mainId } };
