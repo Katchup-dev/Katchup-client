@@ -2,34 +2,29 @@ import styled from '@emotion/styled';
 import MainCategoryList from 'components/output/MainCategoryList';
 import NoMiddleCategory from 'components/output/NoMiddleCategory';
 import WorkCard from 'components/output/WorkCard';
-import { currentMainCategoryIdxAtom, currentMiddleCategoryIdAtom } from 'core/atom';
 import { useGetMainCategoryList } from 'lib/hooks/useGetMainCategoryList';
 import { useGetMiddleCategoryList } from 'lib/hooks/useGetMiddleCategory';
 import useGetWorkCard from 'lib/hooks/useGetWorkCard';
 import Link from 'next/link';
 import { IcBack, IcDeleteWorkCard, IcEditMiddleCategory, IcWorkCardFilter } from 'public/assets/icons';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { WorkCardInfo } from 'types/output';
+import { WorkCardInfo, middleCtxType } from 'types/output';
 
-const WorkCardPage = () => {
-  const currentMainCategoryIdx = useRecoilValue(currentMainCategoryIdxAtom);
-  const [currentMiddleCategoryId, setCurrentMiddleCategoryId] = useRecoilState(currentMiddleCategoryIdAtom);
-
+const WorkCardPage = ({ mainId, middleId }: { mainId: string; middleId: string }) => {
   const { mainCategoryList } = useGetMainCategoryList();
-  const { middleCategoryList } = useGetMiddleCategoryList(mainCategoryList[currentMainCategoryIdx]?.categoryId);
+  const { middleCategoryList } = useGetMiddleCategoryList(Number(mainId));
 
-  const { workCardList, isError } = useGetWorkCard(currentMiddleCategoryId);
+  const { workCardList, isError } = useGetWorkCard(Number(middleId));
 
   return (
     <>
       <StOutputMainWrapper>
-        {/* <MainCategoryList mainId/> */}
+        <MainCategoryList mainId={mainId} />
 
         <StMiddleBoard>
-          <Link href={`/output/${currentMainCategoryIdx}`}>
+          <Link href={`/output/${mainId}`}>
             <button>
               <IcBack />
-              <p>{mainCategoryList[currentMainCategoryIdx].name}</p>
+              <p>{mainCategoryList && mainCategoryList[Number(mainId)].name}</p>
             </button>
           </Link>
 
@@ -43,7 +38,7 @@ const WorkCardPage = () => {
           </StSettingButtonWrapper>
 
           <header>
-            {/* <h1>{middleCategoryList[]}</h1> */}
+            <h1>{middleCategoryList && middleCategoryList.find((item) => item.folderId === Number(middleId)).name}</h1>
             <button>
               <IcEditMiddleCategory />
             </button>
@@ -78,6 +73,13 @@ const WorkCardPage = () => {
       </StOutputMainWrapper>
     </>
   );
+};
+
+export const getServerSideProps = async (ctx: middleCtxType) => {
+  const mainId = ctx.query.mainId;
+  const middleId = ctx.query.middleId;
+
+  return { props: { mainId, middleId } };
 };
 
 const StOutputMainWrapper = styled.main`
