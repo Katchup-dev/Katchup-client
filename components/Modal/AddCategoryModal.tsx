@@ -3,10 +3,11 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { NEW_CATEGORY_REGEX } from 'constants/output';
 import { postNewMainCategory, postNewMiddleCategory } from 'core/apis/output';
 import { useGetMainCategoryList } from 'lib/hooks/useGetMainCategoryList';
+import { useGetMiddleCategoryList } from 'lib/hooks/useGetMiddleCategory';
 import { useRouter } from 'next/router';
 
 import { IcDeleteModal } from 'public/assets/icons';
-import { useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 
 export interface AddCategoryModalProps {
   isMainCategory: boolean;
@@ -14,17 +15,15 @@ export interface AddCategoryModalProps {
   setIsOpen: (isOpen: boolean) => void;
 }
 
-const AddCategoryModal = (props: AddCategoryModalProps) => {
-  const { isMainCategory, isOpen, setIsOpen } = props;
+const AddCategoryModal = (props: AddCategoryModalProps & { mainId: string }) => {
+  const { isMainCategory, isOpen, setIsOpen, mainId } = props;
   const [warningMsg, setWarningMsg] = useState('');
   const [isCategoryAvailable, setIsCategoryAvailable] = useState(false);
 
   const { mainCategoryList } = useGetMainCategoryList();
+  const { middleCategoryList } = useGetMiddleCategoryList(Number(mainId));
 
   const inputRef = useRef<HTMLInputElement>(null);
-
-  const router = useRouter();
-  const { mainId } = router.query;
 
   //넣자마자 바로 반영되게 하는 로직
   const queryClient = useQueryClient();
@@ -60,11 +59,16 @@ const AddCategoryModal = (props: AddCategoryModalProps) => {
     }
   };
 
-  const handleCheckNewCategory = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCheckMainCategory = (e: React.ChangeEvent<HTMLInputElement>) => {
     const currentInputValue = e.target.value;
 
     if (NEW_CATEGORY_REGEX.test(currentInputValue)) {
-      const duplicateValue = mainCategoryList && mainCategoryList.find((item) => item.name === currentInputValue);
+      const duplicateValue =
+        mainCategoryList && isMainCategory
+          ? mainCategoryList.find((item) => item.name === currentInputValue)
+          : middleCategoryList && !isMainCategory
+          ? middleCategoryList.find((item) => item.name === currentInputValue)
+          : undefined;
       if (duplicateValue === undefined) {
         setIsCategoryAvailable(true);
         setWarningMsg('');
@@ -93,37 +97,37 @@ const AddCategoryModal = (props: AddCategoryModalProps) => {
     }
   };
 
-  return (
-    isOpen && (
-      <StWrapper>
-        <StModal>
-          <StModalHeader>
-            <h1>{isMainCategory ? '카테고리 추가' : '업무 추가'}</h1>
+  return isOpen ? (
+    <StWrapper>
+      <StModal>
+        <StModalHeader>
+          <h1>{isMainCategory ? '카테고리 추가' : '업무 추가'}</h1>
 
-            <button onClick={() => setIsOpen(false)}>
-              <IcDeleteModal />
-            </button>
-          </StModalHeader>
+          <button onClick={() => setIsOpen(false)}>
+            <IcDeleteModal />
+          </button>
+        </StModalHeader>
 
-          <StModalForm>
-            <h2>{isMainCategory ? '카테고리명' : '업무명'}</h2>
-            <input
-              type="text"
-              ref={inputRef}
-              onChange={(e) => {
-                handleSpace(e);
-                handleCheckNewCategory(e);
-              }}
-            />
-            <p>{warningMsg}</p>
-          </StModalForm>
+        <StModalForm>
+          <h2>{isMainCategory ? '카테고리명' : '업무명'}</h2>
+          <input
+            type="text"
+            ref={inputRef}
+            onChange={(e) => {
+              handleSpace(e);
+              handleCheckMainCategory(e);
+            }}
+          />
+          <p>{warningMsg}</p>
+        </StModalForm>
 
-          <StSubmitCategoryBtn onClick={(e) => handleAddCategory(e)} disabled={!isCategoryAvailable}>
-            추가하기
-          </StSubmitCategoryBtn>
-        </StModal>
-      </StWrapper>
-    )
+        <StSubmitCategoryBtn onClick={(e) => handleAddCategory(e)} disabled={!isCategoryAvailable}>
+          추가하기
+        </StSubmitCategoryBtn>
+      </StModal>
+    </StWrapper>
+  ) : (
+    <div></div>
   );
 };
 
