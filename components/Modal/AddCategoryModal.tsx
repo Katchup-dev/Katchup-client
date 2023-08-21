@@ -1,10 +1,12 @@
 import styled from '@emotion/styled';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { NEW_CATEGORY_REGEX } from 'constants/output';
 import { postNewMainCategory, postNewMiddleCategory } from 'core/apis/output';
+import { useGetMainCategoryList } from 'lib/hooks/useGetMainCategoryList';
 import { useRouter } from 'next/router';
 
 import { IcDeleteModal } from 'public/assets/icons';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 
 export interface AddCategoryModalProps {
   isMainCategory: boolean;
@@ -13,6 +15,10 @@ export interface AddCategoryModalProps {
 
 const AddCategoryModal = (props: AddCategoryModalProps) => {
   const { isMainCategory, setIsOpen } = props;
+  const [warningMsg, setWarningMsg] = useState('');
+  const [isCategoryAvailable, setIsCategoryAvailable] = useState(false);
+
+  const { mainCategoryList } = useGetMainCategoryList();
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -53,17 +59,66 @@ const AddCategoryModal = (props: AddCategoryModalProps) => {
     }
   };
 
+  const handleCheckNewCategory = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const currentInputValue = e.target.value;
+
+    if (NEW_CATEGORY_REGEX.test(currentInputValue)) {
+      const duplicateValue = mainCategoryList && mainCategoryList.find((item) => item.name === currentInputValue);
+      if (duplicateValue === undefined) {
+        setIsCategoryAvailable(true);
+        setWarningMsg('');
+      } else {
+        setIsCategoryAvailable(false);
+        setWarningMsg('해당 카테고리명은 이미 존재합니다. 다른 카테고리명을 입력해 주세요.');
+      }
+    } else {
+      setIsCategoryAvailable(false);
+      if (e.target.value.length === 0) {
+        setWarningMsg('');
+      } else {
+        setWarningMsg('이모지 및 특수기호 입력은 불가능합니다. 제외하여 입력해 주세요.');
+      }
+    }
+  };
+
+  const handleSpace = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const currentInput = e.target;
+    const currentInputValue = e.target.value;
+
+    if (currentInputValue.includes(' ')) {
+      const position = currentInput.selectionStart && currentInput.selectionStart - 1;
+      e.target.value = currentInputValue.replace(' ', '');
+      currentInput.setSelectionRange(position, position);
+    }
+  };
+
   return (
     <StWrapper>
       <StModal>
-        <IcDeleteModal onClick={() => setIsOpen(false)} />
-        <h1>업무 대분류 추가</h1>
+        <StModalHeader>
+          <h1>{isMainCategory ? '카테고리 추가' : '업무 추가'}</h1>
 
-        <h2>{isMainCategory ? '대분류명' : '중분류명'}</h2>
+          <button onClick={() => setIsOpen(false)}>
+            <IcDeleteModal />
+          </button>
+        </StModalHeader>
 
-        <input type="text" ref={inputRef} />
+        <StModalForm>
+          <h2>{isMainCategory ? '카테고리명' : '업무명'}</h2>
+          <input
+            type="text"
+            ref={inputRef}
+            onChange={(e) => {
+              handleSpace(e);
+              handleCheckNewCategory(e);
+            }}
+          />
+          <p>{warningMsg}</p>
+        </StModalForm>
 
-        <button onClick={(e) => handleAddCategory(e)}>추가하기</button>
+        <StSubmitCategoryBtn onClick={(e) => handleAddCategory(e)} disabled={!isCategoryAvailable}>
+          추가하기
+        </StSubmitCategoryBtn>
       </StModal>
     </StWrapper>
   );
@@ -92,7 +147,7 @@ const StModal = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  position: relative;
+  position: absolute;
 
   padding: 4rem 5rem 4.4rem 4rem;
 
@@ -103,12 +158,6 @@ const StModal = styled.div`
 
   border-radius: 2.6rem;
 
-  > h1 {
-    margin-bottom: 5rem;
-
-    ${({ theme }) => theme.fonts.h1_smalltitle};
-  }
-
   > svg {
     position: absolute;
     right: 4rem;
@@ -116,11 +165,30 @@ const StModal = styled.div`
 
     cursor: pointer;
   }
+`;
+
+const StModalHeader = styled.header`
+  display: flex;
+  margin-bottom: 5rem;
+  align-self: flex-end;
+
+  > h1 {
+    width: 100%;
+    margin-right: 17.8rem;
+    ${({ theme }) => theme.fonts.h1_smalltitle};
+  }
+
+  > button {
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+`;
+
+const StModalForm = styled.form`
+  width: 100%;
 
   > h2 {
-    align-self: flex-start;
-    margin-bottom: 0.4rem;
-
     ${({ theme }) => theme.fonts.p1_text};
   }
 
@@ -134,26 +202,29 @@ const StModal = styled.div`
     border-radius: 0.8rem;
   }
 
-  > button {
-    margin-top: 4rem;
-
-    width: 11rem;
-    height: 4rem;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    align-self: flex-end;
-
-    background-color: ${({ theme }) => theme.colors.katchup_main};
-
-    ${({ theme }) => theme.fonts.h3_title};
-
-    color: ${({ theme }) => theme.colors.katchup_white};
-
-    border: none;
-    border-radius: 0.8rem;
+  > p {
+    margin-top: 0.6rem;
+    ${({ theme }) => theme.fonts.caption};
+    color: ${({ theme }) => theme.colors.katchup_main};
   }
+`;
+
+const StSubmitCategoryBtn = styled.button<{ disabled: boolean }>`
+  align-self: flex-end;
+  position: relative;
+  width: 11rem;
+  height: 4rem;
+
+  top: 2rem;
+
+  background-color: ${({ disabled, theme }) => (disabled ? theme.colors.katchup_gray : theme.colors.katchup_main)};
+
+  ${({ theme }) => theme.fonts.h3_title};
+
+  color: ${({ theme }) => theme.colors.katchup_white};
+
+  border: none;
+  border-radius: 0.8rem;
 `;
 
 export default AddCategoryModal;
