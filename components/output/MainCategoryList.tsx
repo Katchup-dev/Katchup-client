@@ -2,8 +2,9 @@ import styled from '@emotion/styled';
 import { useGetMainCategoryList } from 'lib/hooks/useGetMainCategoryList';
 import { IcAddMain, IcTrash } from 'public/assets/icons';
 import React, { useEffect, useState } from 'react';
-import { mainCategoryInfo } from 'types/output';
+import { mainCategoryInfo, mainCtxType } from 'types/output';
 import { useRouter } from 'next/router';
+import AddCategoryModal from 'components/Modal/AddCategoryModal';
 
 export interface MainCategoryListProps {
   currentMain: string;
@@ -13,6 +14,8 @@ export interface MainCategoryListProps {
 const MainCategoryList = ({ mainId }: { mainId: string }) => {
   const router = useRouter();
   const { mainCategoryList } = useGetMainCategoryList();
+  const [isModalShowing, setIsModalShowing] = useState(false);
+
   function initializeArray(arrSize: number) {
     const arr = new Array(arrSize).fill(false);
     if (arrSize > 0) {
@@ -24,7 +27,6 @@ const MainCategoryList = ({ mainId }: { mainId: string }) => {
 
   useEffect(() => {
     setIsCurrentCategoryArray(initializeArray(mainCategoryList?.length));
-    console.log(isCurrentCategoryArray);
   }, [mainCategoryList, mainId]);
 
   const handleChangeMainCategory = (e: React.MouseEvent<HTMLLIElement>, idx: number) => {
@@ -39,7 +41,9 @@ const MainCategoryList = ({ mainId }: { mainId: string }) => {
       <StWrapper>
         <header>
           <h1>워크 스페이스</h1>
-          <IcAddMain />
+          <button onClick={() => setIsModalShowing(true)}>
+            <IcAddMain />
+          </button>
         </header>
         <StMainCategoryWrapper>
           {mainCategoryList?.map((category: mainCategoryInfo, idx: number) => (
@@ -55,10 +59,13 @@ const MainCategoryList = ({ mainId }: { mainId: string }) => {
           <IcTrash />
           <span>휴지통</span>
         </button>
+
+        <AddCategoryModal mainId={mainId} isMainCategory={true} isOpen={isModalShowing} setIsOpen={setIsModalShowing} />
       </StWrapper>
     </>
   );
 };
+
 const StWrapper = styled.aside`
   display: flex;
   flex-direction: column;
@@ -75,6 +82,8 @@ const StWrapper = styled.aside`
   > header {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    padding-bottom: 1.6rem;
 
     width: 21.2rem;
     height: 4.1rem;
@@ -85,7 +94,10 @@ const StWrapper = styled.aside`
       ${({ theme }) => theme.fonts.h1_title};
     }
 
-    > svg {
+    > button {
+      border: none;
+      background: none;
+
       cursor: pointer;
     }
   }
