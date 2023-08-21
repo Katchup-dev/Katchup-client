@@ -1,16 +1,20 @@
 import styled from '@emotion/styled';
 import { useGetMainCategoryList } from 'lib/hooks/useGetMainCategoryList';
 import { IcAddMain, IcTrash } from 'public/assets/icons';
-import React, { useCallback, useEffect, useState } from 'react';
-import { useRecoilState } from 'recoil';
-import { ctxType, mainCategoryInfo } from 'types/output';
+import React, { useEffect, useState } from 'react';
+import { mainCategoryInfo, mainCtxType } from 'types/output';
 import { useRouter } from 'next/router';
-import { currentMainCategoryIdxAtom } from 'core/atom';
+import AddCategoryModal from 'components/Modal/AddCategoryModal';
+
+export interface MainCategoryListProps {
+  currentMain: string;
+  currentMainId: number;
+}
 
 const MainCategoryList = ({ mainId }: { mainId: string }) => {
   const router = useRouter();
-
   const { mainCategoryList } = useGetMainCategoryList();
+  const [isModalShowing, setIsModalShowing] = useState(false);
 
   function initializeArray(arrSize: number) {
     const arr = new Array(arrSize).fill(false);
@@ -19,7 +23,6 @@ const MainCategoryList = ({ mainId }: { mainId: string }) => {
     }
     return arr;
   }
-
   const [isCurrentCategoryArray, setIsCurrentCategoryArray] = useState(initializeArray(mainCategoryList?.length));
 
   useEffect(() => {
@@ -28,21 +31,19 @@ const MainCategoryList = ({ mainId }: { mainId: string }) => {
 
   const handleChangeMainCategory = (e: React.MouseEvent<HTMLLIElement>, idx: number) => {
     e.preventDefault();
-
     const tempIsCurrentCategoryArray = Array(mainCategoryList?.length).fill(false);
     tempIsCurrentCategoryArray[idx] = true;
-
     setIsCurrentCategoryArray(tempIsCurrentCategoryArray);
-
     router.push(`/output/${idx}`);
   };
-
   return (
     <>
       <StWrapper>
         <header>
           <h1>워크 스페이스</h1>
-          <IcAddMain />
+          <button onClick={() => setIsModalShowing(true)}>
+            <IcAddMain />
+          </button>
         </header>
         <StMainCategoryWrapper>
           {mainCategoryList?.map((category: mainCategoryInfo, idx: number) => (
@@ -54,11 +55,12 @@ const MainCategoryList = ({ mainId }: { mainId: string }) => {
             </StMainCategory>
           ))}
         </StMainCategoryWrapper>
-
         <button type="button">
           <IcTrash />
           <span>휴지통</span>
         </button>
+
+        <AddCategoryModal mainId={mainId} isMainCategory={true} isOpen={isModalShowing} setIsOpen={setIsModalShowing} />
       </StWrapper>
     </>
   );
@@ -80,6 +82,8 @@ const StWrapper = styled.aside`
   > header {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    padding-bottom: 1.6rem;
 
     width: 21.2rem;
     height: 4.1rem;
@@ -90,7 +94,10 @@ const StWrapper = styled.aside`
       ${({ theme }) => theme.fonts.h1_title};
     }
 
-    > svg {
+    > button {
+      border: none;
+      background: none;
+
       cursor: pointer;
     }
   }
@@ -117,10 +124,8 @@ const StWrapper = styled.aside`
 
 const StMainCategoryWrapper = styled.ul`
   padding-top: 1.6rem;
-
   list-style: none;
 `;
-
 const StMainCategory = styled.li<{ isCurrentCategory: boolean }>`
   display: flex;
   align-items: center;
@@ -135,10 +140,8 @@ const StMainCategory = styled.li<{ isCurrentCategory: boolean }>`
   color: ${({ isCurrentCategory, theme }) =>
     isCurrentCategory ? theme.colors.katchup_main : theme.colors.katchup_dark_gray};
   background-color: ${({ isCurrentCategory, theme }) => isCurrentCategory && `${theme.colors.katchup_main}33`};
-
   border-radius: 0.8rem;
 
   cursor: pointer;
 `;
-
 export default MainCategoryList;
