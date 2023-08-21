@@ -3,6 +3,7 @@ import { IcHelp, IcLogo } from 'public/assets/icons';
 import SearchBox from './SearchBox';
 import { css } from '@emotion/react';
 import { useRouter } from 'next/router';
+import { useRecoilValue } from 'recoil';
 
 export interface HeaderProps {
   profileImgSrc: string;
@@ -15,8 +16,10 @@ const Header = (props: HeaderProps) => {
 
   const handleNavigate = (e: React.MouseEvent) => {
     const target = e.target as HTMLLIElement;
-    if (target.innerText === '모아보기') router.push('/output/1');
+
     if (target.innerText === '작성하기') router.push('/input/main');
+
+    if (target.innerText === '모아보기') router.push('/output/0');
   };
 
   return (
