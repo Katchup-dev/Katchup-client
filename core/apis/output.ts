@@ -2,7 +2,6 @@ import { client } from 'lib/axios';
 
 export const getMainCategoryList = async () => {
   const { data } = await client.get(`/categories`);
-  console.log(data);
   return data;
 };
 

@@ -1,39 +1,41 @@
 import styled from '@emotion/styled';
-import { currentMainCategoryAtom } from 'core/atom';
 import { useGetMainCategoryList } from 'lib/hooks/useGetMainCategoryList';
 import { IcAddMain, IcTrash } from 'public/assets/icons';
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
-import { mainCategoryInfo } from 'types/output';
+import { ctxType, mainCategoryInfo } from 'types/output';
 import { useRouter } from 'next/router';
+import { currentMainCategoryIdxAtom } from 'core/atom';
 
-export interface MainCategoryListProps {
-  currentMain: string;
-  currentMainId: number;
-}
-
-const MainCategoryList = (props: MainCategoryListProps) => {
-  const { currentMain, currentMainId } = props;
-  const { categoryList, isError } = useGetMainCategoryList();
-
-  const [currentMainCategory, setCurrentMainCategory] = useRecoilState(currentMainCategoryAtom);
+const MainCategoryList = ({ mainId }: { mainId: string }) => {
   const router = useRouter();
 
-  const handleChangeMainCategory = (e: React.MouseEvent<HTMLLIElement>, categoryId: number) => {
-    e.preventDefault();
+  const { mainCategoryList } = useGetMainCategoryList();
 
-    const selectedCategory = e.target as HTMLLIElement;
+  function initializeArray(arrSize: number) {
+    const arr = new Array(arrSize).fill(false);
+    if (arrSize > 0) {
+      arr[Number(mainId)] = true;
+    }
+    return arr;
+  }
 
-    setCurrentMainCategory(() => {
-      const updatedCategory = { mainCategory: selectedCategory.innerText, categoryId: categoryId };
-      router.push(`/output/${categoryId}`);
-      return updatedCategory;
-    });
-  };
+  const [isCurrentCategoryArray, setIsCurrentCategoryArray] = useState(initializeArray(mainCategoryList?.length));
 
   useEffect(() => {
-    setCurrentMainCategory({ mainCategory: currentMain, categoryId: currentMainId });
-  }, [currentMain]);
+    setIsCurrentCategoryArray(initializeArray(mainCategoryList?.length));
+  }, [mainCategoryList, mainId]);
+
+  const handleChangeMainCategory = (e: React.MouseEvent<HTMLLIElement>, idx: number) => {
+    e.preventDefault();
+
+    const tempIsCurrentCategoryArray = Array(mainCategoryList?.length).fill(false);
+    tempIsCurrentCategoryArray[idx] = true;
+
+    setIsCurrentCategoryArray(tempIsCurrentCategoryArray);
+
+    router.push(`/output/${idx}`);
+  };
 
   return (
     <>
@@ -43,11 +45,11 @@ const MainCategoryList = (props: MainCategoryListProps) => {
           <IcAddMain />
         </header>
         <StMainCategoryWrapper>
-          {categoryList?.map((category: mainCategoryInfo, idx: number) => (
+          {mainCategoryList?.map((category: mainCategoryInfo, idx: number) => (
             <StMainCategory
-              isCurrentCategory={category.name === currentMainCategory.mainCategory}
+              isCurrentCategory={isCurrentCategoryArray[idx]}
               key={idx}
-              onClick={(e) => handleChangeMainCategory(e, category.categoryId)}>
+              onClick={(e) => handleChangeMainCategory(e, idx)}>
               {category.name}
             </StMainCategory>
           ))}
