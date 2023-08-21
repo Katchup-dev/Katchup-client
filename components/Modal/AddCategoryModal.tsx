@@ -10,11 +10,12 @@ import { useRef, useState } from 'react';
 
 export interface AddCategoryModalProps {
   isMainCategory: boolean;
+  isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
 }
 
 const AddCategoryModal = (props: AddCategoryModalProps) => {
-  const { isMainCategory, setIsOpen } = props;
+  const { isMainCategory, isOpen, setIsOpen } = props;
   const [warningMsg, setWarningMsg] = useState('');
   const [isCategoryAvailable, setIsCategoryAvailable] = useState(false);
 
@@ -93,34 +94,36 @@ const AddCategoryModal = (props: AddCategoryModalProps) => {
   };
 
   return (
-    <StWrapper>
-      <StModal>
-        <StModalHeader>
-          <h1>{isMainCategory ? '카테고리 추가' : '업무 추가'}</h1>
+    isOpen && (
+      <StWrapper>
+        <StModal>
+          <StModalHeader>
+            <h1>{isMainCategory ? '카테고리 추가' : '업무 추가'}</h1>
 
-          <button onClick={() => setIsOpen(false)}>
-            <IcDeleteModal />
-          </button>
-        </StModalHeader>
+            <button onClick={() => setIsOpen(false)}>
+              <IcDeleteModal />
+            </button>
+          </StModalHeader>
 
-        <StModalForm>
-          <h2>{isMainCategory ? '카테고리명' : '업무명'}</h2>
-          <input
-            type="text"
-            ref={inputRef}
-            onChange={(e) => {
-              handleSpace(e);
-              handleCheckNewCategory(e);
-            }}
-          />
-          <p>{warningMsg}</p>
-        </StModalForm>
+          <StModalForm>
+            <h2>{isMainCategory ? '카테고리명' : '업무명'}</h2>
+            <input
+              type="text"
+              ref={inputRef}
+              onChange={(e) => {
+                handleSpace(e);
+                handleCheckNewCategory(e);
+              }}
+            />
+            <p>{warningMsg}</p>
+          </StModalForm>
 
-        <StSubmitCategoryBtn onClick={(e) => handleAddCategory(e)} disabled={!isCategoryAvailable}>
-          추가하기
-        </StSubmitCategoryBtn>
-      </StModal>
-    </StWrapper>
+          <StSubmitCategoryBtn onClick={(e) => handleAddCategory(e)} disabled={!isCategoryAvailable}>
+            추가하기
+          </StSubmitCategoryBtn>
+        </StModal>
+      </StWrapper>
+    )
   );
 };
 
