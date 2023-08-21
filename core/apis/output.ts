@@ -22,3 +22,20 @@ export const getDetailPage = async (cardId: number) => {
 
   return data;
 };
+
+export const postNewMainCategory = async (name: string) => {
+  const { data } = await client.post(`/categories`, {
+    name,
+  });
+
+  return data;
+};
+
+export const postNewMiddleCategory = async (categoryId: number, name: string) => {
+  const { data } = await client.post(`/folders`, {
+    categoryId,
+    name,
+  });
+
+  return data;
+};
