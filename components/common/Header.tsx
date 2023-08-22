@@ -24,7 +24,7 @@ const Header = (props: HeaderProps) => {
     <>
       <StHeaderWrapper path={asPath}>
         <div>
-          <IcLogo />
+          <IcLogo style={{ cursor: 'pointer' }} onClick={() => router.push('/')} />
 
           <StMenuNav>
             <ul>
