@@ -67,8 +67,9 @@ const StDropdown = styled.ul`
   position: absolute;
   top: 7.2rem;
 
-  height: 28rem;
-  overflow: scroll;
+  height: max-content;
+  max-height: 20rem;
+  overflow-y: auto;
 
   z-index: 1;
 
@@ -95,5 +96,10 @@ const StDropdown = styled.ul`
 
       margin-bottom: -1rem;
     }
+  }
+
+  @media (max-height: '20rem') {
+    height: 20rem;
+    overflow: hidden;
   }
 `;

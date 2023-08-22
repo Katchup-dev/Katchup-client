@@ -1,7 +1,7 @@
 import { categorySelectState, folderSelectState, taskSelectState } from 'core/atom';
 import { IcBtnDeletePopup } from 'public/assets/icons';
 import React, { useEffect, useState } from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 import styled from '@emotion/styled';
 
@@ -37,20 +37,13 @@ const CardModal = (props: ModalProps) => {
   const [isKeywordFocused, setIsKeywordFocused] = useState(false);
   const [isEtcFocused, setIsEtcdFocused] = useState(false);
 
-  const [categoryOptions, setCategoryOptions] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useRecoilState(categorySelectState);
-  const [folderOptions, setFolderOptions] = useState([]);
-  const [selectedFolder, setSelectedFolder] = useRecoilState(folderSelectState);
-  const [taskOptions, setTaskOptions] = useState([]);
-  const [selectedTask, setSelectedTask] = useRecoilState(taskSelectState);
+  const selectedCategory = useRecoilValue(categorySelectState);
+  const selectedFolder = useRecoilValue(folderSelectState);
+  const selectedTask = useRecoilValue(taskSelectState);
   const [keywordColor, setKeywordColor] = useState({
     background: '',
     color: '',
   });
-
-  // const { categories, isCategoriesLoading, isCategoriesError } = useGetCategories();
-  // const { folders, isFoldersLoading, isFoldersError } = useGetFolders();
-  // const { tasks, isTasksLoading, isTasksError } = useGetTasks();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -95,14 +88,6 @@ const CardModal = (props: ModalProps) => {
     setFolder(selectedFolder.name);
     setTask(selectedTask.name);
   }, [selectedCategory, selectedFolder, selectedTask]);
-
-  // if (isCategoriesLoading || isFoldersLoading || isTasksLoading) {
-  //   return <div>로딩중</div>;
-  // }
-
-  // if (isCategoriesError || isFoldersError || isTasksError) {
-  //   return <div>에러</div>;
-  // }
 
   useEffect(() => {
     setCategoryCount(category.length);

@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { IcBtnAddIndex } from 'public/assets/icons';
 
 interface KeyworkProps {
   background: string;
@@ -27,7 +28,9 @@ const StDropdown = styled.ul`
   z-index: 1;
 
   width: 100%;
-  height: 28rem;
+  height: max-content;
+  max-height: 20rem;
+  overflow-y: auto;
 
   overflow: scroll;
   padding: 1.2rem 1.4rem;
