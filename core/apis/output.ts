@@ -2,7 +2,6 @@ import { client } from 'lib/axios';
 
 export const getMainCategoryList = async () => {
   const { data } = await client.get(`/categories`);
-  console.log(data);
   return data;
 };
 
@@ -20,6 +19,23 @@ export const getWorkCard = async (folderId: number) => {
 
 export const getDetailPage = async (cardId: number) => {
   const { data } = await client.get(`/cards/${cardId}`);
+
+  return data;
+};
+
+export const postNewMainCategory = async (name: string) => {
+  const { data } = await client.post(`/categories`, {
+    name,
+  });
+
+  return data;
+};
+
+export const postNewMiddleCategory = async (categoryId: number, name: string) => {
+  const { data } = await client.post(`/folders`, {
+    categoryId,
+    name,
+  });
 
   return data;
 };

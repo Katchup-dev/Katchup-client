@@ -1,12 +1,25 @@
 import styled from '@emotion/styled';
 import { StMiddleFolder } from './MiddleCategory';
 import { IcAddMiddle } from 'public/assets/icons';
+import { useState } from 'react';
+import AddCategoryModal from 'components/Modal/AddCategoryModal';
+import { useRouter } from 'next/router';
 
 const AddMiddleCategory = () => {
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+  const router = useRouter();
+  const mainId = router.query.mainId;
+
   return (
-    <StAddMiddleCategory>
-      <IcAddMiddle />
-    </StAddMiddleCategory>
+    <>
+      {isModalOpen && (
+        <AddCategoryModal mainId={mainId} isMainCategory={false} isOpen={isModalOpen} setIsOpen={setIsModalOpen} />
+      )}
+      <StAddMiddleCategory onClick={() => setIsModalOpen(true)}>
+        <IcAddMiddle />
+      </StAddMiddleCategory>
+    </>
   );
 };
 

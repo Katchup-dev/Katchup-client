@@ -13,3 +13,5 @@ export const keywordColors = [
   '#B195FF',
   '#FFB3D7',
 ];
+
+export const NEW_CATEGORY_REGEX = /^(?:[가-힣a-zA-Zㄱ-ㅎㅏ-ㅣ]{1,20})$/;
