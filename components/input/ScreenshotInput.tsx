@@ -5,6 +5,7 @@ import styled from '@emotion/styled';
 
 const ScreenshotInput = () => {
   const [screenshotInput, setScreenshotInput] = useState<File[]>([]);
+  const [inputScreenshot, setInputScreenshot] = useState<[]>([]);
   const [URLThumbnails, setURLThumbnails] = useState<string[]>([]);
   const screenshotInputRef = useRef<HTMLInputElement>(null);
 
@@ -22,6 +23,7 @@ const ScreenshotInput = () => {
 
   const handleDeleteFile = (file: File) => {
     setScreenshotInput((prev) => prev.filter((selectedFile) => selectedFile !== file));
+    setInputScreenshot([]);
   };
 
   const createImageURL = (file: File): Promise<string> => {
@@ -58,8 +60,9 @@ const ScreenshotInput = () => {
             type="file"
             onChange={handleFileSelect}
             accept=".jpg,.png,.jpeg,.gif,.tiff,.tif"
+            value={inputScreenshot}
           />
-          <button onClick={handleFileBtnClick}>파일선택</button>
+          <button onClick={handleFileBtnClick}>이미지 선택</button>
         </StFileBtnWrapper>
       </StFileSelect>
       <StFileInput>
@@ -88,8 +91,11 @@ const StScreenshotInput = styled.section`
   width: 90rem;
   height: 85rem;
 
+  border: 0.1rem solid ${({ theme }) => theme.colors.katchup_line_gray};
   border-radius: 2.6rem;
   background-color: ${({ theme }) => theme.colors.katchup_white};
+
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.05);
 `;
 
 const StFileSelect = styled.div`

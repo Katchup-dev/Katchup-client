@@ -6,13 +6,16 @@ import { InputTaskInfo } from 'types/input';
 import styled from '@emotion/styled';
 
 import { usePostTask } from '../../lib/hooks/usePostIndex';
+import { useGetTasks } from 'lib/hooks/useGetIndex';
 
 interface dropdownIndexProps {
-  options: InputTaskInfo[];
   inputValue: string;
 }
 
-const DropdownTask = ({ options, inputValue }: dropdownIndexProps) => {
+const DropdownTask = ({ inputValue }: dropdownIndexProps) => {
+  let isAdd = true;
+  let addArr: InputTaskInfo[] = [];
+  const { tasks, isTasksLoading, isTasksError } = useGetTasks();
   const [folderSelect, setFolderSelect] = useRecoilState(folderSelectState);
   const [taskSelect, setTaskSelect] = useRecoilState(taskSelectState);
   const postTask = usePostTask();
@@ -26,28 +29,36 @@ const DropdownTask = ({ options, inputValue }: dropdownIndexProps) => {
     postTask.createTask(taskData);
   };
 
-  const displayOptions = () => {
-    let allOptions = Array.isArray(options) ? options : [];
-
-    if (inputValue?.length > 0) {
-      allOptions = [...allOptions, { taskId: allOptions.length, name: inputValue }];
+  const displayNewOptions = () => {
+    if (inputValue?.length > 0 && tasks) {
+      if (!tasks.find((option) => option.name === inputValue)) {
+        addArr = [...addArr, { taskId: tasks.length, name: inputValue }];
+      } else {
+        isAdd = false;
+      }
     }
-
-    return allOptions.map((option, idx) => (
-      <li key={idx} onMouseDown={() => handleOptionClick(option)}>
+    return addArr.map((option, idx) => (
+      <li>
         {option.name}
-        {inputValue && (
-          <IcBtnAddIndex
-            onMouseDown={() => {
-              handleAddIndex(option.name);
-            }}
-          />
-        )}
+        <IcBtnAddIndex
+          onMouseDown={() => {
+            handleAddIndex(option.name);
+          }}
+        />
       </li>
     ));
   };
 
-  return <StDropdown>{displayOptions()}</StDropdown>;
+  return (
+    <StDropdown>
+      {displayNewOptions()}
+      {tasks?.map((option, idx) => (
+        <li key={idx} onMouseDown={() => handleOptionClick(option)}>
+          {option.name}
+        </li>
+      ))}
+    </StDropdown>
+  );
 };
 
 export default DropdownTask;
@@ -56,9 +67,13 @@ const StDropdown = styled.ul`
   position: absolute;
   top: 7.2rem;
 
+  height: max-content;
+  max-height: 20rem;
+  overflow-y: auto;
+
   z-index: 1;
 
-  width: 53.4rem;
+  width: 100%;
   padding: 1.2rem 1.4rem;
 
   border: 0.1rem solid #e2e2e2;
@@ -77,12 +92,14 @@ const StDropdown = styled.ul`
     cursor: pointer;
 
     & > svg {
-      display: none;
+      display: block;
 
       margin-bottom: -1rem;
     }
-    :last-child > svg {
-      display: block;
-    }
+  }
+
+  @media (max-height: '20rem') {
+    height: 20rem;
+    overflow: hidden;
   }
 `;

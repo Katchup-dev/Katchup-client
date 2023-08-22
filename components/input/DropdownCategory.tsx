@@ -6,14 +6,18 @@ import { InputCategoryInfo } from 'types/input';
 import styled from '@emotion/styled';
 
 import { usePostCategory } from '../../lib/hooks/usePostIndex';
+import { useGetCategories } from 'lib/hooks/useGetIndex';
 
 interface dropdownIndexProps {
-  options: InputCategoryInfo[];
   inputValue: string;
 }
 
-const DropdownCategory = ({ options, inputValue }: dropdownIndexProps) => {
-  const [categorySelect, setCategorySelect] = useRecoilState(categorySelectState);
+const DropdownCategory = ({ inputValue }: dropdownIndexProps) => {
+  let isAdd = true;
+  let addArr: InputCategoryInfo[] = [];
+
+  const { categories, isCategoriesLoading, isCategoriesError } = useGetCategories();
+  const [, setCategorySelect] = useRecoilState(categorySelectState);
   const postCategory = usePostCategory();
 
   const handleOptionClick = (option: InputCategoryInfo) => {
@@ -25,17 +29,18 @@ const DropdownCategory = ({ options, inputValue }: dropdownIndexProps) => {
     postCategory.createCategory(categoryData);
   };
 
-  const displayOptions = () => {
-    let allOptions = Array.isArray(options) ? options : [];
-
-    if (inputValue?.length > 0) {
-      allOptions = [...allOptions, { categoryId: allOptions.length, name: inputValue, isShared: false }];
+  const displayNewOptions = () => {
+    if (inputValue?.length > 0 && categories) {
+      if (!categories.find((option) => option.name === inputValue)) {
+        addArr = [...addArr, { categoryId: categories.length, name: inputValue, isShared: false }];
+      } else {
+        isAdd = false;
+      }
     }
-
-    return allOptions.map((option, idx) => (
-      <li key={idx} onMouseDown={() => handleOptionClick(option)}>
+    return addArr.map((option, idx) => (
+      <li>
         {option.name}
-        {inputValue && (
+        {isAdd && inputValue && (
           <IcBtnAddIndex
             onMouseDown={() => {
               handleAddIndex(option.name);
@@ -46,7 +51,16 @@ const DropdownCategory = ({ options, inputValue }: dropdownIndexProps) => {
     ));
   };
 
-  return <StDropdown>{displayOptions()}</StDropdown>;
+  return (
+    <StDropdown>
+      {displayNewOptions()}
+      {categories?.map((option, idx) => (
+        <li key={idx} onMouseDown={() => handleOptionClick(option)}>
+          {option.name}
+        </li>
+      ))}
+    </StDropdown>
+  );
 };
 
 export default DropdownCategory;
@@ -57,7 +71,10 @@ const StDropdown = styled.ul`
 
   z-index: 1;
 
-  width: 53.4rem;
+  width: 100%;
+  height: 20rem;
+
+  overflow: scroll;
   padding: 1.2rem 1.4rem;
 
   border: 0.1rem solid #e2e2e2;
@@ -76,12 +93,9 @@ const StDropdown = styled.ul`
     cursor: pointer;
 
     & > svg {
-      display: none;
+      display: block;
 
       margin-bottom: -1rem;
-    }
-    :last-child > svg {
-      display: block;
     }
   }
 `;
