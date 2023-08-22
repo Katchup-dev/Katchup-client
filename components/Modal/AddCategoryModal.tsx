@@ -4,10 +4,9 @@ import { NEW_CATEGORY_REGEX } from 'constants/output';
 import { postNewMainCategory, postNewMiddleCategory } from 'core/apis/output';
 import { useGetMainCategoryList } from 'lib/hooks/useGetMainCategoryList';
 import { useGetMiddleCategoryList } from 'lib/hooks/useGetMiddleCategory';
-import { useRouter } from 'next/router';
 
 import { IcDeleteModal } from 'public/assets/icons';
-import { useCallback, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
 export interface AddCategoryModalProps {
   isMainCategory: boolean;
