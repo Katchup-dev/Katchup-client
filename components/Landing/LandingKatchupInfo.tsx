@@ -1,5 +1,6 @@
+import { IcConfetti3, IcConfetti4, IcFolder, IcMemo, IcPencil } from 'public/assets/icons';
+
 import styled from '@emotion/styled';
-import { IcFolder, IcMemo, IcPencil } from 'public/assets/icons';
 
 const LandingKatchupInfo = () => {
   return (
@@ -50,6 +51,8 @@ const LandingKatchupInfo = () => {
           </StLandingKatcupInfoRightItemBox>
         </StLandingKatcupInfoRightItem>
       </StLandingKatchupInfoRight>
+      <IcConfetti3 className="left-confetti" />
+      <IcConfetti4 className="right-confetti" />
     </StLandingKatchupInfoWrapper>
   );
 };
@@ -57,6 +60,7 @@ const LandingKatchupInfo = () => {
 export default LandingKatchupInfo;
 
 const StLandingKatchupInfoWrapper = styled.div`
+  position: relative;
   display: flex;
   justify-content: space-between;
 
@@ -64,6 +68,17 @@ const StLandingKatchupInfoWrapper = styled.div`
   padding: 15.3rem 32.5rem 23.3rem 20rem;
 
   background-color: ${({ theme }) => theme.colors.katchup_white};
+
+  .left-confetti {
+    position: absolute;
+    top: 58.7rem;
+    left: 0;
+  }
+  .right-confetti {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+  }
 `;
 
 const StLandingKatchupInfoTitleBox = styled.div`
