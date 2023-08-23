@@ -56,7 +56,8 @@ const MainInput = () => {
   };
 
   const handleDeleteAll = (e: React.MouseEvent<HTMLButtonElement>) => {
-    console.log('모두 지우기');
+    setWorkInput('');
+    setLetterCount(0);
   };
 
   const handleNext = (e: React.MouseEvent<HTMLButtonElement>) => {
