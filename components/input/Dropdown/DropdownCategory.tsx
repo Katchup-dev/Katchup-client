@@ -1,12 +1,12 @@
-import { categorySelectState } from 'core/atom';
-import { IcBtnAddIndex } from 'public/assets/icons';
-import { useRecoilState } from 'recoil';
-import { InputCategoryInfo } from 'types/input';
+import { categorySelectState } from "core/atom";
+import { useGetCategories } from "lib/hooks/useGetIndex";
+import { IcBtnAddIndex } from "public/assets/icons";
+import { useRecoilState } from "recoil";
+import { InputCategoryInfo } from "types/input";
 
-import styled from '@emotion/styled';
+import styled from "@emotion/styled";
 
-import { usePostCategory } from '../../lib/hooks/usePostIndex';
-import { useGetCategories } from 'lib/hooks/useGetIndex';
+import { usePostCategory } from "../../../lib/hooks/usePostIndex";
 
 interface dropdownIndexProps {
   inputValue: string;

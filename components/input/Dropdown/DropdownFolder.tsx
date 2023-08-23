@@ -1,12 +1,11 @@
 import { categorySelectState, folderSelectState } from 'core/atom';
+import { useGetFolders } from 'lib/hooks/useGetIndex';
+import { usePostFolder } from 'lib/hooks/usePostIndex';
 import { IcBtnAddIndex } from 'public/assets/icons';
 import { useRecoilState } from 'recoil';
 import { InputFolderInfo } from 'types/input';
 
 import styled from '@emotion/styled';
-
-import { usePostFolder } from '../../lib/hooks/usePostIndex';
-import { useGetFolders } from 'lib/hooks/useGetIndex';
 
 interface dropdownIndexProps {
   inputValue: string;

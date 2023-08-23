@@ -1,12 +1,11 @@
 import { folderSelectState, taskSelectState } from 'core/atom';
+import { useGetTasks } from 'lib/hooks/useGetIndex';
+import { usePostTask } from 'lib/hooks/usePostIndex';
 import { IcBtnAddIndex } from 'public/assets/icons';
 import { useRecoilState } from 'recoil';
 import { InputTaskInfo } from 'types/input';
 
 import styled from '@emotion/styled';
-
-import { usePostTask } from '../../lib/hooks/usePostIndex';
-import { useGetTasks } from 'lib/hooks/useGetIndex';
 
 interface dropdownIndexProps {
   inputValue: string;

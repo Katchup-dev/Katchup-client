@@ -1,17 +1,13 @@
+import { ColorKey, KEYWORDS_COLOR } from 'constants/keywords';
 import { categorySelectState, folderSelectState, taskSelectState } from 'core/atom';
 import { IcBtnDeletePopup } from 'public/assets/icons';
 import React, { useEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
-import { useGetCategories, useGetFolders, useGetTasks } from '../../lib/hooks/useGetIndex';
-import DropdownCategory from './DropdownCategory';
-import DropdownFolder from './DropdownFolder';
-import DropdownTask from './DropdownTask';
-import { css } from '@emotion/react';
-import { ColorKey, KEYWORDS_COLOR } from 'constants/keywords';
-import DropdownKeyword from './DropdownKeyword';
+import { DropdownCategory, DropdownFolder, DropdownKeyword, DropdownTask } from './Dropdown';
 
 interface ModalProps {
   isShowing: boolean;
