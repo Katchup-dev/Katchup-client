@@ -32,4 +32,7 @@ export { default as IcLogoBig } from './ic_logoBig.svg';
 export { default as IcDeleteModal } from './ic_deleteModal.svg';
 export { default as IcFileIcon } from './ic_fileIcon.svg';
 export { default as IcMoreDetail } from './ic_moreDetail.svg';
-export { default as IcScreenshotTag } from './ic_ScreenShotTag.svg';
+export { default as IcConfetti1 } from './ic_confetti_1.svg';
+export { default as IcConfetti2 } from './ic_confetti_2.svg';
+export { default as IcConfetti3 } from './ic_confetti_3.svg';
+export { default as IcConfetti4 } from './ic_confetti_4.svg';
