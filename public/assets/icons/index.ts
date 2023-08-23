@@ -36,3 +36,4 @@ export { default as IcConfetti1 } from './ic_confetti_1.svg';
 export { default as IcConfetti2 } from './ic_confetti_2.svg';
 export { default as IcConfetti3 } from './ic_confetti_3.svg';
 export { default as IcConfetti4 } from './ic_confetti_4.svg';
+export { default as IcSurprise } from './ic_surprise.svg';

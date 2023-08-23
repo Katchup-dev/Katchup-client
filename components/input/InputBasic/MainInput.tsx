@@ -1,4 +1,6 @@
+import { ModalOneButton } from 'components/common/Modal';
 import Toast from 'components/common/Toast';
+import { MODAL_LEAVE_PAGE } from 'constants/modal';
 import useModal from 'lib/hooks/useModal';
 import {
   IcBtnDeleteFile,
@@ -21,10 +23,12 @@ const MainInput = () => {
   const [isChecked, setIsChecked] = useState(false);
   const [fileInput, setFileInput] = useState<File[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const { isShowing, toggle } = useModal();
   const [isScreenshotShowing, setIsScreenshotShowing] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
   const [toastKey, setToastKey] = useState<number>();
+
+  const cardModal = useModal();
+  const leavePageModal = useModal();
 
   const handleScreenshotShowing = (e: React.MouseEvent<HTMLButtonElement>) => {
     setIsScreenshotShowing((prev) => !prev);
@@ -38,8 +42,9 @@ const MainInput = () => {
     setLetterCount(inputCount);
   };
 
-  const handleCheckboxChange = () => {
-    setIsChecked((prev) => !prev);
+  const handleDeleteAll = (e: React.MouseEvent<HTMLButtonElement>) => {
+    setWorkInput('');
+    setLetterCount(0);
   };
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -58,9 +63,8 @@ const MainInput = () => {
     setFileInput((prev) => prev.filter((selectedFile) => selectedFile !== file));
   };
 
-  const handleDeleteAll = (e: React.MouseEvent<HTMLButtonElement>) => {
-    setWorkInput('');
-    setLetterCount(0);
+  const handleCheckboxChange = () => {
+    setIsChecked((prev) => !prev);
   };
 
   const handleNext = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -76,6 +80,12 @@ const MainInput = () => {
 
   return (
     <StMainInputWrapper>
+      <ModalOneButton
+        isShowing={leavePageModal.isShowing}
+        contents={MODAL_LEAVE_PAGE}
+        buttonName={'확인'}
+        handleButton={leavePageModal.toggle}
+      />
       <StMainInput>
         <StDeleteAllBtn type="button" onClick={handleDeleteAll}>
           모든 내용 지우기
@@ -131,11 +141,11 @@ const MainInput = () => {
           </StFileInput>
         </StFileWrapper>
         <StNextBtn disabled={!workInput.length}>
-          <button type="button" onClick={toggle}>
+          <button type="button" onClick={cardModal.toggle}>
             다음 단계
           </button>
         </StNextBtn>
-        <CardModal isShowing={isShowing} handleHide={toggle} />
+        <CardModal isShowing={cardModal.isShowing} handleHide={cardModal.toggle} />
         <StToastWrapper>
           <Toast key={toastKey} message={toastMessage} />
         </StToastWrapper>
