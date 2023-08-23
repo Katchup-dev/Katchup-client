@@ -38,7 +38,7 @@ const DropdownCategory = ({ inputValue }: dropdownIndexProps) => {
       }
     }
     return addArr.map((option, idx) => (
-      <li>
+      <li key={idx}>
         {option.name}
         {isAdd && inputValue && (
           <IcBtnAddIndex

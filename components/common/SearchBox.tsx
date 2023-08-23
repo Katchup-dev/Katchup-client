@@ -1,5 +1,6 @@
-import styled from '@emotion/styled';
 import { IcFilter, IcSearch } from 'public/assets/icons';
+
+import styled from '@emotion/styled';
 
 const SearchBox = () => {
   return (
@@ -24,12 +25,12 @@ const StSearchForm = styled.form`
     align-items: center;
     position: relative;
 
-    > svg:nth-child(1) {
+    > svg:nth-of-child(1) {
       position: absolute;
       top: 1.2rem;
       left: 2.2rem;
     }
-    > svg:nth-child(2) {
+    > svg:nth-of-child(2) {
       position: absolute;
       top: 1.2rem;
       right: 2.2rem;

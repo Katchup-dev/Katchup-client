@@ -1,9 +1,11 @@
-import styled from '@emotion/styled';
-import { IcHelp, IcLogo } from 'public/assets/icons';
-import SearchBox from './SearchBox';
-import { css } from '@emotion/react';
 import { useRouter } from 'next/router';
+import { IcHelp, IcLogo } from 'public/assets/icons';
 import { useRecoilValue } from 'recoil';
+
+import { css } from '@emotion/react';
+import styled from '@emotion/styled';
+
+import SearchBox from './SearchBox';
 
 export interface HeaderProps {
   profileImgSrc: string;
@@ -64,7 +66,7 @@ const StHeaderWrapper = styled.header<{ path: string }>`
 
   background-color: ${({ theme }) => theme.colors.katchup_bg_gray};
 
-  > div:nth-child(1) {
+  > div:nth-of-child(1) {
     display: flex;
 
     > svg {
@@ -73,7 +75,7 @@ const StHeaderWrapper = styled.header<{ path: string }>`
     }
   }
 
-  > div:nth-child(2) {
+  > div:nth-of-child(2) {
     display: flex;
     gap: 2rem;
 
