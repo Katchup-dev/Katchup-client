@@ -30,3 +30,9 @@ export interface postSubTaskInfo {
   taskId: number;
   name: string;
 }
+
+export interface InputKeywordInfo {
+  taskId: number;
+  name: string;
+  color: string;
+}

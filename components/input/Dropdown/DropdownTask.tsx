@@ -1,6 +1,6 @@
 import { categorySelectState, taskSelectState } from 'core/atom';
-import { useGetTasks } from 'lib/hooks/useGetIndex';
-import { usePostTask } from 'lib/hooks/usePostIndex';
+import { useGetTasks } from 'lib/hooks/input/useGetIndex';
+import { usePostTask } from 'lib/hooks/input/usePostIndex';
 import { IcBtnAddIndex } from 'public/assets/icons';
 import { useRecoilState } from 'recoil';
 import { InputTaskInfo } from 'types/input';
