@@ -15,9 +15,9 @@ interface dropdownIndexProps {
 const DropdownTask = ({ inputValue, setIsTaskFocused }: dropdownIndexProps) => {
   let isAdd = true;
   let addArr: InputTaskInfo[] = [];
-  const { tasks, isTasksLoading, isTasksError } = useGetTasks();
   const [taskSelect, setTaskSelect] = useRecoilState(taskSelectState);
   const [categorySelect, setCategorySelect] = useRecoilState(categorySelectState);
+  const { tasks, isTasksLoading, isTasksError } = useGetTasks(categorySelect.categoryId);
   const postTask = usePostTask();
 
   const handleOptionClick = (option: InputTaskInfo) => {

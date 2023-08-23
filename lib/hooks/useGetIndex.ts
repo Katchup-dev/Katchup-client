@@ -13,8 +13,10 @@ export const useGetCategories = () => {
   };
 };
 
-export const useGetTasks = () => {
-  const { data, isLoading, error } = useQuery<KatchupResponse<InputTaskInfo[]>>(['tasks'], getTasks);
+export const useGetTasks = (categoryId: number) => {
+  const { data, isLoading, error } = useQuery<KatchupResponse<InputTaskInfo[]>>(['tasks', categoryId], () =>
+    getTasks(categoryId),
+  );
 
   return {
     tasks: data?.data,
@@ -23,8 +25,10 @@ export const useGetTasks = () => {
   };
 };
 
-export const useGetSubTasks = () => {
-  const { data, isLoading, error } = useQuery<KatchupResponse<InputSubTaskInfo[]>>(['subTasks'], getSubTasks);
+export const useGetSubTasks = (taskId: number) => {
+  const { data, isLoading, error } = useQuery<KatchupResponse<InputSubTaskInfo[]>>(['subTasks', taskId], () =>
+    getSubTasks(taskId),
+  );
 
   return {
     subTasks: data?.data,
