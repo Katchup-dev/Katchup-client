@@ -5,7 +5,7 @@ import useRouteChangeBlocking from 'lib/hooks/input/useRouteChangeBlocking';
 import useModal from 'lib/hooks/useModal';
 import { IcBtnScreenshot, IcBtnScreenshotHide } from 'public/assets/icons';
 import { useEffect, useState } from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 
 import styled from '@emotion/styled';
 
@@ -15,7 +15,7 @@ import FileInput from './FileInput';
 import WorkInput from './WorkInput';
 
 const MainInput = () => {
-  const [workInput, setWorkInput] = useRecoilState(workInputState);
+  const workInput = useRecoilValue(workInputState);
   const [isScreenshotShowing, setIsScreenshotShowing] = useState(false);
 
   const cardModal = useModal();
@@ -27,10 +27,6 @@ const MainInput = () => {
   const handleScreenshotShowing = (e: React.MouseEvent<HTMLButtonElement>) => {
     setIsScreenshotShowing((prev) => !prev);
     screenshotCancelModal.toggle();
-  };
-
-  const handleNext = (e: React.MouseEvent<HTMLButtonElement>) => {
-    console.log('다음');
   };
 
   const handleBeforeUnload = (e: BeforeUnloadEvent) => {
