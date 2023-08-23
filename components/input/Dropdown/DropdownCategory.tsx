@@ -24,7 +24,7 @@ const DropdownCategory = ({ inputValue }: dropdownIndexProps) => {
     setCategorySelect(option);
   };
 
-  const handleAddIndex = (name: string) => {
+  const handleAddIndex = () => {
     const categoryData = inputValue;
     postCategory.createCategory(categoryData);
   };
@@ -43,7 +43,7 @@ const DropdownCategory = ({ inputValue }: dropdownIndexProps) => {
         {isAdd && inputValue && (
           <IcBtnAddIndex
             onMouseDown={() => {
-              handleAddIndex(option.name);
+              handleAddIndex();
             }}
           />
         )}

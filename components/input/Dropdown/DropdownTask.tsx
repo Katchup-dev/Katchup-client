@@ -24,7 +24,7 @@ const DropdownTask = ({ inputValue, setIsTaskFocused }: dropdownIndexProps) => {
     setTaskSelect(option);
   };
 
-  const handleAddIndex = (name: string) => {
+  const handleAddIndex = () => {
     const taskData = { categoryId: categorySelect.categoryId, name: inputValue };
     postTask.createTask(taskData);
     setIsTaskFocused(false);
@@ -40,12 +40,12 @@ const DropdownTask = ({ inputValue, setIsTaskFocused }: dropdownIndexProps) => {
     }
 
     return addArr.map((option, idx) => (
-      <li>
+      <li key={idx}>
         {option.name}
         {isAdd && inputValue && (
           <IcBtnAddIndex
             onMouseDown={() => {
-              handleAddIndex(option.name);
+              handleAddIndex();
             }}
           />
         )}

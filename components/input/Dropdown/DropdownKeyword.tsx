@@ -1,19 +1,71 @@
+import { KEYWORDS_COLOR } from 'constants/keywords';
+import { taskSelectState } from 'core/atom';
+import { useGetKeywords, usePostKeyword } from 'lib/hooks/input/useKeyword';
+import { IcBtnAddIndex } from 'public/assets/icons';
+import { useState } from 'react';
+import { useRecoilValue } from 'recoil';
+import { InputKeywordInfo, PostKeywordInfo } from 'types/input';
+
 import styled from '@emotion/styled';
 
-interface KeyworkProps {
+interface KeywordProps {
   background: string;
   color: string;
 }
 
 interface DropdownKeywordProps {
   inputValue: string;
-  keywordColor: KeyworkProps;
+  keywordColor: KeywordProps;
 }
 
 const DropdownKeyword = ({ inputValue, keywordColor }: DropdownKeywordProps) => {
+  const taskSelect = useRecoilValue(taskSelectState);
+  const { keywords } = useGetKeywords(taskSelect.taskId);
+  const postKeyword = usePostKeyword();
+  const [keywordSelect, setKeywordSelect] = useState<InputKeywordInfo>();
+  let addArr: InputKeywordInfo[] = [];
+  let isAdd = true;
+
+  const handleOptionClick = (option: InputKeywordInfo) => {
+    setKeywordSelect(option);
+  };
+
+  const handleAddIndex = () => {
+    const keywordData = { taskId: taskSelect.taskId, name: inputValue, color: keywordColor.color };
+    postKeyword.createKeyword(keywordData);
+  };
+
+  const displayNewOptions = () => {
+    if (inputValue?.length > 0 && keywords) {
+      if (!keywords.find((option) => option.name === inputValue)) {
+        addArr = [...addArr, { keywordId: keywords.length, name: inputValue, color: '' }];
+      } else {
+        isAdd = false;
+      }
+    }
+    return addArr.map((option, idx) => (
+      <li key={idx}>
+        <StDropdownKeyworkText keywordColor={keywordColor}>{option.name}</StDropdownKeyworkText>
+        <IcBtnAddIndex
+          onMouseDown={() => {
+            handleAddIndex();
+          }}
+        />
+      </li>
+    ));
+  };
+
   return (
     <StDropdown>
-      <li>{inputValue && <DropdownKeyworkText keywordColor={keywordColor}>{inputValue}</DropdownKeyworkText>}</li>
+      {displayNewOptions()}
+      {keywords?.map((option, idx) => (
+        <StDropdownKeyworkText
+          keywordColor={KEYWORDS_COLOR[option.color as keyof typeof KEYWORDS_COLOR]}
+          key={idx}
+          onMouseDown={() => handleOptionClick(option)}>
+          {option.name}
+        </StDropdownKeyworkText>
+      ))}
     </StDropdown>
   );
 };
@@ -43,8 +95,6 @@ const StDropdown = styled.ul`
     display: flex;
     justify-content: space-between;
 
-    margin-bottom: 1rem;
-
     ${({ theme }) => theme.fonts.h2_smalltitle};
 
     cursor: pointer;
@@ -53,12 +103,16 @@ const StDropdown = styled.ul`
       display: block;
 
       margin-bottom: -1rem;
+
+      cursor: pointer;
     }
   }
 `;
 
-const DropdownKeyworkText = styled.div<{ keywordColor: KeyworkProps }>`
+const StDropdownKeyworkText = styled.div<{ keywordColor: KeywordProps }>`
+  width: fit-content;
   padding: 0.5rem 1rem;
+  margin-bottom: 0.8rem;
 
   border-radius: 0.8rem;
   background-color: ${({ keywordColor }) => keywordColor.background};
@@ -69,4 +123,6 @@ const DropdownKeyworkText = styled.div<{ keywordColor: KeyworkProps }>`
   font-style: normal;
   font-weight: 600;
   line-height: normal;
+
+  cursor: pointer;
 `;

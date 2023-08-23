@@ -44,7 +44,6 @@ export const postCategories = async (name: string) => {
 export const postTasks = async (taskInfo: PostTaskInfo) => {
   try {
     const { data } = await client.post(`/tasks`, taskInfo);
-    console.log(data);
     return data;
   } catch (error) {
     console.error(error);
@@ -74,6 +73,7 @@ export const getKeywords = async (taskId: number) => {
 export const postKeywords = async (keywordInfo: PostKeywordInfo) => {
   try {
     const { data } = await client.post(`/cards/keywords`, keywordInfo);
+    console.log(data);
     return data;
   } catch (error) {
     console.error(error);

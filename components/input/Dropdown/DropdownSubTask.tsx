@@ -23,7 +23,7 @@ const DropdownSubTask = ({ inputValue }: dropdownIndexProps) => {
     setSubTaskSelect(option);
   };
 
-  const handleAddIndex = (name: string) => {
+  const handleAddIndex = () => {
     const subTaskData = { taskId: taskSelect.taskId, name: inputValue };
     postSubTask.createSubTask(subTaskData);
   };
@@ -37,11 +37,11 @@ const DropdownSubTask = ({ inputValue }: dropdownIndexProps) => {
       }
     }
     return addArr.map((option, idx) => (
-      <li>
+      <li key={idx}>
         {option.name}
         <IcBtnAddIndex
           onMouseDown={() => {
-            handleAddIndex(option.name);
+            handleAddIndex();
           }}
         />
       </li>
