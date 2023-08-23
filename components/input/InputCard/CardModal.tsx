@@ -2,7 +2,7 @@ import { ColorKey, KEYWORDS_COLOR } from 'constants/keywords';
 import { categorySelectState, subTaskSelectState, taskSelectState } from 'core/atom';
 import { IcBtnDeletePopup } from 'public/assets/icons';
 import React, { useEffect, useState } from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilValue } from 'recoil';
 
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';

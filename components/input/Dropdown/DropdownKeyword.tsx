@@ -1,5 +1,4 @@
 import styled from '@emotion/styled';
-import { IcBtnAddIndex } from 'public/assets/icons';
 
 interface KeyworkProps {
   background: string;

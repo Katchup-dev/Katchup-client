@@ -2,7 +2,7 @@ import { subTaskSelectState, taskSelectState } from 'core/atom';
 import { useGetSubTasks } from 'lib/hooks/input/useGetIndex';
 import { usePostSubTask } from 'lib/hooks/input/usePostIndex';
 import { IcBtnAddIndex } from 'public/assets/icons';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { InputSubTaskInfo } from 'types/input';
 
 import styled from '@emotion/styled';
@@ -14,9 +14,9 @@ interface dropdownIndexProps {
 const DropdownSubTask = ({ inputValue }: dropdownIndexProps) => {
   let isAdd = true;
   let addArr: InputSubTaskInfo[] = [];
-  const [taskSelect, setTaskSelect] = useRecoilState(taskSelectState);
-  const [subTaskSelect, setSubTaskSelect] = useRecoilState(subTaskSelectState);
-  const { subTasks, isSubTasksLoading, isSubTasksError } = useGetSubTasks(taskSelect.taskId);
+  const taskSelect = useRecoilValue(taskSelectState);
+  const [, setSubTaskSelect] = useRecoilState(subTaskSelectState);
+  const { subTasks } = useGetSubTasks(taskSelect.taskId);
   const postSubTask = usePostSubTask();
 
   const handleOptionClick = (option: InputSubTaskInfo) => {

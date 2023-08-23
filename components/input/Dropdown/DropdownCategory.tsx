@@ -16,7 +16,7 @@ const DropdownCategory = ({ inputValue }: dropdownIndexProps) => {
   let isAdd = true;
   let addArr: InputCategoryInfo[] = [];
 
-  const { categories, isCategoriesLoading, isCategoriesError } = useGetCategories();
+  const { categories } = useGetCategories();
   const [, setCategorySelect] = useRecoilState(categorySelectState);
   const postCategory = usePostCategory();
 

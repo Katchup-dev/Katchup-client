@@ -2,7 +2,7 @@ import { categorySelectState, taskSelectState } from 'core/atom';
 import { useGetTasks } from 'lib/hooks/input/useGetIndex';
 import { usePostTask } from 'lib/hooks/input/usePostIndex';
 import { IcBtnAddIndex } from 'public/assets/icons';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { InputTaskInfo } from 'types/input';
 
 import styled from '@emotion/styled';
@@ -15,9 +15,9 @@ interface dropdownIndexProps {
 const DropdownTask = ({ inputValue, setIsTaskFocused }: dropdownIndexProps) => {
   let isAdd = true;
   let addArr: InputTaskInfo[] = [];
-  const [taskSelect, setTaskSelect] = useRecoilState(taskSelectState);
-  const [categorySelect, setCategorySelect] = useRecoilState(categorySelectState);
-  const { tasks, isTasksLoading, isTasksError } = useGetTasks(categorySelect.categoryId);
+  const [, setTaskSelect] = useRecoilState(taskSelectState);
+  const categorySelect = useRecoilValue(categorySelectState);
+  const { tasks } = useGetTasks(categorySelect.categoryId);
   const postTask = usePostTask();
 
   const handleOptionClick = (option: InputTaskInfo) => {
@@ -102,6 +102,3 @@ const StDropdown = styled.ul`
     }
   }
 `;
-function useTaskFolder() {
-  throw new Error('Function not implemented.');
-}

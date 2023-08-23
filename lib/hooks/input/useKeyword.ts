@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 
 import { postKeywords } from '../../../core/apis/input';
 
-export const usePostCategory = () => {
+export const usePostKeyword = () => {
   const { mutate, isLoading, isError } = useMutation(postKeywords);
 
   return {
