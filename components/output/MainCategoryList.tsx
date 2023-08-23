@@ -2,9 +2,11 @@ import styled from '@emotion/styled';
 import { useGetMainCategoryList } from 'lib/hooks/useGetMainCategoryList';
 import { IcAddMain, IcTrash } from 'public/assets/icons';
 import React, { useEffect, useState } from 'react';
-import { mainCategoryInfo, mainCtxType } from 'types/output';
+import { mainCategoryInfo } from 'types/output';
 import { useRouter } from 'next/router';
 import AddCategoryModal from 'components/Modal/AddCategoryModal';
+
+import DeleteCategoryModal from 'components/Modal/DeleteCategoryModal';
 
 export interface MainCategoryListProps {
   currentMain: string;
@@ -14,7 +16,8 @@ export interface MainCategoryListProps {
 const MainCategoryList = ({ mainId }: { mainId: string }) => {
   const router = useRouter();
   const { mainCategoryList } = useGetMainCategoryList();
-  const [isModalShowing, setIsModalShowing] = useState(false);
+  const [isAddModalShowing, setIsAddModalShowing] = useState(false);
+  const [isDeleteModalShowing, setIsDeleteModalShowing] = useState(false);
 
   function initializeArray(arrSize: number) {
     const arr = new Array(arrSize).fill(false);
@@ -36,12 +39,13 @@ const MainCategoryList = ({ mainId }: { mainId: string }) => {
     setIsCurrentCategoryArray(tempIsCurrentCategoryArray);
     router.push(`/output/${idx}`);
   };
+
   return (
     <>
       <StWrapper>
         <header>
           <h1>워크 스페이스</h1>
-          <button onClick={() => setIsModalShowing(true)}>
+          <button onClick={() => setIsAddModalShowing(true)}>
             <IcAddMain />
           </button>
         </header>
@@ -55,13 +59,24 @@ const MainCategoryList = ({ mainId }: { mainId: string }) => {
             </StMainCategory>
           ))}
 
-          <StDeleteBtn type="button">
+          <StDeleteBtn type="button" onClick={() => setIsDeleteModalShowing(true)}>
             <IcTrash />
             <span>휴지통</span>
           </StDeleteBtn>
         </StMainCategoryWrapper>
 
-        <AddCategoryModal mainId={mainId} isMainCategory={true} isOpen={isModalShowing} setIsOpen={setIsModalShowing} />
+        <AddCategoryModal
+          mainId={mainId}
+          isMainCategory={true}
+          isOpen={isAddModalShowing}
+          setIsOpen={setIsAddModalShowing}
+        />
+        <DeleteCategoryModal
+          mainId={mainId}
+          categoryType="main"
+          isOpen={isDeleteModalShowing}
+          setIsOpen={setIsDeleteModalShowing}
+        />
       </StWrapper>
     </>
   );
@@ -130,6 +145,10 @@ const StMainCategoryWrapper = styled.ul`
   position: relative;
 
   overflow-y: scroll;
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const StMainCategory = styled.li<{ isCurrentCategory: boolean }>`

@@ -1,8 +1,10 @@
 import styled from '@emotion/styled';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { deleteMainCategory } from 'core/apis/output';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { deleteMainCategory, getMainCategoryList } from 'core/apis/output';
 import { useGetMainCategoryList } from 'lib/hooks/useGetMainCategoryList';
+import { useRouter } from 'next/router';
 import { IcDeleteCategoryLogo } from 'public/assets/icons';
+import { useEffect } from 'react';
 
 interface DeleteCategoryModalProps {
   categoryType: string;
@@ -15,17 +17,26 @@ export default function DeleteCategoryModal(props: DeleteCategoryModalProps & { 
   const { mainCategoryList } = useGetMainCategoryList();
 
   const queryClient = useQueryClient();
+  const router = useRouter();
 
   const handleDeleteMainCategory = async () => {
+    const nextPageIndex = Number(mainId) > 0 ? Number(mainId) - 1 : 0;
     deleteMainCategoryMutation(mainCategoryList[Number(mainId)].categoryId);
+    router.replace(`/output/${nextPageIndex}`);
   };
 
-  const { mutate: deleteMainCategoryMutation } = useMutation(deleteMainCategory, {
+  const { mutate: deleteMainCategoryMutation, isSuccess } = useMutation(deleteMainCategory, {
     onSuccess: () => {
       setIsOpen(false);
-      queryClient.invalidateQueries(['main-category']);
     },
   });
+
+  useEffect(() => {
+    if (isSuccess) {
+      queryClient.invalidateQueries(['main-category']);
+      console.log('mutate');
+    }
+  }, [isSuccess, queryClient]);
 
   return isOpen ? (
     <StBackgroundWrapper>
@@ -95,6 +106,8 @@ const StDeleteCategoryModalWrapper = styled.dialog`
   > h2 {
     margin-top: 1rem;
     ${({ theme }) => theme.fonts.h2_smalltitle};
+
+    color: ${({ theme }) => theme.colors.katchup_dark_gray};
   }
 `;
 
