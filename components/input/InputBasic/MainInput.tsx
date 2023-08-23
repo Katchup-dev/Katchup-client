@@ -1,6 +1,6 @@
 import { ModalTwoButton } from 'components/common/Modal';
 import Toast from 'components/common/Toast';
-import { MODAL_LEAVE_PAGE } from 'constants/modal';
+import { MODAL_DELETE_ALL, MODAL_LEAVE_PAGE } from 'constants/modal';
 import useRouteChangeBlocking from 'lib/hooks/input/useRouteChangeBlocking';
 import useModal from 'lib/hooks/useModal';
 import {
@@ -33,6 +33,7 @@ const MainInput = () => {
   const [toastKey, setToastKey] = useState<number>();
 
   const cardModal = useModal();
+  const deleteAllModal = useModal();
   const leavePageModal = useModal();
   const { offRouteChangeBlocking } = useRouteChangeBlocking(leavePageModal.toggle, workInput);
 
@@ -51,6 +52,7 @@ const MainInput = () => {
   const handleDeleteAll = (e: React.MouseEvent<HTMLButtonElement>) => {
     setWorkInput('');
     setLetterCount(0);
+    deleteAllModal.toggle();
   };
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -98,16 +100,8 @@ const MainInput = () => {
 
   return (
     <StMainInputWrapper>
-      <ModalTwoButton
-        isShowing={leavePageModal.isShowing}
-        contents={MODAL_LEAVE_PAGE}
-        leftButtonName={'돌아가기'}
-        rightButtonName={'벗어나기'}
-        handleLeftButton={leavePageModal.toggle}
-        handleRightButton={() => offRouteChangeBlocking()}
-      />
       <StMainInput>
-        <StDeleteAllBtn type="button" onClick={handleDeleteAll}>
+        <StDeleteAllBtn type="button" onClick={deleteAllModal.toggle}>
           모든 내용 지우기
         </StDeleteAllBtn>
         <StInputWrapper>
@@ -178,6 +172,22 @@ const MainInput = () => {
       ) : (
         <IcBtnScreenshot onClick={handleScreenshotShowing} />
       )}
+      <ModalTwoButton
+        isShowing={leavePageModal.isShowing}
+        contents={MODAL_LEAVE_PAGE}
+        leftButtonName={'돌아가기'}
+        rightButtonName={'벗어나기'}
+        handleLeftButton={leavePageModal.toggle}
+        handleRightButton={() => offRouteChangeBlocking()}
+      />
+      <ModalTwoButton
+        isShowing={deleteAllModal.isShowing}
+        contents={MODAL_DELETE_ALL}
+        leftButtonName={'취소하기'}
+        rightButtonName={'내용 지우기'}
+        handleLeftButton={deleteAllModal.toggle}
+        handleRightButton={handleDeleteAll}
+      />
     </StMainInputWrapper>
   );
 };
