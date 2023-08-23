@@ -1,3 +1,4 @@
+import Toast from 'components/common/Toast';
 import useModal from 'lib/hooks/useModal';
 import {
   IcBtnDeleteFile,
@@ -7,7 +8,7 @@ import {
   IcFileCheckboxAfter,
   IcKatchupLogo,
 } from 'public/assets/icons';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import styled from '@emotion/styled';
 
@@ -22,6 +23,8 @@ const MainInput = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { isShowing, toggle } = useModal();
   const [isScreenshotShowing, setIsScreenshotShowing] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
+  const [toastKey, setToastKey] = useState<number>();
 
   const handleScreenshotShowing = (e: React.MouseEvent<HTMLButtonElement>) => {
     setIsScreenshotShowing((prev) => !prev);
@@ -63,6 +66,13 @@ const MainInput = () => {
   const handleNext = (e: React.MouseEvent<HTMLButtonElement>) => {
     console.log('다음');
   };
+
+  useEffect(() => {
+    if (isChecked) {
+      setToastMessage('곧 추가될 예정이에요! Coming soon..');
+      setToastKey(Date.now());
+    }
+  }, [isChecked]);
 
   return (
     <StMainInputWrapper>
@@ -126,6 +136,9 @@ const MainInput = () => {
           </button>
         </StNextBtn>
         <CardModal isShowing={isShowing} handleHide={toggle} />
+        <StToastWrapper>
+          <Toast key={toastKey} message={toastMessage} />
+        </StToastWrapper>
       </StMainInput>
       {isScreenshotShowing ? (
         <>
@@ -167,6 +180,13 @@ const StMainInput = styled.section`
   background-color: ${({ theme }) => theme.colors.katchup_white};
 
   box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.05);
+`;
+
+const StToastWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+
+  width: 100%;
 `;
 
 const StDeleteAllBtn = styled.button`
