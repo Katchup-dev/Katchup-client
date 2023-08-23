@@ -1,6 +1,6 @@
 import { ModalTwoButton } from 'components/common/Modal';
 import Toast from 'components/common/Toast';
-import { MODAL_DELETE_ALL, MODAL_LEAVE_PAGE } from 'constants/modal';
+import { MODAL_DELETE_ALL, MODAL_DELETE_SCREENSHOT, MODAL_LEAVE_PAGE } from 'constants/modal';
 import useRouteChangeBlocking from 'lib/hooks/input/useRouteChangeBlocking';
 import useModal from 'lib/hooks/useModal';
 import {
@@ -35,10 +35,13 @@ const MainInput = () => {
   const cardModal = useModal();
   const deleteAllModal = useModal();
   const leavePageModal = useModal();
+  const screenshotCancelModal = useModal();
   const { offRouteChangeBlocking } = useRouteChangeBlocking(leavePageModal.toggle, workInput);
 
   const handleScreenshotShowing = (e: React.MouseEvent<HTMLButtonElement>) => {
+    setFileInput([]);
     setIsScreenshotShowing((prev) => !prev);
+    screenshotCancelModal.toggle();
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -167,10 +170,14 @@ const MainInput = () => {
       {isScreenshotShowing ? (
         <>
           <ScreenshotInput />
-          <IcBtnScreenshotHide onClick={handleScreenshotShowing} />
+          <IcBtnScreenshotHide onClick={screenshotCancelModal.toggle} />
         </>
       ) : (
-        <IcBtnScreenshot onClick={handleScreenshotShowing} />
+        <IcBtnScreenshot
+          onClick={() => {
+            setIsScreenshotShowing((prev) => !prev);
+          }}
+        />
       )}
       <ModalTwoButton
         isShowing={leavePageModal.isShowing}
@@ -187,6 +194,14 @@ const MainInput = () => {
         rightButtonName={'내용 지우기'}
         handleLeftButton={deleteAllModal.toggle}
         handleRightButton={handleDeleteAll}
+      />
+      <ModalTwoButton
+        isShowing={screenshotCancelModal.isShowing}
+        contents={MODAL_DELETE_SCREENSHOT}
+        leftButtonName={'취소하기'}
+        rightButtonName={'그만두기'}
+        handleLeftButton={screenshotCancelModal.toggle}
+        handleRightButton={handleScreenshotShowing}
       />
     </StMainInputWrapper>
   );
