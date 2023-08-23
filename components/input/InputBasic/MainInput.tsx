@@ -140,11 +140,15 @@ const MainInput = () => {
 
 const StMainInputWrapper = styled.section`
   display: flex;
+  justify-content: center;
   gap: 1.8rem;
   position: relative;
 
+  width: 100%;
+  padding: 0 5.2rem 0 6.2rem;
+
   & > svg {
-    margin: 1.1rem -1.8rem -1.8rem -1.8rem;
+    margin: 1.1rem -1.8rem -1.8rem -2.3rem;
 
     cursor: pointer;
   }
@@ -153,7 +157,8 @@ const StMainInputWrapper = styled.section`
 const StMainInput = styled.section`
   position: relative;
 
-  width: 90rem;
+  width: 100%;
+  max-width: 90rem;
   height: 85rem;
 
   border: 0.1rem solid ${({ theme }) => theme.colors.katchup_line_gray};

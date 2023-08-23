@@ -88,7 +88,8 @@ const ScreenshotInput = () => {
 export default ScreenshotInput;
 
 const StScreenshotInput = styled.section`
-  width: 90rem;
+  width: 100%;
+  max-width: 81.8rem;
   height: 85rem;
 
   border: 0.1rem solid ${({ theme }) => theme.colors.katchup_line_gray};
