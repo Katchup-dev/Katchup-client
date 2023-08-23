@@ -39,3 +39,13 @@ export const postNewMiddleCategory = async (categoryId: number, name: string) =>
 
   return data;
 };
+
+export const deleteMainCategory = async (mainId: number) => {
+  try {
+    const res = await client.delete(`categories/${mainId}`);
+    console.log(res);
+    return res;
+  } catch (error) {
+    console.error(error);
+  }
+};
