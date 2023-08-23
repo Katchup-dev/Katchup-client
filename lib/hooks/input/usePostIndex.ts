@@ -3,20 +3,20 @@ import { postCategories, postSubTasks, postTasks } from 'core/apis/input';
 import { useMutation } from '@tanstack/react-query';
 
 export const usePostCategory = () => {
-  const { mutate, isLoading, isError } = useMutation(postCategories);
+  const { mutateAsync, isLoading, isError } = useMutation(postCategories);
 
   return {
-    createCategory: mutate,
+    createCategory: mutateAsync,
     isLoading: isLoading,
     error: isError,
   };
 };
 
 export const usePostTask = () => {
-  const { mutate, isLoading, isError } = useMutation(postTasks);
+  const { mutateAsync, isLoading, isError } = useMutation(postTasks);
 
   return {
-    createTask: mutate,
+    createTask: mutateAsync,
     isLoading: isLoading,
     error: isError,
   };

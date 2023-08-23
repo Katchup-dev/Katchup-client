@@ -34,26 +34,34 @@ export const getSubTasks = async (taskId: number) => {
 
 export const postCategories = async (name: string) => {
   try {
-    const { data } = await client.post(`/categories`, name);
-    return data;
+    const response = await client.post(`/categories`, name);
+    const location = response.headers['location'];
+
+    console.log('response', response);
+    return location;
   } catch (error) {
     console.error(error);
   }
 };
 
 export const postTasks = async (taskInfo: PostTaskInfo) => {
-  try {
-    const { data } = await client.post(`/tasks`, taskInfo);
-    return data;
-  } catch (error) {
-    console.error(error);
+  {
+    try {
+      const response = await client.post(`/tasks`, taskInfo);
+      const location = response.headers['location'];
+
+      console.log(location);
+      return location;
+    } catch (error) {
+      console.error(error);
+    }
   }
 };
 
 export const postSubTasks = async (subTaskInfo: PostSubTaskInfo) => {
   try {
-    const { data } = await client.post(`/subTasks`, subTaskInfo);
-    return data;
+    const response = await client.post(`/subTasks`, subTaskInfo);
+    return response;
   } catch (error) {
     console.error(error);
   }

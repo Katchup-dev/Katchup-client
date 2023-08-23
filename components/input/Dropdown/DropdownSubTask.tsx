@@ -22,7 +22,6 @@ const DropdownSubTask = ({ inputValue }: dropdownIndexProps) => {
   const handleOptionClick = (option: InputSubTaskInfo) => {
     setSubTaskSelect(option);
   };
-
   const handleAddIndex = () => {
     const subTaskData = { taskId: taskSelect.taskId, name: inputValue };
     postSubTask.createSubTask(subTaskData);

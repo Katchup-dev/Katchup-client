@@ -17,16 +17,18 @@ const DropdownTask = ({ inputValue, setIsTaskFocused }: dropdownIndexProps) => {
   let addArr: InputTaskInfo[] = [];
   const [, setTaskSelect] = useRecoilState(taskSelectState);
   const categorySelect = useRecoilValue(categorySelectState);
+
   const { tasks } = useGetTasks(categorySelect.categoryId);
-  const postTask = usePostTask();
+  const { createTask } = usePostTask();
 
   const handleOptionClick = (option: InputTaskInfo) => {
     setTaskSelect(option);
   };
 
-  const handleAddIndex = () => {
+  const handleAddIndex = async () => {
     const taskData = { categoryId: categorySelect.categoryId, name: inputValue };
-    postTask.createTask(taskData);
+    const location = await createTask(taskData);
+    if (location) setTaskSelect({ taskId: location, name: inputValue });
     setIsTaskFocused(false);
   };
 

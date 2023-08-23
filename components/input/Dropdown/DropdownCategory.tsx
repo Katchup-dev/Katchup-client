@@ -18,15 +18,15 @@ const DropdownCategory = ({ inputValue }: dropdownIndexProps) => {
 
   const { categories } = useGetCategories();
   const [, setCategorySelect] = useRecoilState(categorySelectState);
-  const postCategory = usePostCategory();
+  const { createCategory } = usePostCategory();
 
   const handleOptionClick = (option: InputCategoryInfo) => {
     setCategorySelect(option);
   };
 
-  const handleAddIndex = () => {
-    const categoryData = inputValue;
-    postCategory.createCategory(categoryData);
+  const handleAddIndex = async () => {
+    const location = await createCategory(inputValue);
+    if (location) setCategorySelect({ categoryId: location, name: inputValue, isShared: false });
   };
 
   const displayNewOptions = () => {
