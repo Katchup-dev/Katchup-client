@@ -42,3 +42,25 @@ export interface PostKeywordInfo {
   name: string;
   color: string;
 }
+
+export interface PostCardInfo {
+  categoryId: number;
+  taskId: number;
+  subTaskId: number;
+  keywordIdList: number[];
+  screenshotList: PostScreenshotListInfo[];
+  note: string;
+  content: string;
+}
+
+export interface PostScreenshotListInfo {
+  screenshotUUID: string;
+  screenshotUrl: string;
+  stickerList: PostStickerListInfo[];
+}
+
+export interface PostStickerListInfo {
+  order: string;
+  x: string;
+  y: string;
+}

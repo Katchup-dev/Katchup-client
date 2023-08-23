@@ -1,5 +1,5 @@
 import { client } from 'lib/axios';
-import { PostKeywordInfo, PostSubTaskInfo, PostTaskInfo } from 'types/input';
+import { PostCardInfo, PostKeywordInfo, PostSubTaskInfo, PostTaskInfo } from 'types/input';
 
 // ----- 대, 중, 소분류 조회 -----
 
@@ -82,6 +82,17 @@ export const postKeywords = async (keywordInfo: PostKeywordInfo) => {
   try {
     console.log(keywordInfo);
     const { data } = await client.post(`/cards/keywords`, keywordInfo);
+    console.log(data);
+    return data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+// ----- 업무 카드 생성 -----
+export const postCard = async (cardInfo: PostCardInfo) => {
+  try {
+    const { data } = await client.post(`/cards`, cardInfo);
     console.log(data);
     return data;
   } catch (error) {
