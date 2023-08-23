@@ -1,5 +1,5 @@
-import { getCategories, getFolders, getTasks } from 'core/apis/input';
-import { InputCategoryInfo, InputFolderInfo, InputTaskInfo, KatchupResponse } from 'types/input';
+import { getCategories, getSubTasks, getTasks } from 'core/apis/input';
+import { InputCategoryInfo, InputSubTaskInfo, InputTaskInfo, KatchupResponse } from 'types/input';
 
 import { useQuery } from '@tanstack/react-query';
 
@@ -13,16 +13,6 @@ export const useGetCategories = () => {
   };
 };
 
-export const useGetFolders = () => {
-  const { data, isLoading, error } = useQuery<KatchupResponse<InputFolderInfo[]>>(['folders'], getFolders);
-
-  return {
-    folders: data?.data,
-    isFoldersLoading: isLoading,
-    isFoldersError: error,
-  };
-};
-
 export const useGetTasks = () => {
   const { data, isLoading, error } = useQuery<KatchupResponse<InputTaskInfo[]>>(['tasks'], getTasks);
 
@@ -30,5 +20,15 @@ export const useGetTasks = () => {
     tasks: data?.data,
     isTasksLoading: isLoading,
     isTasksError: error,
+  };
+};
+
+export const useGetSubTasks = () => {
+  const { data, isLoading, error } = useQuery<KatchupResponse<InputSubTaskInfo[]>>(['subTasks'], getSubTasks);
+
+  return {
+    subTasks: data?.data,
+    isSubTasksLoading: isLoading,
+    isSubTasksError: error,
   };
 };

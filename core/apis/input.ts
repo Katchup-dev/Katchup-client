@@ -1,5 +1,5 @@
 import { client } from 'lib/axios';
-import { InputSubTaskInfo, postTaskInfo } from 'types/input';
+import { postSubTaskInfo, postTaskInfo } from 'types/input';
 
 export const getCategories = async () => {
   try {
@@ -47,7 +47,7 @@ export const postTasks = async (taskInfo: postTaskInfo) => {
   }
 };
 
-export const postSubTasks = async (subTaskInfo: InputSubTaskInfo) => {
+export const postSubTasks = async (subTaskInfo: postSubTaskInfo) => {
   try {
     const { data } = await client.post(`/subTasks`, subTaskInfo);
     return data;
