@@ -9,6 +9,7 @@ import { InputKeywordInfo, PostKeywordInfo } from 'types/input';
 import styled from '@emotion/styled';
 
 interface KeywordProps {
+  name: string;
   background: string;
   color: string;
 }
@@ -31,14 +32,14 @@ const DropdownKeyword = ({ inputValue, keywordColor }: DropdownKeywordProps) => 
   };
 
   const handleAddIndex = () => {
-    const keywordData = { taskId: taskSelect.taskId, name: inputValue, color: keywordColor.color };
+    const keywordData = { taskId: taskSelect.taskId, name: inputValue, color: keywordColor.name };
     postKeyword.createKeyword(keywordData);
   };
 
   const displayNewOptions = () => {
     if (inputValue?.length > 0 && keywords) {
       if (!keywords.find((option) => option.name === inputValue)) {
-        addArr = [...addArr, { keywordId: keywords.length, name: inputValue, color: '' }];
+        addArr = [...addArr, { keywordId: keywords.length, name: inputValue, color: keywordColor.name }];
       } else {
         isAdd = false;
       }

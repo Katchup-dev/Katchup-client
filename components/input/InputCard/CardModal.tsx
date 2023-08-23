@@ -37,6 +37,7 @@ const CardModal = (props: ModalProps) => {
   const selectedTask = useRecoilValue(taskSelectState);
   const selectedSubTask = useRecoilValue(subTaskSelectState);
   const [keywordColor, setKeywordColor] = useState({
+    name: '',
     background: '',
     color: '',
   });
@@ -74,6 +75,7 @@ const CardModal = (props: ModalProps) => {
     const randomIndex = Math.floor(Math.random() * colorKeys.length);
     const randomColorKey = colorKeys[randomIndex];
     setKeywordColor({
+      name: KEYWORDS_COLOR[randomColorKey].name,
       background: KEYWORDS_COLOR[randomColorKey].background,
       color: KEYWORDS_COLOR[randomColorKey].color,
     });
