@@ -11,22 +11,22 @@ export interface InputCategoryInfo {
   isShared: boolean;
 }
 
-export interface InputFolderInfo {
-  folderId: number;
-  name: string;
-}
-
 export interface InputTaskInfo {
   taskId: number;
   name: string;
 }
 
-export interface postFolderInfo {
-  categoryId: number;
+export interface InputSubTaskInfo {
+  subTaskId: number;
   name: string;
 }
 
 export interface postTaskInfo {
-  folderId: number;
+  categoryId: number;
+  name: string;
+}
+
+export interface postSubTaskInfo {
+  taskId: number;
   name: string;
 }

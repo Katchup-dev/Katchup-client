@@ -1,19 +1,9 @@
-import axios from 'axios';
 import { client } from 'lib/axios';
-import { InputFolderInfo, postFolderInfo } from 'types/input';
+import { InputSubTaskInfo, postTaskInfo } from 'types/input';
 
 export const getCategories = async () => {
   try {
     const { data } = await client.get(`/categories`);
-    return data;
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-export const getFolders = async () => {
-  try {
-    const { data } = await client.get(`/folders`);
     return data;
   } catch (error) {
     console.error(error);
@@ -29,6 +19,15 @@ export const getTasks = async () => {
   }
 };
 
+export const getSubTasks = async () => {
+  try {
+    const { data } = await client.get(`/subTasks`);
+    return data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 export const postCategories = async (name: string) => {
   try {
     const { data } = await client.post(`/categories`, name);
@@ -38,9 +37,9 @@ export const postCategories = async (name: string) => {
   }
 };
 
-export const postFolders = async (folderInfo: postFolderInfo) => {
+export const postTasks = async (taskInfo: postTaskInfo) => {
   try {
-    const { data } = await client.post(`/folders`, folderInfo);
+    const { data } = await client.post(`/tasks`, taskInfo);
     console.log(data);
     return data;
   } catch (error) {
@@ -48,9 +47,9 @@ export const postFolders = async (folderInfo: postFolderInfo) => {
   }
 };
 
-export const postTasks = async (taskInfo: InputFolderInfo) => {
+export const postSubTasks = async (subTaskInfo: InputSubTaskInfo) => {
   try {
-    const { data } = await client.post(`/tasks`, taskInfo);
+    const { data } = await client.post(`/subTasks`, subTaskInfo);
     return data;
   } catch (error) {
     console.error(error);
