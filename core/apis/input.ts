@@ -10,18 +10,18 @@ export const getCategories = async () => {
   }
 };
 
-export const getTasks = async () => {
+export const getTasks = async (categoryId: number) => {
   try {
-    const { data } = await client.get(`/tasks`);
+    const { data } = await client.get(`/tasks/categories/${categoryId}`);
     return data;
   } catch (error) {
     console.error(error);
   }
 };
 
-export const getSubTasks = async () => {
+export const getSubTasks = async (taskId: number) => {
   try {
-    const { data } = await client.get(`/subTasks`);
+    const { data } = await client.get(`/subTasks/${taskId}`);
     return data;
   } catch (error) {
     console.error(error);
