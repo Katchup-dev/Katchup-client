@@ -1,4 +1,7 @@
+import { ModalOneButton } from 'components/common/Modal';
 import Toast from 'components/common/Toast';
+import { MODAL_FILE_SIZE } from 'constants/modal';
+import useModal from 'lib/hooks/useModal';
 import { IcBtnDeleteFile, IcFileCheckbox, IcFileCheckboxAfter, IcKatchupLogo } from 'public/assets/icons';
 import { useEffect, useRef, useState } from 'react';
 
@@ -8,15 +11,22 @@ const FileInput = () => {
   const [fileInput, setFileInput] = useState<File[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isChecked, setIsChecked] = useState(false);
+  const sizeLimit = 10 * 1024 * 1024;
 
   const [toastMessage, setToastMessage] = useState('');
   const [toastKey, setToastKey] = useState<number>();
+
+  const fileSizeModal = useModal();
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files && files.length > 0) {
       const file = files[0];
-      setFileInput((prev) => [...prev, file]);
+      if (file.size > sizeLimit) {
+        fileSizeModal.toggle();
+      } else {
+        setFileInput((prev) => [...prev, file]);
+      }
     }
   };
 
@@ -75,6 +85,12 @@ const FileInput = () => {
           )}
         </StFileInput>
       </StFileWrapper>
+      <ModalOneButton
+        isShowing={fileSizeModal.isShowing}
+        contents={MODAL_FILE_SIZE}
+        buttonName={'확인'}
+        handleButton={fileSizeModal.toggle}
+      />
       <StToastWrapper>
         <Toast key={toastKey} message={toastMessage} />
       </StToastWrapper>
