@@ -1,5 +1,6 @@
-import styled from '@emotion/styled';
 import { IcFilter, IcSearch } from 'public/assets/icons';
+
+import styled from '@emotion/styled';
 
 const SearchBox = () => {
   return (

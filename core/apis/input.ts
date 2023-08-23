@@ -1,6 +1,7 @@
-import axios from 'axios';
 import { client } from 'lib/axios';
-import { InputFolderInfo, postFolderInfo } from 'types/input';
+import { PostKeywordInfo, PostSubTaskInfo, PostTaskInfo } from 'types/input';
+
+// ----- 대, 중, 소분류 조회 -----
 
 export const getCategories = async () => {
   try {
@@ -11,23 +12,25 @@ export const getCategories = async () => {
   }
 };
 
-export const getFolders = async () => {
+export const getTasks = async (categoryId: number) => {
   try {
-    const { data } = await client.get(`/folders`);
+    const { data } = await client.get(`/tasks/categories/${categoryId}`);
     return data;
   } catch (error) {
     console.error(error);
   }
 };
 
-export const getTasks = async () => {
+export const getSubTasks = async (taskId: number) => {
   try {
-    const { data } = await client.get(`/tasks`);
+    const { data } = await client.get(`/subTasks/${taskId}`);
     return data;
   } catch (error) {
     console.error(error);
   }
 };
+
+// ----- 대, 중, 소분류 생성 -----
 
 export const postCategories = async (name: string) => {
   try {
@@ -38,19 +41,40 @@ export const postCategories = async (name: string) => {
   }
 };
 
-export const postFolders = async (folderInfo: postFolderInfo) => {
+export const postTasks = async (taskInfo: PostTaskInfo) => {
   try {
-    const { data } = await client.post(`/folders`, folderInfo);
-    console.log(data);
+    const { data } = await client.post(`/tasks`, taskInfo);
     return data;
   } catch (error) {
     console.error(error);
   }
 };
 
-export const postTasks = async (taskInfo: InputFolderInfo) => {
+export const postSubTasks = async (subTaskInfo: PostSubTaskInfo) => {
   try {
-    const { data } = await client.post(`/tasks`, taskInfo);
+    const { data } = await client.post(`/subTasks`, subTaskInfo);
+    return data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+// ----- 키워드 조회, 생성 -----
+
+export const getKeywords = async (taskId: number) => {
+  try {
+    const { data } = await client.get(`/keywords/${taskId}`);
+    return data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const postKeywords = async (keywordInfo: PostKeywordInfo) => {
+  try {
+    console.log(keywordInfo);
+    const { data } = await client.post(`/cards/keywords`, keywordInfo);
+    console.log(data);
     return data;
   } catch (error) {
     console.error(error);

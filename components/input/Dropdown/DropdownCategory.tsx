@@ -1,12 +1,12 @@
 import { categorySelectState } from 'core/atom';
+import { useGetCategories } from 'lib/hooks/input/useGetIndex';
 import { IcBtnAddIndex } from 'public/assets/icons';
 import { useRecoilState } from 'recoil';
 import { InputCategoryInfo } from 'types/input';
 
 import styled from '@emotion/styled';
 
-import { usePostCategory } from '../../lib/hooks/usePostIndex';
-import { useGetCategories } from 'lib/hooks/useGetIndex';
+import { usePostCategory } from '../../../lib/hooks/input/usePostIndex';
 
 interface dropdownIndexProps {
   inputValue: string;
@@ -16,7 +16,7 @@ const DropdownCategory = ({ inputValue }: dropdownIndexProps) => {
   let isAdd = true;
   let addArr: InputCategoryInfo[] = [];
 
-  const { categories, isCategoriesLoading, isCategoriesError } = useGetCategories();
+  const { categories } = useGetCategories();
   const [, setCategorySelect] = useRecoilState(categorySelectState);
   const postCategory = usePostCategory();
 
@@ -24,7 +24,7 @@ const DropdownCategory = ({ inputValue }: dropdownIndexProps) => {
     setCategorySelect(option);
   };
 
-  const handleAddIndex = (name: string) => {
+  const handleAddIndex = () => {
     const categoryData = inputValue;
     postCategory.createCategory(categoryData);
   };
@@ -38,12 +38,12 @@ const DropdownCategory = ({ inputValue }: dropdownIndexProps) => {
       }
     }
     return addArr.map((option, idx) => (
-      <li>
+      <li key={idx}>
         {option.name}
         {isAdd && inputValue && (
           <IcBtnAddIndex
             onMouseDown={() => {
-              handleAddIndex(option.name);
+              handleAddIndex();
             }}
           />
         )}

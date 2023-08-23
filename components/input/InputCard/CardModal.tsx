@@ -1,17 +1,13 @@
-import { categorySelectState, folderSelectState, taskSelectState } from 'core/atom';
+import { ColorKey, KEYWORDS_COLOR } from 'constants/keywords';
+import { categorySelectState, subTaskSelectState, taskSelectState } from 'core/atom';
 import { IcBtnDeletePopup } from 'public/assets/icons';
 import React, { useEffect, useState } from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilValue } from 'recoil';
 
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
-import { useGetCategories, useGetFolders, useGetTasks } from '../../lib/hooks/useGetIndex';
-import DropdownCategory from './DropdownCategory';
-import DropdownFolder from './DropdownFolder';
-import DropdownTask from './DropdownTask';
-import { css } from '@emotion/react';
-import { ColorKey, KEYWORDS_COLOR } from 'constants/keywords';
-import DropdownKeyword from './DropdownKeyword';
+import { DropdownCategory, DropdownKeyword, DropdownSubTask, DropdownTask } from '../Dropdown';
 
 interface ModalProps {
   isShowing: boolean;
@@ -21,26 +17,27 @@ interface ModalProps {
 const CardModal = (props: ModalProps) => {
   const { isShowing, handleHide } = props;
   const [category, setCategory] = useState('');
-  const [folder, setFolder] = useState('');
   const [task, setTask] = useState('');
+  const [subTask, setSubTask] = useState('');
   const [keyword, setKeyword] = useState('');
   const [etc, setEtc] = useState('');
 
   const [categoryCount, setCategoryCount] = useState(0);
-  const [folderCount, setFolderCount] = useState(0);
   const [taskCount, setTaskCount] = useState(0);
+  const [subTaskCount, setSubTaskCount] = useState(0);
   const [etcCount, setEtcCount] = useState(0);
 
   const [isCategoryFocused, setIsCategoryFocused] = useState(false);
-  const [isFolderFocused, setIsFolderFocused] = useState(false);
   const [isTaskFocused, setIsTaskFocused] = useState(false);
+  const [isSubTaskFocused, setIsSubTaskFocused] = useState(false);
   const [isKeywordFocused, setIsKeywordFocused] = useState(false);
   const [isEtcFocused, setIsEtcdFocused] = useState(false);
 
   const selectedCategory = useRecoilValue(categorySelectState);
-  const selectedFolder = useRecoilValue(folderSelectState);
   const selectedTask = useRecoilValue(taskSelectState);
+  const selectedSubTask = useRecoilValue(subTaskSelectState);
   const [keywordColor, setKeywordColor] = useState({
+    name: '',
     background: '',
     color: '',
   });
@@ -52,12 +49,12 @@ const CardModal = (props: ModalProps) => {
         setCategory(value);
         setCategoryCount(value.length);
         break;
-      case 'folder':
-        setFolder(value);
-        setFolderCount(value.length);
-        break;
       case 'task':
         setTask(value);
+        setTaskCount(value.length);
+        break;
+      case 'subTask':
+        setSubTask(value);
         break;
       case 'keyword':
         setKeyword(value);
@@ -78,6 +75,7 @@ const CardModal = (props: ModalProps) => {
     const randomIndex = Math.floor(Math.random() * colorKeys.length);
     const randomColorKey = colorKeys[randomIndex];
     setKeywordColor({
+      name: KEYWORDS_COLOR[randomColorKey].name,
       background: KEYWORDS_COLOR[randomColorKey].background,
       color: KEYWORDS_COLOR[randomColorKey].color,
     });
@@ -85,15 +83,15 @@ const CardModal = (props: ModalProps) => {
 
   useEffect(() => {
     setCategory(selectedCategory.name);
-    setFolder(selectedFolder.name);
     setTask(selectedTask.name);
-  }, [selectedCategory, selectedFolder, selectedTask]);
+    setSubTask(selectedSubTask.name);
+  }, [selectedCategory, selectedTask, selectedSubTask]);
 
   useEffect(() => {
     setCategoryCount(category.length);
-    setFolderCount(folder.length);
     setTaskCount(task.length);
-  }, [category, folder, task]);
+    setSubTaskCount(subTask.length);
+  }, [category, task, subTask]);
 
   return (
     <>
@@ -111,7 +109,7 @@ const CardModal = (props: ModalProps) => {
                 onChange={handleInputChange}
                 onFocus={() => setIsCategoryFocused(true)}
                 onBlur={() => setIsCategoryFocused(false)}
-                placeholder="업무 대분류를 입력해주세요"
+                placeholder="카테고리를 입력해 주세요."
                 maxLength={20}
                 autoComplete="off"
               />
@@ -120,27 +118,8 @@ const CardModal = (props: ModalProps) => {
                 <span>{categoryCount}</span>/20
               </p>
             </StInputIndex>
-            <StInputIndex isFocused={isFolderFocused}>
-              업무
-              <input
-                type="text"
-                name="folder"
-                value={folder}
-                onChange={handleInputChange}
-                onFocus={() => setIsFolderFocused(true)}
-                onBlur={() => setIsFolderFocused(false)}
-                placeholder="업무 중분류를 입력해주세요"
-                maxLength={20}
-                disabled={!category.length}
-                autoComplete="off"
-              />
-              {isFolderFocused && <DropdownFolder inputValue={folder} setIsTaskFocused={setIsTaskFocused} />}
-              <p>
-                <span>{folderCount}</span>/20
-              </p>
-            </StInputIndex>
             <StInputIndex isFocused={isTaskFocused}>
-              세부 업무
+              업무
               <input
                 type="text"
                 name="task"
@@ -148,13 +127,32 @@ const CardModal = (props: ModalProps) => {
                 onChange={handleInputChange}
                 onFocus={() => setIsTaskFocused(true)}
                 onBlur={() => setIsTaskFocused(false)}
-                placeholder="업무 소분류를 입력해주세요"
+                placeholder="업무를 입력해 주세요."
+                maxLength={20}
+                disabled={!category.length}
+                autoComplete="off"
+              />
+              {isTaskFocused && <DropdownTask inputValue={task} setIsTaskFocused={setIsSubTaskFocused} />}
+              <p>
+                <span>{taskCount}</span>/20
+              </p>
+            </StInputIndex>
+            <StInputIndex isFocused={isSubTaskFocused}>
+              세부 업무
+              <input
+                type="text"
+                name="subTask"
+                value={subTask}
+                onChange={handleInputChange}
+                onFocus={() => setIsSubTaskFocused(true)}
+                onBlur={() => setIsSubTaskFocused(false)}
+                placeholder="세부 업무를 입력해 주세요."
                 maxLength={20}
                 autoComplete="off"
               />
-              {isTaskFocused && <DropdownTask inputValue={task} />}
+              {isSubTaskFocused && <DropdownSubTask inputValue={subTask} />}
               <p>
-                <span>{taskCount}</span>/20
+                <span>{subTaskCount}</span>/20
               </p>
             </StInputIndex>
             <StInputIndex isFocused={isKeywordFocused}>
@@ -167,7 +165,7 @@ const CardModal = (props: ModalProps) => {
                 onClick={handleSettingColor}
                 onFocus={() => setIsKeywordFocused(true)}
                 onBlur={() => setIsKeywordFocused(false)}
-                placeholder="키워드를 입력해주세요"
+                placeholder="업무 내용을 잘 나타내는 키워드를 입력해 주세요."
                 autoComplete="off"
               />
               {isKeywordFocused && <DropdownKeyword inputValue={keyword} keywordColor={keywordColor} />}
@@ -178,14 +176,14 @@ const CardModal = (props: ModalProps) => {
                 value={etc}
                 name="etc"
                 onChange={handleInputChange}
-                placeholder="업무에 관한 꿀팁이나 특이사항을 자유롭게 입력해 주세요"
+                placeholder="업무에 관한 꿀팁이나 특이사항을 자유롭게 작성해 주세요."
                 maxLength={200}
               />
               <p>
                 <span>{etcCount}</span>/200
               </p>
             </StInputEtc>
-            <StNextBtn type="button" disabled={!category.length || !folder.length} onClick={handleNext}>
+            <StNextBtn type="button" disabled={!category.length || !task.length} onClick={handleNext}>
               작성 완료
             </StNextBtn>
           </StCardModal>

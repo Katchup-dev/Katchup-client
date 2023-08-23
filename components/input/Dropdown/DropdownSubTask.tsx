@@ -1,48 +1,47 @@
-import { folderSelectState, taskSelectState } from 'core/atom';
+import { subTaskSelectState, taskSelectState } from 'core/atom';
+import { useGetSubTasks } from 'lib/hooks/input/useGetIndex';
+import { usePostSubTask } from 'lib/hooks/input/usePostIndex';
 import { IcBtnAddIndex } from 'public/assets/icons';
-import { useRecoilState } from 'recoil';
-import { InputTaskInfo } from 'types/input';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { InputSubTaskInfo } from 'types/input';
 
 import styled from '@emotion/styled';
-
-import { usePostTask } from '../../lib/hooks/usePostIndex';
-import { useGetTasks } from 'lib/hooks/useGetIndex';
 
 interface dropdownIndexProps {
   inputValue: string;
 }
 
-const DropdownTask = ({ inputValue }: dropdownIndexProps) => {
+const DropdownSubTask = ({ inputValue }: dropdownIndexProps) => {
   let isAdd = true;
-  let addArr: InputTaskInfo[] = [];
-  const { tasks, isTasksLoading, isTasksError } = useGetTasks();
-  const [folderSelect, setFolderSelect] = useRecoilState(folderSelectState);
-  const [taskSelect, setTaskSelect] = useRecoilState(taskSelectState);
-  const postTask = usePostTask();
+  let addArr: InputSubTaskInfo[] = [];
+  const taskSelect = useRecoilValue(taskSelectState);
+  const [, setSubTaskSelect] = useRecoilState(subTaskSelectState);
+  const { subTasks } = useGetSubTasks(taskSelect.taskId);
+  const postSubTask = usePostSubTask();
 
-  const handleOptionClick = (option: InputTaskInfo) => {
-    setTaskSelect(option);
+  const handleOptionClick = (option: InputSubTaskInfo) => {
+    setSubTaskSelect(option);
   };
 
-  const handleAddIndex = (name: string) => {
-    const taskData = { folderId: folderSelect.folderId, name: inputValue };
-    postTask.createTask(taskData);
+  const handleAddIndex = () => {
+    const subTaskData = { taskId: taskSelect.taskId, name: inputValue };
+    postSubTask.createSubTask(subTaskData);
   };
 
   const displayNewOptions = () => {
-    if (inputValue?.length > 0 && tasks) {
-      if (!tasks.find((option) => option.name === inputValue)) {
-        addArr = [...addArr, { taskId: tasks.length, name: inputValue }];
+    if (inputValue?.length > 0 && subTasks) {
+      if (!subTasks.find((option) => option.name === inputValue)) {
+        addArr = [...addArr, { subTaskId: subTasks.length, name: inputValue }];
       } else {
         isAdd = false;
       }
     }
     return addArr.map((option, idx) => (
-      <li>
+      <li key={idx}>
         {option.name}
         <IcBtnAddIndex
           onMouseDown={() => {
-            handleAddIndex(option.name);
+            handleAddIndex();
           }}
         />
       </li>
@@ -52,7 +51,7 @@ const DropdownTask = ({ inputValue }: dropdownIndexProps) => {
   return (
     <StDropdown>
       {displayNewOptions()}
-      {tasks?.map((option, idx) => (
+      {subTasks?.map((option, idx) => (
         <li key={idx} onMouseDown={() => handleOptionClick(option)}>
           {option.name}
         </li>
@@ -61,7 +60,7 @@ const DropdownTask = ({ inputValue }: dropdownIndexProps) => {
   );
 };
 
-export default DropdownTask;
+export default DropdownSubTask;
 
 const StDropdown = styled.ul`
   position: absolute;

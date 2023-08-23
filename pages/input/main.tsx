@@ -1,4 +1,4 @@
-import MainInput from 'components/input/MainInput';
+import MainInput from 'components/input/InputBasic/MainInput';
 import React from 'react';
 
 import styled from '@emotion/styled';

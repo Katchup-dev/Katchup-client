@@ -11,8 +11,8 @@ export const getMiddleCategoryList = async (categoryId: number) => {
   return data;
 };
 
-export const getWorkCard = async (folderId: number) => {
-  const { data } = await client.get(`/folders/${folderId}/cards`);
+export const getWorkCard = async (taskId: number) => {
+  const { data } = await client.get(`/tasks/${taskId}/cards`);
 
   return data;
 };

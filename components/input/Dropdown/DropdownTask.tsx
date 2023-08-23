@@ -1,52 +1,51 @@
-import { categorySelectState, folderSelectState } from 'core/atom';
+import { categorySelectState, taskSelectState } from 'core/atom';
+import { useGetTasks } from 'lib/hooks/input/useGetIndex';
+import { usePostTask } from 'lib/hooks/input/usePostIndex';
 import { IcBtnAddIndex } from 'public/assets/icons';
-import { useRecoilState } from 'recoil';
-import { InputFolderInfo } from 'types/input';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { InputTaskInfo } from 'types/input';
 
 import styled from '@emotion/styled';
-
-import { usePostFolder } from '../../lib/hooks/usePostIndex';
-import { useGetFolders } from 'lib/hooks/useGetIndex';
 
 interface dropdownIndexProps {
   inputValue: string;
   setIsTaskFocused: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const DropdownFolder = ({ inputValue, setIsTaskFocused }: dropdownIndexProps) => {
+const DropdownTask = ({ inputValue, setIsTaskFocused }: dropdownIndexProps) => {
   let isAdd = true;
-  let addArr: InputFolderInfo[] = [];
-  const { folders, isFoldersLoading, isFoldersError } = useGetFolders();
-  const [folderSelect, setFolderSelect] = useRecoilState(folderSelectState);
-  const [categorySelect, setCategorySelect] = useRecoilState(categorySelectState);
-  const postFolder = usePostFolder();
+  let addArr: InputTaskInfo[] = [];
+  const [, setTaskSelect] = useRecoilState(taskSelectState);
+  const categorySelect = useRecoilValue(categorySelectState);
+  const { tasks } = useGetTasks(categorySelect.categoryId);
+  const postTask = usePostTask();
 
-  const handleOptionClick = (option: InputFolderInfo) => {
-    setFolderSelect(option);
+  const handleOptionClick = (option: InputTaskInfo) => {
+    setTaskSelect(option);
   };
 
-  const handleAddIndex = (name: string) => {
-    const folderData = { categoryId: categorySelect.categoryId, name: inputValue };
-    postFolder.createFolder(folderData);
+  const handleAddIndex = () => {
+    const taskData = { categoryId: categorySelect.categoryId, name: inputValue };
+    postTask.createTask(taskData);
     setIsTaskFocused(false);
   };
 
   const displayNewOptions = () => {
-    if (inputValue?.length > 0 && folders) {
-      if (!folders?.find((option) => option.name === inputValue)) {
-        addArr = [...addArr, { folderId: folders.length, name: inputValue }];
+    if (inputValue?.length > 0 && tasks) {
+      if (!tasks?.find((option) => option.name === inputValue)) {
+        addArr = [...addArr, { taskId: tasks.length, name: inputValue }];
       } else {
         isAdd = false;
       }
     }
 
     return addArr.map((option, idx) => (
-      <li>
+      <li key={idx}>
         {option.name}
         {isAdd && inputValue && (
           <IcBtnAddIndex
             onMouseDown={() => {
-              handleAddIndex(option.name);
+              handleAddIndex();
             }}
           />
         )}
@@ -57,7 +56,7 @@ const DropdownFolder = ({ inputValue, setIsTaskFocused }: dropdownIndexProps) =>
   return (
     <StDropdown>
       {displayNewOptions()}
-      {folders?.map((option, idx) => (
+      {tasks?.map((option, idx) => (
         <li key={idx} onMouseDown={() => handleOptionClick(option)}>
           {option.name}
         </li>
@@ -66,7 +65,7 @@ const DropdownFolder = ({ inputValue, setIsTaskFocused }: dropdownIndexProps) =>
   );
 };
 
-export default DropdownFolder;
+export default DropdownTask;
 
 const StDropdown = styled.ul`
   position: absolute;
