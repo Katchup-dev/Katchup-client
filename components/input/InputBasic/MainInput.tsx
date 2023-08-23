@@ -202,6 +202,7 @@ const MainInput = () => {
         rightButtonName={'그만두기'}
         handleLeftButton={screenshotCancelModal.toggle}
         handleRightButton={handleScreenshotShowing}
+        isSubContent={true}
       />
     </StMainInputWrapper>
   );

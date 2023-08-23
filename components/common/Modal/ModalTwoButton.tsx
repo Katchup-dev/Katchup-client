@@ -9,10 +9,12 @@ interface ModalTwoButtonProps {
   rightButtonName: string;
   handleLeftButton: React.MouseEventHandler;
   handleRightButton: React.MouseEventHandler;
+  isSubContent?: boolean;
 }
 
 const ModalTwoButton = (props: ModalTwoButtonProps) => {
-  const { isShowing, contents, leftButtonName, rightButtonName, handleLeftButton, handleRightButton } = props;
+  const { isShowing, contents, leftButtonName, rightButtonName, handleLeftButton, handleRightButton, isSubContent } =
+    props;
 
   return (
     <>
@@ -20,9 +22,11 @@ const ModalTwoButton = (props: ModalTwoButtonProps) => {
         <StModalWrapper>
           <StModal>
             <IcSurprise />
-            <StContentWrapper>
+            <StContentWrapper isSubContent={isSubContent}>
               {contents.map((content, index) => (
-                <p key={index}>{content}</p>
+                <p key={index} className={isSubContent && index === contents.length - 1 ? 'subContent' : ''}>
+                  {content}
+                </p>
               ))}
             </StContentWrapper>
             <StBtnWrapper>
@@ -73,7 +77,7 @@ const StModal = styled.div`
   background-color: ${({ theme }) => theme.colors.katchup_white};
 `;
 
-const StContentWrapper = styled.div`
+const StContentWrapper = styled.div<{ isSubContent?: boolean }>`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -81,6 +85,13 @@ const StContentWrapper = styled.div`
 
   & > p {
     ${({ theme }) => theme.fonts.h1_smalltitle};
+
+    &.subContent {
+      margin-top: 1rem;
+
+      ${({ theme }) => theme.fonts.h2_smalltitle};
+      color: ${({ theme }) => theme.colors.katchup_dark_gray};
+    }
   }
 `;
 
