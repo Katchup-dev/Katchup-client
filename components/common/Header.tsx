@@ -66,7 +66,7 @@ const StHeaderWrapper = styled.header<{ path: string }>`
 
   background-color: ${({ theme }) => theme.colors.katchup_bg_gray};
 
-  > div:nth-of-child(1) {
+  > div:nth-child(1) {
     display: flex;
 
     > svg {
@@ -75,7 +75,7 @@ const StHeaderWrapper = styled.header<{ path: string }>`
     }
   }
 
-  > div:nth-of-child(2) {
+  > div:nth-child(2) {
     display: flex;
     gap: 2rem;
 

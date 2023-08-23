@@ -25,12 +25,12 @@ const StSearchForm = styled.form`
     align-items: center;
     position: relative;
 
-    > svg:nth-of-child(1) {
+    > svg:nth-child(1) {
       position: absolute;
       top: 1.2rem;
       left: 2.2rem;
     }
-    > svg:nth-of-child(2) {
+    > svg:nth-child(2) {
       position: absolute;
       top: 1.2rem;
       right: 2.2rem;

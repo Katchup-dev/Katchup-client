@@ -1,3 +1,4 @@
+import Toast from 'components/common/Toast';
 import { IcBtnDeleteScreenshot, IcKatchupLogo, IcScreenshotEmpty } from 'public/assets/icons';
 import React, { useEffect, useRef, useState } from 'react';
 
@@ -8,6 +9,8 @@ const ScreenshotInput = () => {
   const [inputScreenshot, setInputScreenshot] = useState<[]>([]);
   const [URLThumbnails, setURLThumbnails] = useState<string[]>([]);
   const screenshotInputRef = useRef<HTMLInputElement>(null);
+  const [toastMessage, setToastMessage] = useState('');
+  const [toastKey, setToastKey] = useState<number>();
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -18,6 +21,11 @@ const ScreenshotInput = () => {
   };
 
   const handleFileBtnClick = () => {
+    if (screenshotInput.length >= 5) {
+      setToastMessage('스크린샷은 5개까지만 추가 가능해요!');
+      setToastKey(Date.now());
+      return;
+    }
     screenshotInputRef.current?.click();
   };
 
@@ -81,14 +89,25 @@ const ScreenshotInput = () => {
           </StEmpty>
         )}
       </StFileInput>
+      <StToastWrapper>
+        <Toast key={toastKey} message={toastMessage} />
+      </StToastWrapper>
     </StScreenshotInput>
   );
 };
 
 export default ScreenshotInput;
 
+const StToastWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+
+  width: 100%;
+`;
+
 const StScreenshotInput = styled.section`
-  width: 90rem;
+  width: 100%;
+  max-width: 81.8rem;
   height: 85rem;
 
   border: 0.1rem solid ${({ theme }) => theme.colors.katchup_line_gray};
