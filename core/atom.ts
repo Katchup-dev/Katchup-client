@@ -40,3 +40,8 @@ export const subTaskSelectState = atom<InputSubTaskInfo>({
     name: '',
   },
 });
+
+export const workInputState = atom<string>({
+  key: `workInput`,
+  default: '',
+});
