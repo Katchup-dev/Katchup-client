@@ -1,6 +1,7 @@
-import { ModalOneButton } from 'components/common/Modal';
+import { ModalTwoButton } from 'components/common/Modal';
 import Toast from 'components/common/Toast';
 import { MODAL_LEAVE_PAGE } from 'constants/modal';
+import useRouteChangeBlocking from 'lib/hooks/input/useRouteChangeBlocking';
 import useModal from 'lib/hooks/useModal';
 import {
   IcBtnDeleteFile,
@@ -20,15 +21,20 @@ import { ScreenshotInput } from '../InputScreenshot';
 const MainInput = () => {
   const [workInput, setWorkInput] = useState('');
   const [letterCount, setLetterCount] = useState(0);
+
   const [isChecked, setIsChecked] = useState(false);
+
   const [fileInput, setFileInput] = useState<File[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
   const [isScreenshotShowing, setIsScreenshotShowing] = useState(false);
+
   const [toastMessage, setToastMessage] = useState('');
   const [toastKey, setToastKey] = useState<number>();
 
   const cardModal = useModal();
   const leavePageModal = useModal();
+  const { offRouteChangeBlocking } = useRouteChangeBlocking(leavePageModal.toggle, workInput);
 
   const handleScreenshotShowing = (e: React.MouseEvent<HTMLButtonElement>) => {
     setIsScreenshotShowing((prev) => !prev);
@@ -71,6 +77,18 @@ const MainInput = () => {
     console.log('다음');
   };
 
+  const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+    e.preventDefault();
+    e.returnValue = '';
+  };
+
+  useEffect(() => {
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, []);
+
   useEffect(() => {
     if (isChecked) {
       setToastMessage('곧 추가될 예정이에요! Coming soon..');
@@ -80,11 +98,13 @@ const MainInput = () => {
 
   return (
     <StMainInputWrapper>
-      <ModalOneButton
+      <ModalTwoButton
         isShowing={leavePageModal.isShowing}
         contents={MODAL_LEAVE_PAGE}
-        buttonName={'확인'}
-        handleButton={leavePageModal.toggle}
+        leftButtonName={'돌아가기'}
+        rightButtonName={'벗어나기'}
+        handleLeftButton={leavePageModal.toggle}
+        handleRightButton={() => offRouteChangeBlocking()}
       />
       <StMainInput>
         <StDeleteAllBtn type="button" onClick={handleDeleteAll}>

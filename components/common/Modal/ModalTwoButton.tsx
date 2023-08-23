@@ -3,31 +3,40 @@ import { IcSurprise } from 'public/assets/icons';
 import styled from '@emotion/styled';
 
 interface ModalTwoButtonProps {
+  isShowing: boolean;
   contents: string[];
+  leftButtonName: string;
+  rightButtonName: string;
+  handleLeftButton: React.MouseEventHandler;
+  handleRightButton: React.MouseEventHandler;
 }
 
 const ModalTwoButton = (props: ModalTwoButtonProps) => {
-  const { contents } = props;
+  const { isShowing, contents, leftButtonName, rightButtonName, handleLeftButton, handleRightButton } = props;
 
   return (
-    <StModalWrapper>
-      <StModal>
-        <IcSurprise />
-        <StContentWrapper>
-          {contents.map((content, index) => (
-            <p key={index}>{content}</p>
-          ))}
-        </StContentWrapper>
-        <StBtnWrapper>
-          <button type="button" className="leftBtn">
-            돌아가기
-          </button>
-          <button type="button" className="rightBtn">
-            벗어나기
-          </button>
-        </StBtnWrapper>
-      </StModal>
-    </StModalWrapper>
+    <>
+      {isShowing && (
+        <StModalWrapper>
+          <StModal>
+            <IcSurprise />
+            <StContentWrapper>
+              {contents.map((content, index) => (
+                <p key={index}>{content}</p>
+              ))}
+            </StContentWrapper>
+            <StBtnWrapper>
+              <button type="button" className="leftBtn" onClick={handleLeftButton}>
+                {leftButtonName}
+              </button>
+              <button type="button" className="righttBtn" onClick={handleRightButton}>
+                {rightButtonName}
+              </button>
+            </StBtnWrapper>
+          </StModal>
+        </StModalWrapper>
+      )}
+    </>
   );
 };
 
@@ -90,12 +99,11 @@ const StBtnWrapper = styled.div`
     border: none;
     border-radius: 0.8rem;
     color: ${({ theme }) => theme.colors.katchup_white};
+    background-color: ${({ theme }) => theme.colors.katchup_main};
     ${({ theme }) => theme.fonts.h2_title};
   }
+
   .leftBtn {
     background-color: ${({ theme }) => theme.colors.katchup_gray};
-  }
-  .rightBtn {
-    background-color: ${({ theme }) => theme.colors.katchup_main};
   }
 `;
