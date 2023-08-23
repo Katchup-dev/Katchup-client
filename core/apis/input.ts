@@ -1,5 +1,5 @@
 import { client } from 'lib/axios';
-import { InputKeywordInfo, postSubTaskInfo, postTaskInfo } from 'types/input';
+import { PostKeywordInfo, PostSubTaskInfo, PostTaskInfo } from 'types/input';
 
 // ----- 대, 중, 소분류 조회 -----
 
@@ -41,7 +41,7 @@ export const postCategories = async (name: string) => {
   }
 };
 
-export const postTasks = async (taskInfo: postTaskInfo) => {
+export const postTasks = async (taskInfo: PostTaskInfo) => {
   try {
     const { data } = await client.post(`/tasks`, taskInfo);
     console.log(data);
@@ -51,7 +51,7 @@ export const postTasks = async (taskInfo: postTaskInfo) => {
   }
 };
 
-export const postSubTasks = async (subTaskInfo: postSubTaskInfo) => {
+export const postSubTasks = async (subTaskInfo: PostSubTaskInfo) => {
   try {
     const { data } = await client.post(`/subTasks`, subTaskInfo);
     return data;
@@ -60,9 +60,18 @@ export const postSubTasks = async (subTaskInfo: postSubTaskInfo) => {
   }
 };
 
-// ----- 키워드 -----
+// ----- 키워드 조회, 생성 -----
 
-export const postKeywords = async (keywordInfo: InputKeywordInfo) => {
+export const getKeywords = async (taskId: number) => {
+  try {
+    const { data } = await client.get(`/keywords/${taskId}`);
+    return data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const postKeywords = async (keywordInfo: PostKeywordInfo) => {
   try {
     const { data } = await client.post(`/cards/keywords`, keywordInfo);
     return data;

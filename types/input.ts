@@ -21,17 +21,23 @@ export interface InputSubTaskInfo {
   name: string;
 }
 
-export interface postTaskInfo {
+export interface InputKeywordInfo {
+  keywordId: number;
+  name: string;
+  color: string;
+}
+
+export interface PostTaskInfo {
   categoryId: number;
   name: string;
 }
 
-export interface postSubTaskInfo {
+export interface PostSubTaskInfo {
   taskId: number;
   name: string;
 }
 
-export interface InputKeywordInfo {
+export interface PostKeywordInfo {
   taskId: number;
   name: string;
   color: string;
