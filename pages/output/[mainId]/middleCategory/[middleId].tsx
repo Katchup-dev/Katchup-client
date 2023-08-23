@@ -57,6 +57,7 @@ const WorkCardPage = ({ mainId, middleId }: { mainId: string; middleId: string }
 
               {workCardList?.map((card: WorkCardInfo) => (
                 <WorkCard
+                  mainId={mainId}
                   key={card.cardId}
                   cardId={card.cardId}
                   content={card.content}

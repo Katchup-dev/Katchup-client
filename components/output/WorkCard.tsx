@@ -5,6 +5,7 @@ import { KeywordInfo } from 'types/output';
 import Link from 'next/link';
 
 export interface WorkCardProps {
+  mainId: string;
   cardId: number;
   keywordList: KeywordInfo[];
   cardName: string;
@@ -12,7 +13,7 @@ export interface WorkCardProps {
   existFile: boolean;
 }
 
-const WorkCard = (props: WorkCardProps) => {
+const WorkCard = (props: WorkCardProps, { mainId }: { mainId: string }) => {
   const { cardId, keywordList, cardName, content, existFile } = props;
   return (
     <StWorkCardWrapper>
@@ -39,7 +40,7 @@ const WorkCard = (props: WorkCardProps) => {
 
       <Link
         href={{
-          pathname: `/output/middleCategory/detail/${cardId}`,
+          pathname: `/output/${mainId}/middleCategory/detail/${cardId}`,
           query: { content: content },
         }}>
         <StMoreDetailBtn>
