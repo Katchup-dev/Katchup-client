@@ -11,8 +11,8 @@ import { useRef, useState } from 'react';
 
 import styled from '@emotion/styled';
 
-import CardModal from './CardModal';
-import ScreenshotInput from './ScreenshotInput';
+import CardModal from '../InputCard/CardModal';
+import { ScreenshotInput } from '../InputScreenshot';
 
 const MainInput = () => {
   const [workInput, setWorkInput] = useState('');

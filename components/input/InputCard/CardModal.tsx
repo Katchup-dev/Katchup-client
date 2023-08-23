@@ -7,7 +7,7 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
-import { DropdownCategory, DropdownFolder, DropdownKeyword, DropdownTask } from './Dropdown';
+import { DropdownCategory, DropdownFolder, DropdownKeyword, DropdownTask } from '../Dropdown';
 
 interface ModalProps {
   isShowing: boolean;
