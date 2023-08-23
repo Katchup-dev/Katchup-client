@@ -78,7 +78,7 @@ const MainInput = () => {
               maxLength={2000}
               value={workInput}
               onChange={handleInputChange}
-              placeholder="업무 내용을 입력해주세요"
+              placeholder="업무 내용을 작성해 주세요."
             />
             <p>
               <span>{letterCount}</span>/2000자
@@ -113,7 +113,7 @@ const MainInput = () => {
               ))
             ) : (
               <StEmpty>
-                <p>파일을 선택하거나 드래그하세요</p>
+                <p>파일을 선택하거나 이곳에 드래그하세요.</p>
                 <p>파일당 최대 크기: 10MB</p>
               </StEmpty>
             )}

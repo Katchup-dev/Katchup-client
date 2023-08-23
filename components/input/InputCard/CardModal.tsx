@@ -107,7 +107,7 @@ const CardModal = (props: ModalProps) => {
                 onChange={handleInputChange}
                 onFocus={() => setIsCategoryFocused(true)}
                 onBlur={() => setIsCategoryFocused(false)}
-                placeholder="업무 대분류를 입력해주세요"
+                placeholder="카테고리를 입력해 주세요."
                 maxLength={20}
                 autoComplete="off"
               />
@@ -125,7 +125,7 @@ const CardModal = (props: ModalProps) => {
                 onChange={handleInputChange}
                 onFocus={() => setIsTaskFocused(true)}
                 onBlur={() => setIsTaskFocused(false)}
-                placeholder="업무 중분류를 입력해주세요"
+                placeholder="업무를 입력해 주세요."
                 maxLength={20}
                 disabled={!category.length}
                 autoComplete="off"
@@ -144,7 +144,7 @@ const CardModal = (props: ModalProps) => {
                 onChange={handleInputChange}
                 onFocus={() => setIsSubTaskFocused(true)}
                 onBlur={() => setIsSubTaskFocused(false)}
-                placeholder="업무 소분류를 입력해주세요"
+                placeholder="세부 업무를 입력해 주세요."
                 maxLength={20}
                 autoComplete="off"
               />
@@ -163,7 +163,7 @@ const CardModal = (props: ModalProps) => {
                 onClick={handleSettingColor}
                 onFocus={() => setIsKeywordFocused(true)}
                 onBlur={() => setIsKeywordFocused(false)}
-                placeholder="키워드를 입력해주세요"
+                placeholder="업무 내용을 잘 나타내는 키워드를 입력해 주세요."
                 autoComplete="off"
               />
               {isKeywordFocused && <DropdownKeyword inputValue={keyword} keywordColor={keywordColor} />}
@@ -174,7 +174,7 @@ const CardModal = (props: ModalProps) => {
                 value={etc}
                 name="etc"
                 onChange={handleInputChange}
-                placeholder="업무에 관한 꿀팁이나 특이사항을 자유롭게 입력해 주세요"
+                placeholder="업무에 관한 꿀팁이나 특이사항을 자유롭게 작성해 주세요."
                 maxLength={200}
               />
               <p>
