@@ -1,6 +1,8 @@
+import { URL_ABOUT_US, URL_FEEDBACK, URL_INSTAGRAM, URL_PRIVACY_POLICY } from 'constants/footer';
+import { IcInsta, IcLogo } from 'public/assets/icons';
+
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-import { IcInsta, IcLogo } from 'public/assets/icons';
 
 const LandingFooter = () => {
   return (
@@ -8,14 +10,22 @@ const LandingFooter = () => {
       <LandingFooterBox>
         <IcLogo />
         <LandingFooterRightTop>
-          <span>개인정보 보호 정책</span>
-          <span>ABOUT US</span>
-          <span>피드백</span>
+          <a href={URL_ABOUT_US} target="_blank" rel="noopener noreferrer">
+            개인정보 보호 정책
+          </a>
+          <a href={URL_PRIVACY_POLICY} target="_blank" rel="noopener noreferrer">
+            ABOUT US
+          </a>
+          <a href={URL_FEEDBACK} target="_blank" rel="noopener noreferrer">
+            피드백
+          </a>
         </LandingFooterRightTop>
       </LandingFooterBox>
       <LandingFooterBox bottom>
-        <LandingFooterEmail>Katchupchoigo@gmail.com</LandingFooterEmail>
-        <IcInsta />
+        <LandingFooterEmail>katchup.is.everywhere@gmail.com</LandingFooterEmail>
+        <a href={URL_INSTAGRAM} target="_blank" rel="noopener noreferrer">
+          <IcInsta />
+        </a>
       </LandingFooterBox>
     </LandingFooterWrapper>
   );
@@ -61,7 +71,10 @@ const LandingFooterRightTop = styled.div`
   font-weight: 600;
   line-height: normal;
 
-  span {
+  a {
+    color: inherit;
+    text-decoration: none;
+
     cursor: pointer;
   }
 `;
