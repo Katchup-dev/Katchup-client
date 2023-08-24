@@ -18,28 +18,43 @@ const FileInput = () => {
 
   const fileSizeModal = useModal();
 
+  const handleFileModification = (file: File) => {
+    let modifiedName = file.name;
+
+    if (isChecked) {
+      const originalName = file.name.substring(0, file.name.lastIndexOf('.'));
+      const extension = file.name.substring(file.name.lastIndexOf('.'));
+
+      modifiedName = `카테고리_업무_세부업무_${originalName}${extension}`;
+    }
+
+    if (file.size > sizeLimit) {
+      fileSizeModal.toggle();
+    } else {
+      const modifiedFile = new File([file], modifiedName);
+      setFileInput((prev) => [...prev, modifiedFile]);
+    }
+  };
+
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files && files.length > 0) {
       const file = files[0];
-
-      let modifiedName = file.name;
-
-      if (isChecked) {
-        const originalName = file.name.substring(0, file.name.lastIndexOf('.'));
-        const extension = file.name.substring(file.name.lastIndexOf('.'));
-
-        modifiedName = `카테고리_업무_세부업무_${originalName}${extension}`;
-      }
-      console.log('modifiedName', modifiedName);
-
-      if (file.size > sizeLimit) {
-        fileSizeModal.toggle();
-      } else {
-        const modifiedFile = new File([file], modifiedName);
-        setFileInput((prev) => [...prev, modifiedFile]);
-      }
+      handleFileModification(file);
     }
+  };
+
+  const handleFileDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    const files = e.dataTransfer.files;
+    if (files && files.length > 0) {
+      const file = files[0];
+      handleFileModification(file);
+    }
+  };
+
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
   };
 
   const handleFileBtnClick = () => {
@@ -78,7 +93,7 @@ const FileInput = () => {
             파일명 자동 변경
           </label>
         </StFileSelect>
-        <StFileInput>
+        <StFileInput onDrop={handleFileDrop} onDragOver={handleDragOver}>
           {fileInput.length ? (
             fileInput.map((file, index) => (
               <p key={index}>
