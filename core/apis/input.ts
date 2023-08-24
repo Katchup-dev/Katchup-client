@@ -84,7 +84,7 @@ export const getKeywords = async (taskId: number) => {
 export const postKeywords = async (keywordInfo: PostKeywordInfo) => {
   try {
     console.log(keywordInfo);
-    const { data } = await client.post(`/cards/keywords`, keywordInfo);
+    const { data } = await client.post(`/keywords`, keywordInfo);
     console.log(data);
     return data;
   } catch (error) {

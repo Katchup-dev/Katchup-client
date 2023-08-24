@@ -55,3 +55,8 @@ export const keywordListState = atom<number[]>({
   key: 'keywordList',
   default: [],
 });
+
+export const etcState = atom<string>({
+  key: 'etc',
+  default: '',
+});

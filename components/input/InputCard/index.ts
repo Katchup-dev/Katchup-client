@@ -1,1 +1,1 @@
-export { default as CardModal } from './CardModal';
+export { default as CardModal } from './ModalCard';
