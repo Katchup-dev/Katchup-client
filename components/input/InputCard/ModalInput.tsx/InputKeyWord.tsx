@@ -78,7 +78,7 @@ const InputKeyWord = () => {
             onFocus={() => setIsKeywordFocused(true)}
             onBlur={() => setIsKeywordFocused(false)}
             placeholder="업무 내용을 잘 나타내는 키워드를 입력해 주세요."
-            disabled={!selectedTask}
+            disabled={selectedTask.taskId === 0 ? true : false}
             autoComplete="off"
           />
         </StSelectedKeywords>

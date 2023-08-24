@@ -35,7 +35,7 @@ const InputTask = () => {
         onBlur={() => setIsTaskFocused(false)}
         placeholder="업무를 입력해 주세요."
         maxLength={20}
-        disabled={!selectedCategory}
+        disabled={selectedCategory.categoryId === 0 ? true : false}
         autoComplete="off"
       />
       {isTaskFocused && <DropdownTask inputValue={task} />}
