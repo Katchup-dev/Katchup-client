@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 
 import styled from '@emotion/styled';
+import { getFilePresignedUrl, putFile } from 'core/apis/input';
 
 const FileInput = () => {
   const [fileInput, setFileInput] = useState<File[]>([]);
@@ -19,6 +20,14 @@ const FileInput = () => {
   const selectedCatecory = useRecoilValue(categorySelectState);
   const selectedTask = useRecoilValue(subTaskSelectState);
   const selectedSubTask = useRecoilValue(taskSelectState);
+
+  // 파일 업로드 시 presigned url 받아오고 put 요청으로 s3에 올리는 코드
+  const handlePostFile = async (fileUrl: string, file: File) => {
+    const response = await getFilePresignedUrl(fileUrl);
+    if (response) {
+      await putFile(response.data.filePreSignedUrl, file);
+    }
+  };
 
   const handleFileModification = (file: File) => {
     // FIX : '업무 카드 생성' 시 파일명 변경되게 변경해야함
@@ -42,6 +51,7 @@ const FileInput = () => {
     const files = e.target.files;
     if (files && files.length > 0) {
       const file = files[0];
+      handlePostFile(file.name, file);
       handleFileModification(file);
     }
   };

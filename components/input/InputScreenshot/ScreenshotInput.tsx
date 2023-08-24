@@ -3,6 +3,7 @@ import { IcBtnDeleteScreenshot, IcKatchupLogo, IcScreenshotEmpty } from 'public/
 import React, { useEffect, useRef, useState } from 'react';
 
 import styled from '@emotion/styled';
+import { getPresignedUrl, putScreenshot } from 'core/apis/input';
 
 const ScreenshotInput = () => {
   const [screenshotInput, setScreenshotInput] = useState<File[]>([]);
@@ -12,10 +13,20 @@ const ScreenshotInput = () => {
   const [toastMessage, setToastMessage] = useState('');
   const [toastKey, setToastKey] = useState<number>();
 
+  // 스크린 샷 업로드 시 presigned url 받아오고 put 요청으로 s3에 올리는 코드
+  const handlePostScreenShot = async (screenshot: string, file: File) => {
+    const response = await getPresignedUrl(screenshot);
+    if (response) {
+      await putScreenshot(response.data.screenshotPreSignedUrl, file);
+    }
+  };
+
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files && files.length > 0) {
       const newFiles = Array.from(files);
+      handlePostScreenShot(newFiles[0].name, newFiles[0]);
+
       setScreenshotInput((prev) => [...prev, ...newFiles]);
     }
   };

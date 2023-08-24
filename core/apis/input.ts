@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { client } from 'lib/axios';
 import { PostCardInfo, PostKeywordInfo, PostSubTaskInfo, PostTaskInfo } from 'types/input';
 
@@ -98,6 +99,46 @@ export const postCard = async (cardInfo: PostCardInfo) => {
   try {
     const { data } = await client.post(`/cards`, cardInfo);
     console.log(data);
+    return data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+// ---- 스크린샷 presigned url 생성 ----
+export const getPresignedUrl = async (screenshotName: string) => {
+  try {
+    const { data } = await client.get(`/screenshots/presigned`, { params: { screenshotName } });
+    return data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+// ---- 스크린샷 업로드 ----
+export const putScreenshot = async (presignedUrl: string, file: File) => {
+  try {
+    const { data } = await axios.put(`${presignedUrl}`, file);
+    return data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+// ---- 파일 presigned url 생성 ----
+export const getFilePresignedUrl = async (fileName: string) => {
+  try {
+    const { data } = await client.get(`/files/presigned`, { params: { fileName } });
+    return data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+// ---- 파일 업로드 ----
+export const putFile = async (presignedUrl: string, file: File) => {
+  try {
+    const { data } = await axios.put(`${presignedUrl}`, file);
     return data;
   } catch (error) {
     console.error(error);

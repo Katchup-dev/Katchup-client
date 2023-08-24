@@ -10,10 +10,10 @@ const LandingFooter = () => {
       <LandingFooterBox>
         <IcLogo />
         <LandingFooterRightTop>
-          <a href={URL_ABOUT_US} target="_blank" rel="noopener noreferrer">
+          <a href={URL_PRIVACY_POLICY} target="_blank" rel="noopener noreferrer">
             개인정보 보호 정책
           </a>
-          <a href={URL_PRIVACY_POLICY} target="_blank" rel="noopener noreferrer">
+          <a href={URL_ABOUT_US} target="_blank" rel="noopener noreferrer">
             ABOUT US
           </a>
           <a href={URL_FEEDBACK} target="_blank" rel="noopener noreferrer">
