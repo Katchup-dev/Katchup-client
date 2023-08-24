@@ -1,8 +1,16 @@
 import { ColorKey, KEYWORDS_COLOR } from 'constants/keywords';
-import { categorySelectState, subTaskSelectState, taskSelectState } from 'core/atom';
+import {
+  categorySelectState,
+  keywordListState,
+  keywordSelectState,
+  subTaskSelectState,
+  taskSelectState,
+} from 'core/atom';
+import { usePostCard } from 'lib/hooks/input/usePostCard';
 import { IcBtnDeletePopup } from 'public/assets/icons';
 import React, { useEffect, useState } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { InputKeywordInfo, PostCardInfo } from 'types/input';
 
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
@@ -14,6 +22,11 @@ interface ModalProps {
   handleHide: React.MouseEventHandler;
 }
 
+interface KeywordProps {
+  name: string;
+  background: string;
+  color: string;
+}
 const CardModal = (props: ModalProps) => {
   const { isShowing, handleHide } = props;
   const [category, setCategory] = useState('');
@@ -36,11 +49,17 @@ const CardModal = (props: ModalProps) => {
   const selectedCategory = useRecoilValue(categorySelectState);
   const selectedTask = useRecoilValue(taskSelectState);
   const selectedSubTask = useRecoilValue(subTaskSelectState);
+  const [selectedKeywords, setSelectedKeywords] = useRecoilState(keywordSelectState);
+  const selectedKeywordsArray = selectedKeywords as InputKeywordInfo[];
+
+  const keywordList = useRecoilValue(keywordListState);
   const [keywordColor, setKeywordColor] = useState({
     name: '',
     background: '',
     color: '',
   });
+
+  const { createCard } = usePostCard();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -68,7 +87,15 @@ const CardModal = (props: ModalProps) => {
     }
   };
 
-  const handleNext = (e: React.MouseEvent<HTMLButtonElement>) => {};
+  const handleNext = (e: React.MouseEvent<HTMLButtonElement>) => {
+    // const cardData: PostCardInfo = {
+    //   categoryId: selectedCategory.categoryId,
+    //   taskId: selectedTask.taskId,
+    //   subTaskId: selectedSubTask.subTaskId,
+    //   keywordIdList:
+    // };
+    // createCard(cardData);
+  };
 
   const handleSettingColor = () => {
     const colorKeys: ColorKey[] = Object.keys(KEYWORDS_COLOR) as ColorKey[];
@@ -168,7 +195,27 @@ const CardModal = (props: ModalProps) => {
                 placeholder="업무 내용을 잘 나타내는 키워드를 입력해 주세요."
                 autoComplete="off"
               />
-              {isKeywordFocused && <DropdownKeyword inputValue={keyword} keywordColor={keywordColor} />}
+              {isKeywordFocused && (
+                <>
+                  {selectedKeywordsArray.map((selectedKeyword, index) => (
+                    <StDropdownKeyworkText
+                      key={index}
+                      keywordColor={{
+                        name: selectedKeyword.color,
+                        background: selectedKeyword.color,
+                        color: '#ffffff', // You can set the text color to white or another suitable color
+                      }}>
+                      {selectedKeyword.name}
+                    </StDropdownKeyworkText>
+                  ))}
+                  <DropdownKeyword
+                    inputValue={keyword}
+                    keywordColor={keywordColor}
+                    // onKeywordSelect={handleKeywordSelection} // Pass the selection handler
+                    // selectedKeywords={selectedKeywords} // Pass the selected keywords
+                  />
+                </>
+              )}
             </StInputIndex>
             <StInputEtc isFocused={isEtcFocused}>
               비고
@@ -195,6 +242,22 @@ const CardModal = (props: ModalProps) => {
 
 export default CardModal;
 
+const StDropdownKeyworkText = styled.div<{ keywordColor: KeywordProps }>`
+  width: fit-content;
+
+  border-radius: 0.8rem;
+  background-color: ${({ keywordColor }) => keywordColor.background};
+  color: ${({ keywordColor }) => keywordColor.color};
+
+  font-family: Pretendard;
+  font-size: 1.3rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+
+  cursor: pointer;
+`;
+
 const StModalWrapper = styled.div`
   display: flex;
   justify-content: center;
@@ -203,6 +266,7 @@ const StModalWrapper = styled.div`
   position: fixed;
   top: 0;
   left: 0;
+  z-index: 1;
 
   width: 100%;
   height: 100%;

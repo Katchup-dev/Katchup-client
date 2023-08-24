@@ -23,12 +23,18 @@ const DropdownKeyword = ({ inputValue, keywordColor }: DropdownKeywordProps) => 
   const taskSelect = useRecoilValue(taskSelectState);
   const { keywords } = useGetKeywords(taskSelect.taskId);
   const postKeyword = usePostKeyword();
-  const [keywordSelect, setKeywordSelect] = useState<InputKeywordInfo>();
+  const [keywordSelect, setKeywordSelect] = useState<InputKeywordInfo[]>([]);
   let addArr: InputKeywordInfo[] = [];
   let isAdd = true;
 
+  console.log(keywordSelect);
+
   const handleOptionClick = (option: InputKeywordInfo) => {
-    setKeywordSelect(option);
+    if (keywordSelect.some((selected) => selected.keywordId === option.keywordId)) {
+      setKeywordSelect((prevSelected) => prevSelected.filter((selected) => selected.keywordId !== option.keywordId));
+    } else {
+      setKeywordSelect((prevSelected) => [...prevSelected, option]);
+    }
   };
 
   const handleAddIndex = () => {

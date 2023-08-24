@@ -90,6 +90,7 @@ export const postKeywords = async (keywordInfo: PostKeywordInfo) => {
 };
 
 // ----- 업무 카드 생성 -----
+
 export const postCard = async (cardInfo: PostCardInfo) => {
   try {
     const { data } = await client.post(`/cards`, cardInfo);
