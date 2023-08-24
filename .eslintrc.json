@@ -15,7 +15,8 @@
     "plugin:@typescript-eslint/recommended",
     "plugin:import/typescript",
     "plugin:prettier/recommended",
-    "plugin:import/recommended"
+    "plugin:import/recommended",
+    "plugin:@emotion/recommended"
   ],
   "rules": {
     "indent": ["off", 2, { "SwitchCase": 1 }], // 들여쓰기 몇 칸? 기본 2칸으로 하되, switch문에서는 1칸으로 지정
