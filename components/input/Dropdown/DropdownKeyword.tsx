@@ -28,13 +28,13 @@ const DropdownKeyword = ({ inputValue, keywordColor }: DropdownKeywordProps) => 
   let isAdd = true;
 
   const handleOptionClick = (option: InputKeywordInfo) => {
-    // if (keywordSelect.some((selected) => selected.keywordId === option.keywordId)) {
-    //   setKeywordSelect((prevSelected) => prevSelected.filter((selected) => selected.keywordId !== option.keywordId));
-    // } else {
-    console.log('option', option);
-    console.log('keywordSelect', keywordSelect);
-    setKeywordSelect((prevSelected) => [...prevSelected, option]);
-    // }
+    if (keywordSelect.some((selected) => selected.keywordId === option.keywordId)) {
+      return;
+    } else {
+      console.log('option', option);
+      console.log('keywordSelect', keywordSelect);
+      setKeywordSelect((prevSelected) => [...prevSelected, option]);
+    }
   };
 
   const handleAddIndex = () => {
@@ -89,8 +89,11 @@ const StDropdown = styled.ul`
   height: max-content;
   max-height: 20rem;
   overflow-y: auto;
+  box-sizing: border-box;
 
   padding: 1.2rem 1.4rem;
+  margin-left: -1.4rem;
+  margin-top: 1rem;
 
   border: 0.1rem solid #e2e2e2;
   border-radius: 0 0 0.8rem 0.8rem;

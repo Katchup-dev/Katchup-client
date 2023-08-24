@@ -1,12 +1,12 @@
-import { categorySelectState } from "core/atom";
-import { useGetCategories } from "lib/hooks/input/useGetIndex";
-import { IcBtnAddIndex } from "public/assets/icons";
-import { useRecoilState } from "recoil";
-import { InputCategoryInfo } from "types/input";
+import { categorySelectState } from 'core/atom';
+import { useGetCategories } from 'lib/hooks/input/useGetIndex';
+import { IcBtnAddIndex } from 'public/assets/icons';
+import { useRecoilState } from 'recoil';
+import { InputCategoryInfo } from 'types/input';
 
-import styled from "@emotion/styled";
+import styled from '@emotion/styled';
 
-import { usePostCategory } from "../../../lib/hooks/input/usePostIndex";
+import { usePostCategory } from '../../../lib/hooks/input/usePostIndex';
 
 interface dropdownIndexProps {
   inputValue: string;
@@ -76,11 +76,6 @@ const StDropdown = styled.ul`
 
   overflow: auto;
   padding: 1.2rem 1.4rem;
-
-  /* -ms-overflow-style: none;
-  ::-webkit-scrollbar {
-    display: none;
-  } */
 
   border: 0.1rem solid #e2e2e2;
   border-radius: 0 0 0.8rem 0.8rem;

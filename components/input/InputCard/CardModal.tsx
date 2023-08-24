@@ -1,4 +1,5 @@
 import { ColorKey, KEYWORDS_COLOR } from 'constants/keywords';
+import { getDetailPage } from 'core/apis/output';
 import {
   categorySelectState,
   keywordListState,
@@ -191,42 +192,39 @@ const CardModal = (props: ModalProps) => {
                 <span>{subTaskCount}</span>/20
               </p>
             </StInputIndex>
-            <StInputKeyword isFocused={isKeywordFocused}>
+            <StInputIndex isFocused={isKeywordFocused}>
               키워드
-              <div style={{ position: 'relative' }}>
-                <input
-                  type="text"
-                  name="keyword"
-                  value={keyword}
-                  onChange={handleInputChange}
-                  onClick={handleSettingColor}
-                  onFocus={() => setIsKeywordFocused(true)}
-                  onBlur={() => setIsKeywordFocused(false)}
-                  placeholder="업무 내용을 잘 나타내는 키워드를 입력해 주세요."
-                  autoComplete="off"></input>
-                {selectedKeywordsArray.map((selectedKeyword, index) => (
-                  <StDropdownKeyworkText
-                    key={index}
-                    keywordColor={{
-                      name: selectedKeyword.color,
-                      background: getColorByName(selectedKeyword.color as ColorKey).background,
-                      color: getColorByName(selectedKeyword.color as ColorKey).color,
-                    }}>
-                    {selectedKeyword.name}
-                  </StDropdownKeyworkText>
-                ))}
-              </div>
-              {isKeywordFocused && (
-                <>
-                  <DropdownKeyword
-                    inputValue={keyword}
-                    keywordColor={keywordColor}
-                    // selectedKeywords={selectedKeywordsArray}
-                    // setSelectedKeywords={setSelectedKeywords}
-                  />
-                </>
-              )}
-            </StInputKeyword>
+              <StInputKeyword isFocused={isKeywordFocused}>
+                <StSelectedKeywords>
+                  {selectedKeywordsArray.map((selectedKeyword, index) => (
+                    <StDropdownKeyworkText
+                      key={index}
+                      keywordColor={{
+                        name: selectedKeyword.color,
+                        background: getColorByName(selectedKeyword.color as ColorKey).background,
+                        color: getColorByName(selectedKeyword.color as ColorKey).color,
+                      }}>
+                      {selectedKeyword.name}
+                    </StDropdownKeyworkText>
+                  ))}
+                  <input
+                    type="text"
+                    name="keyword"
+                    value={keyword}
+                    onChange={handleInputChange}
+                    onClick={handleSettingColor}
+                    onFocus={() => setIsKeywordFocused(true)}
+                    onBlur={() => setIsKeywordFocused(false)}
+                    placeholder="업무 내용을 잘 나타내는 키워드를 입력해 주세요."
+                    autoComplete="off"></input>
+                </StSelectedKeywords>
+                {isKeywordFocused && (
+                  <>
+                    <DropdownKeyword inputValue={keyword} keywordColor={keywordColor} />
+                  </>
+                )}
+              </StInputKeyword>
+            </StInputIndex>
             <StInputEtc isFocused={isEtcFocused}>
               비고
               <textarea
@@ -326,7 +324,6 @@ const StInputIndex = styled.label<{ isFocused: boolean }>`
     ::placeholder {
       color: ${({ theme }) => theme.colors.katchup_gray};
     }
-
     outline: none;
   }
 
@@ -345,39 +342,15 @@ const StInputIndex = styled.label<{ isFocused: boolean }>`
   }
 `;
 
-const StInputKeyword = styled(StInputIndex)`
-  & > div {
-    margin-top: 0.4rem;
-    margin-bottom: 2.2rem;
+const StSelectedKeywords = styled.ul`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
 
-    & > input {
-      width: 100%;
-      padding: 1.4rem 11.1rem 1.2rem 1.4rem;
-
-      border: 0.1rem solid ${({ theme }) => theme.colors.katchup_line_gray};
-      border-radius: 0.8rem;
-      ${({ theme }) => theme.fonts.h2_smalltitle};
-
-      ${({ isFocused, theme }) =>
-        isFocused
-          ? css`
-              background-color: ${theme.colors.katchup_light_gray};
-              box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.23);
-            `
-          : css`
-              background-color: ${theme.colors.katchup_white};
-            `}
-
-      ::placeholder {
-        color: ${({ theme }) => theme.colors.katchup_gray};
-      }
-
-      outline: none;
-    }
-  }
+  width: 100%;
 `;
 
-const StDropdownKeyworkText = styled.div<{ keywordColor: KeywordProps }>`
+const StDropdownKeyworkText = styled.li<{ keywordColor: KeywordProps }>`
   width: fit-content;
   padding: 0.5rem 1rem;
 
@@ -392,6 +365,51 @@ const StDropdownKeyworkText = styled.div<{ keywordColor: KeywordProps }>`
   line-height: normal;
 
   cursor: pointer;
+`;
+
+const StInputKeyword = styled.div<{ isFocused: boolean }>`
+  position: relative;
+  margin-top: 0.4rem;
+  margin-bottom: 2.2rem;
+
+  width: 100%;
+  padding: 1.2rem 1.4rem;
+
+  border: 0.1rem solid ${({ theme }) => theme.colors.katchup_line_gray};
+  border-radius: 0.8rem;
+
+  ${({ isFocused, theme }) =>
+    isFocused
+      ? css`
+          background-color: ${theme.colors.katchup_light_gray};
+          box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.23);
+        `
+      : css`
+          background-color: ${theme.colors.katchup_white};
+        `}
+
+  & > ul > input {
+    width: 100%;
+
+    margin-top: 0.6rem;
+
+    border: none;
+    ${({ theme }) => theme.fonts.h2_smalltitle};
+    ${({ isFocused, theme }) =>
+      isFocused
+        ? css`
+            background-color: ${theme.colors.katchup_light_gray};
+          `
+        : css`
+            background-color: ${theme.colors.katchup_white};
+          `}
+
+    ::placeholder {
+      color: ${({ theme }) => theme.colors.katchup_gray};
+    }
+
+    outline: none;
+  }
 `;
 
 const StInputEtc = styled(StInputIndex)`

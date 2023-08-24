@@ -35,7 +35,7 @@ export const taskSelectState = atom<InputTaskInfo>({
 
 export const keywordSelectState = atom<InputKeywordInfo[]>({
   key: 'keywordSelect',
-  default: [{ keywordId: 0, name: '', color: '' }],
+  default: [],
 });
 
 export const subTaskSelectState = atom<InputSubTaskInfo>({
