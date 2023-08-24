@@ -1,17 +1,17 @@
 import { ColorKey, KEYWORDS_COLOR } from 'constants/keywords';
-import { getDetailPage } from 'core/apis/output';
 import {
   categorySelectState,
   keywordListState,
   keywordSelectState,
   subTaskSelectState,
   taskSelectState,
+  workInputState,
 } from 'core/atom';
 import { usePostCard } from 'lib/hooks/input/usePostCard';
 import { IcBtnDeletePopup } from 'public/assets/icons';
 import React, { useEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { InputKeywordInfo, PostCardInfo } from 'types/input';
+import { InputKeywordInfo, PostCardInfo, PostScreenshotListInfo, PostStickerListInfo } from 'types/input';
 
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
@@ -53,12 +53,30 @@ const CardModal = (props: ModalProps) => {
   const [selectedKeywords, setSelectedKeywords] = useRecoilState<InputKeywordInfo[]>(keywordSelectState);
   const selectedKeywordsArray = selectedKeywords as InputKeywordInfo[];
 
-  const keywordList = useRecoilValue(keywordListState);
+  const [keywordList, setKeywordList] = useRecoilState(keywordListState);
   const [keywordColor, setKeywordColor] = useState({
     name: '',
     background: '',
     color: '',
   });
+
+  const workInput = useRecoilValue(workInputState);
+
+  // 임시 스크린샷, 스티커
+  const stickerList: PostStickerListInfo[] = [
+    {
+      order: '',
+      x: '',
+      y: '',
+    },
+  ];
+  const screenshotList: PostScreenshotListInfo[] = [
+    {
+      screenshotUUID: '',
+      screenshotUrl: '',
+      stickerList: stickerList,
+    },
+  ];
 
   const { createCard } = usePostCard();
 
@@ -89,13 +107,21 @@ const CardModal = (props: ModalProps) => {
   };
 
   const handleNext = (e: React.MouseEvent<HTMLButtonElement>) => {
-    // const cardData: PostCardInfo = {
-    //   categoryId: selectedCategory.categoryId,
-    //   taskId: selectedTask.taskId,
-    //   subTaskId: selectedSubTask.subTaskId,
-    //   keywordIdList:
-    // };
-    // createCard(cardData);
+    const keywordIdArray: number[] = selectedKeywords.map((keywordInfo) => keywordInfo.keywordId);
+    console.log(keywordIdArray);
+
+    const cardData: PostCardInfo = {
+      categoryId: selectedCategory.categoryId,
+      taskId: selectedTask.taskId,
+      subTaskId: selectedSubTask.subTaskId,
+      keywordIdList: keywordIdArray,
+      screenshotList: screenshotList,
+      note: etc,
+      content: workInput,
+    };
+    console.log('cardData', cardData);
+
+    createCard(cardData);
   };
 
   const getColorByName = (name: ColorKey) => {
