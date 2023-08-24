@@ -1,9 +1,11 @@
 import { ModalOneButton } from 'components/common/Modal';
 import Toast from 'components/common/Toast';
 import { MODAL_FILE_SIZE } from 'constants/modal';
+import { categorySelectState, subTaskSelectState, taskSelectState } from 'core/atom';
 import useModal from 'lib/hooks/useModal';
 import { IcBtnDeleteFile, IcFileCheckbox, IcFileCheckboxAfter, IcKatchupLogo } from 'public/assets/icons';
 import { useEffect, useRef, useState } from 'react';
+import { useRecoilValue } from 'recoil';
 
 import styled from '@emotion/styled';
 
@@ -18,6 +20,10 @@ const FileInput = () => {
 
   const fileSizeModal = useModal();
 
+  const selectedCatecory = useRecoilValue(categorySelectState);
+  const selectedTask = useRecoilValue(subTaskSelectState);
+  const selectedSubTask = useRecoilValue(taskSelectState);
+
   const handleFileModification = (file: File) => {
     let modifiedName = file.name;
 
@@ -25,7 +31,7 @@ const FileInput = () => {
       const originalName = file.name.substring(0, file.name.lastIndexOf('.'));
       const extension = file.name.substring(file.name.lastIndexOf('.'));
 
-      modifiedName = `카테고리_업무_세부업무_${originalName}${extension}`;
+      modifiedName = `${selectedCatecory.name}_${selectedTask.name}_${selectedSubTask.name}_${originalName}${extension}`;
     }
 
     if (file.size > sizeLimit) {
