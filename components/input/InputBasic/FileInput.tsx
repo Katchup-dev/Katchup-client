@@ -22,10 +22,22 @@ const FileInput = () => {
     const files = e.target.files;
     if (files && files.length > 0) {
       const file = files[0];
+
+      let modifiedName = file.name;
+
+      if (isChecked) {
+        const originalName = file.name.substring(0, file.name.lastIndexOf('.'));
+        const extension = file.name.substring(file.name.lastIndexOf('.'));
+
+        modifiedName = `카테고리_업무_세부업무_${originalName}${extension}`;
+      }
+      console.log('modifiedName', modifiedName);
+
       if (file.size > sizeLimit) {
         fileSizeModal.toggle();
       } else {
-        setFileInput((prev) => [...prev, file]);
+        const modifiedFile = new File([file], modifiedName);
+        setFileInput((prev) => [...prev, modifiedFile]);
       }
     }
   };
