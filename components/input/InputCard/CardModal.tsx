@@ -274,7 +274,7 @@ const StCardModal = styled.section`
   position: relative;
 
   width: 63.8rem;
-  height: 83.8rem;
+  height: fit-content;
   padding: 4rem 6rem 4rem 6rem;
 
   border-radius: 2.6rem;
@@ -372,7 +372,7 @@ const StDropdownKeyworkText = styled.li<{ keywordColor: KeywordProps }>`
 const StInputKeyword = styled.div<{ isFocused: boolean }>`
   position: relative;
   margin-top: 0.4rem;
-  /* margin-bottom: 2.2rem; */
+  margin-bottom: 2.2rem;
 
   width: 100%;
   padding: 1.2rem 1.4rem;
@@ -447,4 +447,5 @@ const StNextBtn = styled.button<{ disabled: boolean }>`
   border-radius: 0.8rem;
   color: ${({ theme }) => theme.colors.katchup_white};
   background-color: ${({ theme, disabled }) => (disabled ? theme.colors.katchup_gray : theme.colors.katchup_main)};
+  ${({ theme }) => theme.fonts.h3_title};
 `;
