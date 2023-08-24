@@ -1,33 +1,62 @@
 import { ModalOneButton } from 'components/common/Modal';
-import Toast from 'components/common/Toast';
 import { MODAL_FILE_SIZE } from 'constants/modal';
+import { categorySelectState, subTaskSelectState, taskSelectState } from 'core/atom';
 import useModal from 'lib/hooks/useModal';
 import { IcBtnDeleteFile, IcFileCheckbox, IcFileCheckboxAfter, IcKatchupLogo } from 'public/assets/icons';
 import { useEffect, useRef, useState } from 'react';
+import { useRecoilValue } from 'recoil';
 
 import styled from '@emotion/styled';
 
 const FileInput = () => {
   const [fileInput, setFileInput] = useState<File[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [isChecked, setIsChecked] = useState(false);
+  const [isChecked, setIsChecked] = useState(true);
   const sizeLimit = 10 * 1024 * 1024;
 
-  const [toastMessage, setToastMessage] = useState('');
-  const [toastKey, setToastKey] = useState<number>();
-
   const fileSizeModal = useModal();
+
+  const selectedCatecory = useRecoilValue(categorySelectState);
+  const selectedTask = useRecoilValue(subTaskSelectState);
+  const selectedSubTask = useRecoilValue(taskSelectState);
+
+  const handleFileModification = (file: File) => {
+    // FIX : '업무 카드 생성' 시 파일명 변경되게 변경해야함
+    let modifiedName = file.name;
+
+    if (isChecked) {
+      const originalName = file.name.substring(0, file.name.lastIndexOf('.'));
+      const extension = file.name.substring(file.name.lastIndexOf('.'));
+      modifiedName = `${selectedCatecory.name}_${selectedTask.name}_${selectedSubTask.name}_${originalName}${extension}`;
+    }
+
+    if (file.size > sizeLimit) {
+      fileSizeModal.toggle();
+    } else {
+      // const modifiedFile = new File([file], modifiedName);
+      setFileInput((prev) => [...prev, file]);
+    }
+  };
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files && files.length > 0) {
       const file = files[0];
-      if (file.size > sizeLimit) {
-        fileSizeModal.toggle();
-      } else {
-        setFileInput((prev) => [...prev, file]);
-      }
+      handleFileModification(file);
     }
+  };
+
+  const handleFileDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    const files = e.dataTransfer.files;
+    if (files && files.length > 0) {
+      const file = files[0];
+      handleFileModification(file);
+    }
+  };
+
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
   };
 
   const handleFileBtnClick = () => {
@@ -41,13 +70,6 @@ const FileInput = () => {
   const handleCheckboxChange = () => {
     setIsChecked((prev) => !prev);
   };
-
-  useEffect(() => {
-    if (isChecked) {
-      setToastMessage('곧 추가될 예정이에요! Coming soon..');
-      setToastKey(Date.now());
-    }
-  }, [isChecked]);
 
   return (
     <>
@@ -66,7 +88,7 @@ const FileInput = () => {
             파일명 자동 변경
           </label>
         </StFileSelect>
-        <StFileInput>
+        <StFileInput onDrop={handleFileDrop} onDragOver={handleDragOver}>
           {fileInput.length ? (
             fileInput.map((file, index) => (
               <p key={index}>
@@ -91,9 +113,6 @@ const FileInput = () => {
         buttonName={'확인'}
         handleButton={fileSizeModal.toggle}
       />
-      <StToastWrapper>
-        <Toast key={toastKey} message={toastMessage} />
-      </StToastWrapper>
     </>
   );
 };
