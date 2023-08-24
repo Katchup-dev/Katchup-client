@@ -216,7 +216,9 @@ const CardModal = (props: ModalProps) => {
                     onFocus={() => setIsKeywordFocused(true)}
                     onBlur={() => setIsKeywordFocused(false)}
                     placeholder="업무 내용을 잘 나타내는 키워드를 입력해 주세요."
-                    autoComplete="off"></input>
+                    disabled={!task.length}
+                    autoComplete="off"
+                  />
                 </StSelectedKeywords>
                 {isKeywordFocused && (
                   <>
@@ -370,7 +372,7 @@ const StDropdownKeyworkText = styled.li<{ keywordColor: KeywordProps }>`
 const StInputKeyword = styled.div<{ isFocused: boolean }>`
   position: relative;
   margin-top: 0.4rem;
-  margin-bottom: 2.2rem;
+  /* margin-bottom: 2.2rem; */
 
   width: 100%;
   padding: 1.2rem 1.4rem;

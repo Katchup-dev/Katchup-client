@@ -31,11 +31,10 @@ const DropdownKeyword = ({ inputValue, keywordColor }: DropdownKeywordProps) => 
     if (keywordSelect.some((selected) => selected.keywordId === option.keywordId)) {
       return;
     } else {
-      console.log('option', option);
-      console.log('keywordSelect', keywordSelect);
       setKeywordSelect((prevSelected) => [...prevSelected, option]);
     }
   };
+  console.log('keywordSelect', keywordSelect);
 
   const handleAddIndex = () => {
     const keywordData = { taskId: taskSelect.taskId, name: inputValue, color: keywordColor.name };
@@ -81,8 +80,6 @@ export default DropdownKeyword;
 
 const StDropdown = styled.ul`
   position: absolute;
-  top: 7.2rem;
-
   z-index: 1;
 
   width: 100%;
