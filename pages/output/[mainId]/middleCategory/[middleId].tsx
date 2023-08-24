@@ -1,4 +1,3 @@
-import styled from '@emotion/styled';
 import MainCategoryList from 'components/output/MainCategoryList';
 import NoMiddleCategory from 'components/output/NoMiddleCategory';
 import WorkCard from 'components/output/WorkCard';
@@ -7,7 +6,9 @@ import { useGetMiddleCategoryList } from 'lib/hooks/useGetMiddleCategory';
 import useGetWorkCard from 'lib/hooks/useGetWorkCard';
 import Link from 'next/link';
 import { IcBack, IcDeleteWorkCard, IcEditMiddleCategory, IcWorkCardFilter } from 'public/assets/icons';
-import { WorkCardInfo, middleCtxType } from 'types/output';
+import { middleCtxType, WorkCardInfo } from 'types/output';
+
+import styled from '@emotion/styled';
 
 const WorkCardPage = ({ mainId, middleId }: { mainId: string; middleId: string }) => {
   const { mainCategoryList } = useGetMainCategoryList();
@@ -38,7 +39,7 @@ const WorkCardPage = ({ mainId, middleId }: { mainId: string; middleId: string }
           </StSettingButtonWrapper>
 
           <header>
-            <h1>{middleCategoryList && middleCategoryList.find((item) => item.folderId === Number(middleId)).name}</h1>
+            {/* <h1>{middleCategoryList && middleCategoryList.find((item) => item.folderId === Number(middleId)).name}</h1> */}
             <button>
               <IcEditMiddleCategory />
             </button>

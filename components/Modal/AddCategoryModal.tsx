@@ -1,13 +1,13 @@
-import styled from '@emotion/styled';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { NEW_CATEGORY_REGEX } from 'constants/output';
 import { postNewMainCategory, postNewMiddleCategory } from 'core/apis/output';
 import { useGetMainCategoryList } from 'lib/hooks/useGetMainCategoryList';
 import { useGetMiddleCategoryList } from 'lib/hooks/useGetMiddleCategory';
 import { useRouter } from 'next/router';
-
 import { IcDeleteModal } from 'public/assets/icons';
 import { useCallback, useRef, useState } from 'react';
+
+import styled from '@emotion/styled';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 export interface AddCategoryModalProps {
   isMainCategory: boolean;
@@ -63,12 +63,11 @@ const AddCategoryModal = (props: AddCategoryModalProps & { mainId: string }) => 
     const currentInputValue = e.target.value;
 
     if (NEW_CATEGORY_REGEX.test(currentInputValue)) {
-      const duplicateValue =
-        mainCategoryList && isMainCategory
-          ? mainCategoryList.find((item) => item.name === currentInputValue)
-          : middleCategoryList && !isMainCategory
-          ? middleCategoryList.find((item) => item.name === currentInputValue)
-          : undefined;
+      const duplicateValue = mainCategoryList && isMainCategory;
+      // ? mainCategoryList.find((item) => item.name === currentInputValue)
+      // : middleCategoryList && !isMainCategory
+      // ? middleCategoryList.find((item) => item.name === currentInputValue)
+      // : undefined;
       if (duplicateValue === undefined) {
         setIsCategoryAvailable(true);
         setWarningMsg('');

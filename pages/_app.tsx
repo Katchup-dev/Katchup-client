@@ -1,14 +1,14 @@
+import Header from 'components/common/Header';
+import { useEffect } from 'react';
+import { RecoilRoot } from 'recoil';
+import { globalStyle, resetStyle } from 'styles/globalStyle';
+import theme from 'styles/theme';
+
 import { Global, ThemeProvider } from '@emotion/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { globalStyle, resetStyle } from 'styles/globalStyle';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 import type { AppProps } from 'next/app';
-import Header from 'components/common/Header';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { RecoilRoot } from 'recoil';
-import theme from 'styles/theme';
-import { useEffect } from 'react';
-
 const queryClient = new QueryClient();
 
 export default function App({ Component, pageProps }: AppProps) {
