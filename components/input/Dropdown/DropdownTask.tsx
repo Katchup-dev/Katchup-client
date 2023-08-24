@@ -77,6 +77,11 @@ const StDropdown = styled.ul`
   max-height: 20rem;
   overflow-y: auto;
 
+  -ms-overflow-style: none;
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
   z-index: 1;
 
   width: 100%;
