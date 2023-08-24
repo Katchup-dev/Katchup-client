@@ -17,14 +17,15 @@ const DropdownSubTask = ({ inputValue }: dropdownIndexProps) => {
   const taskSelect = useRecoilValue(taskSelectState);
   const [, setSubTaskSelect] = useRecoilState(subTaskSelectState);
   const { subTasks } = useGetSubTasks(taskSelect.taskId);
-  const postSubTask = usePostSubTask();
+  const { createSubTask } = usePostSubTask();
 
   const handleOptionClick = (option: InputSubTaskInfo) => {
     setSubTaskSelect(option);
   };
-  const handleAddIndex = () => {
+  const handleAddIndex = async () => {
     const subTaskData = { taskId: taskSelect.taskId, name: inputValue };
-    postSubTask.createSubTask(subTaskData);
+    const location = await createSubTask(subTaskData);
+    if (location) setSubTaskSelect({ subTaskId: location, name: inputValue });
   };
 
   const displayNewOptions = () => {

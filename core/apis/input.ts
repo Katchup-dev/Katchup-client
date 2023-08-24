@@ -61,7 +61,10 @@ export const postTasks = async (taskInfo: PostTaskInfo) => {
 export const postSubTasks = async (subTaskInfo: PostSubTaskInfo) => {
   try {
     const response = await client.post(`/subTasks`, subTaskInfo);
-    return response;
+    const location = response.headers['location'];
+
+    console.log(location);
+    return location;
   } catch (error) {
     console.error(error);
   }

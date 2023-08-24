@@ -23,10 +23,10 @@ export const usePostTask = () => {
 };
 
 export const usePostSubTask = () => {
-  const { mutate, isLoading, isError } = useMutation(postSubTasks);
+  const { mutateAsync, isLoading, isError } = useMutation(postSubTasks);
 
   return {
-    createSubTask: mutate,
+    createSubTask: mutateAsync,
     isLoading: isLoading,
     error: isError,
   };
