@@ -74,7 +74,7 @@ const StDropdown = styled.ul`
   width: 100%;
   height: 20rem;
 
-  overflow: scroll;
+  overflow: auto;
   padding: 1.2rem 1.4rem;
 
   border: 0.1rem solid #e2e2e2;

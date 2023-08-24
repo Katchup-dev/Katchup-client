@@ -1,9 +1,9 @@
 import { KEYWORDS_COLOR } from 'constants/keywords';
-import { taskSelectState } from 'core/atom';
+import { keywordSelectState, taskSelectState } from 'core/atom';
 import { useGetKeywords, usePostKeyword } from 'lib/hooks/input/useKeyword';
 import { IcBtnAddIndex } from 'public/assets/icons';
 import { useState } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { InputKeywordInfo, PostKeywordInfo } from 'types/input';
 
 import styled from '@emotion/styled';
@@ -23,19 +23,18 @@ const DropdownKeyword = ({ inputValue, keywordColor }: DropdownKeywordProps) => 
   const taskSelect = useRecoilValue(taskSelectState);
   const { keywords } = useGetKeywords(taskSelect.taskId);
   const postKeyword = usePostKeyword();
-  const [keywordSelect, setKeywordSelect] = useState<InputKeywordInfo[]>([]);
+  const [keywordSelect, setKeywordSelect] = useRecoilState<InputKeywordInfo[]>(keywordSelectState);
   let addArr: InputKeywordInfo[] = [];
   let isAdd = true;
 
-  console.log(keywordSelect);
-
   const handleOptionClick = (option: InputKeywordInfo) => {
     if (keywordSelect.some((selected) => selected.keywordId === option.keywordId)) {
-      setKeywordSelect((prevSelected) => prevSelected.filter((selected) => selected.keywordId !== option.keywordId));
+      return;
     } else {
       setKeywordSelect((prevSelected) => [...prevSelected, option]);
     }
   };
+  console.log('keywordSelect', keywordSelect);
 
   const handleAddIndex = () => {
     const keywordData = { taskId: taskSelect.taskId, name: inputValue, color: keywordColor.name };
@@ -81,17 +80,17 @@ export default DropdownKeyword;
 
 const StDropdown = styled.ul`
   position: absolute;
-  top: 7.2rem;
-
   z-index: 1;
 
   width: 100%;
   height: max-content;
   max-height: 20rem;
   overflow-y: auto;
+  box-sizing: border-box;
 
-  overflow: scroll;
   padding: 1.2rem 1.4rem;
+  margin-left: -1.4rem;
+  margin-top: 1rem;
 
   border: 0.1rem solid #e2e2e2;
   border-radius: 0 0 0.8rem 0.8rem;

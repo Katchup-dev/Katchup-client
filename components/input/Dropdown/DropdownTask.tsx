@@ -9,10 +9,9 @@ import styled from '@emotion/styled';
 
 interface dropdownIndexProps {
   inputValue: string;
-  setIsTaskFocused: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const DropdownTask = ({ inputValue, setIsTaskFocused }: dropdownIndexProps) => {
+const DropdownTask = ({ inputValue }: dropdownIndexProps) => {
   let isAdd = true;
   let addArr: InputTaskInfo[] = [];
   const [, setTaskSelect] = useRecoilState(taskSelectState);
@@ -29,7 +28,6 @@ const DropdownTask = ({ inputValue, setIsTaskFocused }: dropdownIndexProps) => {
     const taskData = { categoryId: categorySelect.categoryId, name: inputValue };
     const location = await createTask(taskData);
     if (location) setTaskSelect({ taskId: location, name: inputValue });
-    setIsTaskFocused(false);
   };
 
   const displayNewOptions = () => {
@@ -76,6 +74,11 @@ const StDropdown = styled.ul`
   height: max-content;
   max-height: 20rem;
   overflow-y: auto;
+
+  -ms-overflow-style: none;
+  ::-webkit-scrollbar {
+    display: none;
+  }
 
   z-index: 1;
 

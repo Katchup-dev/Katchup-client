@@ -61,7 +61,10 @@ export const postTasks = async (taskInfo: PostTaskInfo) => {
 export const postSubTasks = async (subTaskInfo: PostSubTaskInfo) => {
   try {
     const response = await client.post(`/subTasks`, subTaskInfo);
-    return response;
+    const location = response.headers['location'];
+
+    console.log(location);
+    return location;
   } catch (error) {
     console.error(error);
   }
@@ -81,7 +84,7 @@ export const getKeywords = async (taskId: number) => {
 export const postKeywords = async (keywordInfo: PostKeywordInfo) => {
   try {
     console.log(keywordInfo);
-    const { data } = await client.post(`/cards/keywords`, keywordInfo);
+    const { data } = await client.post(`/keywords`, keywordInfo);
     console.log(data);
     return data;
   } catch (error) {

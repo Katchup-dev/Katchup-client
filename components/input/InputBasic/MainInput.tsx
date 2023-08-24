@@ -9,7 +9,7 @@ import { useRecoilValue } from 'recoil';
 
 import styled from '@emotion/styled';
 
-import CardModal from '../InputCard/CardModal';
+import CardModal from '../InputCard/ModalCard';
 import { ScreenshotInput } from '../InputScreenshot';
 import FileInput from './FileInput';
 import WorkInput from './WorkInput';
