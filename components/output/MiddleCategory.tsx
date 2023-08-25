@@ -1,5 +1,7 @@
 import styled from '@emotion/styled';
+import MiddleCategoryMoreModal from 'components/Modal/MiddleCategoryMoreModal';
 import { IcMore } from 'public/assets/icons';
+import { useState } from 'react';
 
 interface MiddleCategoryProps {
   categoryName: string;
@@ -9,13 +11,24 @@ interface MiddleCategoryProps {
 
 const MiddleCategory = (props: MiddleCategoryProps) => {
   const { categoryName, folderId, handleClick } = props;
+  const [isMoreModalOpen, setIsMoreModalOpen] = useState(false);
+
   return (
-    <StMiddleFolder onClick={() => handleClick(folderId)}>
-      <IcMore />
-      <div>
-        <h2>{categoryName}</h2>
-      </div>
-    </StMiddleFolder>
+    <>
+      <StMiddleFolder>
+        <StMoreButton onClick={() => setIsMoreModalOpen(true)}>
+          <IcMore />
+        </StMoreButton>
+        <div onClick={() => handleClick(folderId)}>
+          <h2>{categoryName}</h2>
+        </div>
+        {isMoreModalOpen && (
+          <StMiddleCategoryMoreModalContainer>
+            <MiddleCategoryMoreModal folderIdx={folderId} isOpen={isMoreModalOpen} />
+          </StMiddleCategoryMoreModalContainer>
+        )}
+      </StMiddleFolder>
+    </>
   );
 };
 
@@ -28,14 +41,6 @@ export const StMiddleFolder = styled.article`
   border-radius: 2.6rem;
 
   cursor: pointer;
-
-  > svg {
-    position: absolute;
-    top: 1.2rem;
-    right: 2.2rem;
-
-    cursor: pointer;
-  }
 
   > div {
     position: absolute;
@@ -50,6 +55,25 @@ export const StMiddleFolder = styled.article`
       ${({ theme }) => theme.fonts.h2_bigtitle_eng};
     }
   }
+`;
+
+const StMiddleCategoryMoreModalContainer = styled.section`
+  position: absolute;
+  top: -4rem;
+  right: -2.1rem;
+
+  z-index: 3;
+`;
+
+const StMoreButton = styled.button`
+  border: none;
+  background: none;
+
+  position: absolute;
+  top: 1.2rem;
+  right: 2.2rem;
+
+  cursor: pointer;
 `;
 
 export default MiddleCategory;
