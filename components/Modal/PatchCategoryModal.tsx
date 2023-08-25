@@ -6,20 +6,26 @@ import { useGetMainCategoryList } from 'lib/hooks/useGetMainCategoryList';
 import { useGetMiddleCategoryList } from 'lib/hooks/useGetMiddleCategory';
 
 import { IcDeleteModal } from 'public/assets/icons';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { MiddleCategoryInfo, mainCategoryInfo } from 'types/output';
 
 export interface PatchCategoryModalProps {
   folderIdx?: number;
   isMainCategory: boolean;
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
-  setIsMoreModalOpen: (isMoreModalOpen: boolean) => void;
+  setIsMoreModalOpen?: (isMoreModalOpen: boolean) => void;
 }
 
 const PatchCategoryModal = (props: PatchCategoryModalProps & { mainId: string }) => {
   const { folderIdx, isMainCategory, isOpen, setIsOpen, setIsMoreModalOpen, mainId } = props;
   const [warningMsg, setWarningMsg] = useState('');
-  const [isCategoryAvailable, setIsCategoryAvailable] = useState(false);
+  const [isCategoryAvailable, setIsCategoryAvailable] = useState(true);
+  const [initialValue, setInitialValue] = useState('');
+
+  useEffect(() => {
+    if (inputRef.current) setInitialValue(inputRef.current.value);
+  }, []);
 
   const { mainCategoryList } = useGetMainCategoryList();
   const { middleCategoryList } = useGetMiddleCategoryList(
@@ -51,7 +57,7 @@ const PatchCategoryModal = (props: PatchCategoryModalProps & { mainId: string })
   const { mutate: mutateMiddleCategory } = useMutation(patchNewMiddleCategory, {
     onSuccess: () => {
       setIsOpen(false);
-      setIsMoreModalOpen(false);
+      if (setIsMoreModalOpen) setIsMoreModalOpen(false);
       queryClient.invalidateQueries(['middle-category']);
     },
   });
@@ -80,9 +86,13 @@ const PatchCategoryModal = (props: PatchCategoryModalProps & { mainId: string })
     if (NEW_CATEGORY_REGEX.test(currentInputValue)) {
       const duplicateValue =
         mainCategoryList && isMainCategory
-          ? mainCategoryList?.find((item) => item.name === currentInputValue)
+          ? mainCategoryList?.find(
+              (item: mainCategoryInfo) => item.name === currentInputValue && item.name !== initialValue,
+            )
           : middleCategoryList && !isMainCategory
-          ? middleCategoryList?.find((item) => item.name === currentInputValue)
+          ? middleCategoryList?.find(
+              (item: mainCategoryInfo) => item.name === currentInputValue && item.name !== initialValue,
+            )
           : undefined;
       if (duplicateValue === undefined) {
         setIsCategoryAvailable(true);
@@ -116,7 +126,7 @@ const PatchCategoryModal = (props: PatchCategoryModalProps & { mainId: string })
     <StWrapper>
       <StModal>
         <StModalHeader>
-          <h1>{isMainCategory ? '카테고리 추가' : '업무 추가'}</h1>
+          <h1>{isMainCategory ? '카테고리명 설정' : '업무명 설정'}</h1>
 
           <button onClick={() => setIsOpen(false)}>
             <IcDeleteModal />
@@ -130,7 +140,7 @@ const PatchCategoryModal = (props: PatchCategoryModalProps & { mainId: string })
               isMainCategory && mainCategoryList
                 ? mainCategoryList[Number(mainId)].name
                 : !isMainCategory && middleCategoryList
-                ? middleCategoryList.find((item) => item.taskId === folderIdx).name
+                ? middleCategoryList.find((item: MiddleCategoryInfo) => item.taskId === folderIdx).name
                 : undefined
             }
             type="text"
@@ -145,7 +155,7 @@ const PatchCategoryModal = (props: PatchCategoryModalProps & { mainId: string })
         </StModalForm>
 
         <StSubmitCategoryBtn onClick={(e) => handlePatchCategory(e)} disabled={!isCategoryAvailable}>
-          추가하기
+          저장하기
         </StSubmitCategoryBtn>
       </StModal>
     </StWrapper>
