@@ -62,7 +62,9 @@ export const deleteMiddleCategory = async (taskId: number) => {
 export const deleteWorkCards = async (cardIdList: number[]) => {
   try {
     const res = await client.delete(`/cards`, {
-      data: cardIdList,
+      data: {
+        cardIdList: cardIdList,
+      },
     });
 
     return res;
