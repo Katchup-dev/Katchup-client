@@ -4,6 +4,7 @@ import {
   fileNameChangeState,
   fileSelectState,
   keywordListState,
+  screenshotSelectState,
   subTaskSelectState,
   taskSelectState,
   workInputState,
@@ -33,31 +34,14 @@ const ModalCard = (props: ModalProps) => {
   const selectedSubTask = useRecoilValue(subTaskSelectState);
   const selectedKeywordList = useRecoilValue(keywordListState);
   const selectedFileList = useRecoilValue(fileSelectState);
+  const selectedScreenshotList = useRecoilValue(screenshotSelectState);
   const currentEtc = useRecoilValue(etcState);
   const isFileNameChangeChecked = useRecoilValue(fileNameChangeState);
-
-  // 임시 스크린샷, 스티커
-  const currentStickerList: PostStickerListInfo[] = [
-    {
-      order: 0,
-      x: 0,
-      y: 0,
-    },
-  ];
-  const currentScreenshotList: PostScreenshotListInfo[] = [
-    {
-      screenshotUUID: '',
-      screenshotUrl: '',
-      screenshotUploadDate: '',
-      stickerList: currentStickerList,
-    },
-  ];
 
   const { createCard } = usePostCard();
 
   const modifiedFileList: PostFileListInfo[] = selectedFileList.map((fileInfo) => {
     const modifiedFileName = `${selectedCategory.name}_${selectedTask.name}_${selectedSubTask.name}_${fileInfo.fileName}`;
-
     return {
       ...fileInfo,
       fileName: modifiedFileName,
@@ -72,7 +56,7 @@ const ModalCard = (props: ModalProps) => {
       taskId: selectedTask.taskId,
       subTaskId: selectedSubTask.subTaskId,
       keywordIdList: selectedKeywordList,
-      screenshotList: currentScreenshotList,
+      screenshotList: selectedScreenshotList,
       fileList: postFileList,
       note: currentEtc,
       content: currentWorkInput,

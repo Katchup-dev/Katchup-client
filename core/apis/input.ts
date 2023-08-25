@@ -102,7 +102,7 @@ export const postCard = async (cardInfo: PostCardInfo) => {
 export const getPresignedUrl = async (screenshotName: string) => {
   try {
     const { data } = await client.get(`/screenshots/presigned?screenshotName=${screenshotName}`);
-    return data;
+    return data.data;
   } catch (error) {
     console.error(error);
   }
@@ -111,7 +111,7 @@ export const getPresignedUrl = async (screenshotName: string) => {
 // ---- 스크린샷 업로드 ----
 export const putScreenshot = async (presignedUrl: string, file: File) => {
   try {
-    const { data } = await axios.put(`${presignedUrl}`, file);
+    const data = await axios.put(`${presignedUrl}`, file);
     return data;
   } catch (error) {
     console.error(error);

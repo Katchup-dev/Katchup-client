@@ -1,7 +1,14 @@
-import { atom } from 'recoil';
-import { recoilPersist } from 'recoil-persist';
-import { InputCategoryInfo, InputKeywordInfo, InputSubTaskInfo, InputTaskInfo, PostFileListInfo } from 'types/input';
-import { SelectMainCategoryInfo, SelectMiddleCategoryInfo } from 'types/output';
+import { atom } from "recoil";
+import { recoilPersist } from "recoil-persist";
+import {
+  InputCategoryInfo,
+  InputKeywordInfo,
+  InputSubTaskInfo,
+  InputTaskInfo,
+  PostFileListInfo,
+  PostScreenshotListInfo
+} from "types/input";
+import { SelectMainCategoryInfo, SelectMiddleCategoryInfo } from "types/output";
 
 const { persistAtom } = recoilPersist();
 
@@ -69,4 +76,9 @@ export const fileSelectState = atom<PostFileListInfo[]>({
 export const fileNameChangeState = atom<boolean>({
   key: 'isFileNameChangeChecked',
   default: true,
+});
+
+export const screenshotSelectState = atom<PostScreenshotListInfo[]>({
+  key: 'screenshotSelect',
+  default: [],
 });
