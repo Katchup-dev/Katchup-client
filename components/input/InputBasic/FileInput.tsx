@@ -1,18 +1,26 @@
 import { ModalOneButton } from 'components/common/Modal';
 import { MODAL_FILE_SIZE } from 'constants/modal';
-import { categorySelectState, subTaskSelectState, taskSelectState } from 'core/atom';
+import { getFilePresignedUrl, putFile } from 'core/apis/input';
+import {
+  categorySelectState,
+  fileNameChangeState,
+  fileSelectState,
+  subTaskSelectState,
+  taskSelectState,
+} from 'core/atom';
 import useModal from 'lib/hooks/useModal';
 import { IcBtnDeleteFile, IcFileCheckbox, IcFileCheckboxAfter, IcKatchupLogo } from 'public/assets/icons';
 import { useEffect, useRef, useState } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { PostFileListInfo } from 'types/input';
 
 import styled from '@emotion/styled';
-import { getFilePresignedUrl, putFile } from 'core/apis/input';
 
 const FileInput = () => {
   const [fileInput, setFileInput] = useState<File[]>([]);
+  const [fileSelectList, setFileSelectList] = useRecoilState<PostFileListInfo[]>(fileSelectState);
+  const [isChecked, setIsChecked] = useRecoilState(fileNameChangeState);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [isChecked, setIsChecked] = useState(true);
   const sizeLimit = 10 * 1024 * 1024;
 
   const fileSizeModal = useModal();
@@ -24,36 +32,34 @@ const FileInput = () => {
   // 파일 업로드 시 presigned url 받아오고 put 요청으로 s3에 올리는 코드
   const handlePostFile = async (fileUrl: string, file: File) => {
     const response = await getFilePresignedUrl(fileUrl);
+
     if (response) {
-      await putFile(response.data.filePreSignedUrl, file);
-    }
-  };
+      await putFile(response.filePreSignedUrl, file);
 
-  const handleFileModification = (file: File) => {
-    // FIX : '업무 카드 생성' 시 파일명 변경되게 변경해야함
-    let modifiedName = file.name;
-
-    if (isChecked) {
-      const originalName = file.name.substring(0, file.name.lastIndexOf('.'));
-      const extension = file.name.substring(file.name.lastIndexOf('.'));
-      modifiedName = `${selectedCatecory.name}_${selectedTask.name}_${selectedSubTask.name}_${originalName}${extension}`;
-      console.log(modifiedName);
-    }
-
-    if (file.size > sizeLimit) {
-      fileSizeModal.toggle();
-    } else {
-      // const modifiedFile = new File([file], modifiedName);
       setFileInput((prev) => [...prev, file]);
+      setFileSelectList((prev) => [
+        ...prev,
+        {
+          fileUUID: response.fileUUID,
+          fileName: response.fileName,
+          fileUploadDate: response.fileUploadDate,
+          size: file.size,
+        },
+      ]);
     }
   };
+
+  console.log(fileSelectList);
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files && files.length > 0) {
       const file = files[0];
-      handlePostFile(file.name, file);
-      handleFileModification(file);
+      if (file.size > sizeLimit) {
+        fileSizeModal.toggle();
+      } else {
+        handlePostFile(file.name, file);
+      }
     }
   };
 
@@ -62,7 +68,13 @@ const FileInput = () => {
     const files = e.dataTransfer.files;
     if (files && files.length > 0) {
       const file = files[0];
-      handleFileModification(file);
+
+      console.log(file);
+      if (file.size > sizeLimit) {
+        fileSizeModal.toggle();
+      } else {
+        handlePostFile(file.name, file);
+      }
     }
   };
 
@@ -76,6 +88,7 @@ const FileInput = () => {
 
   const handleDeleteFile = (file: File) => {
     setFileInput((prev) => prev.filter((selectedFile) => selectedFile !== file));
+    setFileSelectList((prev) => prev.filter((selectedFile) => selectedFile.fileName !== file.name));
   };
 
   const handleCheckboxChange = () => {
@@ -103,7 +116,7 @@ const FileInput = () => {
           {fileInput.length ? (
             fileInput.map((file, index) => (
               <p key={index}>
-                <button onClick={() => handleDeleteFile(file)}>
+                <button type="button" onClick={() => handleDeleteFile(file)}>
                   <IcBtnDeleteFile />
                 </button>
                 {file.name}

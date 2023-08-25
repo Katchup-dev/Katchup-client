@@ -131,7 +131,7 @@ export const putScreenshot = async (presignedUrl: string, file: File) => {
 export const getFilePresignedUrl = async (fileName: string) => {
   try {
     const { data } = await client.get(`/files/presigned?fileName=${fileName}`);
-    return data;
+    return data.data;
   } catch (error) {
     console.error(error);
   }
@@ -140,7 +140,7 @@ export const getFilePresignedUrl = async (fileName: string) => {
 // ---- 파일 업로드 ----
 export const putFile = async (presignedUrl: string, file: File) => {
   try {
-    const { data } = await axios.put(`${presignedUrl}`, file);
+    const data = await axios.put(`${presignedUrl}`, file);
     return data;
   } catch (error) {
     console.error(error);

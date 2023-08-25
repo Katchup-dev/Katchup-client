@@ -65,3 +65,8 @@ export const fileSelectState = atom<PostFileListInfo[]>({
   key: 'fileSelect',
   default: [],
 });
+
+export const fileNameChangeState = atom<boolean>({
+  key: 'isFileNameChangeChecked',
+  default: true,
+});

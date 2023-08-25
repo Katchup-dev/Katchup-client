@@ -49,7 +49,7 @@ export interface PostCardInfo {
   subTaskId: number;
   keywordIdList: number[];
   screenshotList: PostScreenshotListInfo[];
-  fiseList: PostFileListInfo[];
+  fileList: PostFileListInfo[];
   note: string;
   content: string;
 }
