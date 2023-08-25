@@ -1,8 +1,17 @@
 import styled from '@emotion/styled';
-import { IcFileIcon, IcMoreDetail, IcScreenshotTag } from '../../public/assets/icons';
+import {
+  IcDeleteWorkCardChosen,
+  IcDeleteWorkCardUnchosen,
+  IcFileIcon,
+  IcMoreDetail,
+  IcScreenshotTag,
+} from '../../public/assets/icons';
 import { keywordColors } from '../../constants/output';
 import { KeywordInfo } from 'types/output';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { useRecoilState } from 'recoil';
+import { deleteWorkCard } from 'core/atom';
 
 export interface WorkCardProps {
   mainId: string;
@@ -11,13 +20,34 @@ export interface WorkCardProps {
   cardName: string;
   content: string;
   existFile: boolean;
+  isDeleteWorkCard: boolean;
 }
 
 const WorkCard = (props: WorkCardProps, { mainId }: { mainId: string }) => {
-  const { cardId, keywordList, cardName, content, existFile } = props;
+  const { cardId, keywordList, cardName, content, existFile, isDeleteWorkCard } = props;
+  const [isWorkCardChosen, setIsWorkCardChosen] = useState(false);
+  const [deleteWorkCardIdxArr, setDeleteWorkCardIdxArr] = useRecoilState(deleteWorkCard);
+
+  useEffect(() => {
+    isWorkCardChosen
+      ? setDeleteWorkCardIdxArr((prev) => [...prev, cardId])
+      : setDeleteWorkCardIdxArr((prev) => prev.filter((item) => item !== cardId));
+  }, [isWorkCardChosen]);
+
   return (
     <StWorkCardWrapper>
-      <StCardNumber>{cardId}</StCardNumber>
+      <StCardNumber>
+        {isDeleteWorkCard ? (
+          <button
+            onClick={() => {
+              setIsWorkCardChosen(!isWorkCardChosen);
+            }}>
+            {isWorkCardChosen ? <IcDeleteWorkCardChosen /> : <IcDeleteWorkCardUnchosen />}
+          </button>
+        ) : (
+          cardId
+        )}
+      </StCardNumber>
 
       <StSmallCategory>
         <IcScreenshotTag />
@@ -70,9 +100,15 @@ const StWorkCardWrapper = styled.section`
 `;
 
 const StCardNumber = styled.p`
-  margin-left: 3.824%;
-  margin-right: 5.772%;
+  width: 3.4rem;
+  margin-left: 3rem;
+  margin-right: 11.5rem;
   ${({ theme }) => theme.fonts.h2_smalltitle_eng};
+
+  > button {
+    background: none;
+    border: none;
+  }
 `;
 
 const StSmallCategory = styled.div`
@@ -81,7 +117,8 @@ const StSmallCategory = styled.div`
   justify-content: center;
   align-items: center;
 
-  margin-right: 7.44%;
+  width: 6.7rem;
+  margin-right: 17rem;
 
   > p {
     display: flex;
@@ -102,7 +139,9 @@ const StKeywordWrapper = styled.div`
   flex-wrap: wrap;
   align-items: center;
   gap: 0.4rem;
-  margin-right: 7.44%;
+
+  width: 16rem;
+  margin-right: 10rem;
 
   width: 15rem;
 `;
@@ -125,7 +164,7 @@ const StContent = styled.div`
   padding-bottom: 2.4rem;
   margin-right: 5%;
 
-  width: 33.171%;
+  width: 48rem;
 
   ${({ theme }) => theme.fonts.p1_text};
   line-height: 2.8rem;
@@ -134,6 +173,7 @@ const StContent = styled.div`
 `;
 
 const StFileBtn = styled.button<{ isFileExists: boolean }>`
+  width: 2.6rem;
   margin-right: 6%;
   border: none;
 
@@ -147,6 +187,7 @@ const StFileBtn = styled.button<{ isFileExists: boolean }>`
 `;
 
 const StMoreDetailBtn = styled.button`
+  width: 2.6rem;
   border: none;
   background-color: transparent;
 `;
