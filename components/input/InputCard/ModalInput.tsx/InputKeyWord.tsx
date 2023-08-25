@@ -1,6 +1,6 @@
 import { ColorKey, KEYWORDS_COLOR } from 'constants/keywords';
 import { keywordSelectState, taskSelectState } from 'core/atom';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { InputKeywordInfo } from 'types/input';
 
@@ -52,6 +52,10 @@ const InputKeyWord = () => {
       color: KEYWORDS_COLOR[randomColorKey].color,
     });
   };
+
+  useEffect(() => {
+    setKeyword('');
+  }, [selectedKeywords]);
 
   return (
     <StInputKeyWordWrapper isFocused={isKeywordFocused}>

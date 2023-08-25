@@ -42,6 +42,14 @@ const DropdownKeyword = ({ inputValue, keywordColor }: DropdownKeywordProps) => 
     const location = await createKeyword(keywordData);
     if (location) {
       setKeywordList((prevKeywordList) => [...prevKeywordList, parseInt(location)]);
+      setKeywordSelect((prevSelected) => [
+        ...prevSelected,
+        {
+          keywordId: parseInt(location),
+          name: inputValue,
+          color: keywordColor.name,
+        },
+      ]);
     }
   };
 

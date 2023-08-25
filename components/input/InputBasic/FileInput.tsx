@@ -39,7 +39,7 @@ const FileInput = () => {
     }
   };
 
-  const handleFile = async (file: File) => {
+  const handleFileUpload = async (file: File) => {
     if (file.size <= sizeLimit) {
       handlePostFile(file.name, file);
     } else {
@@ -50,7 +50,7 @@ const FileInput = () => {
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      handleFile(file);
+      handleFileUpload(file);
     }
   };
 
@@ -58,7 +58,7 @@ const FileInput = () => {
     e.preventDefault();
     const file = e.dataTransfer.files?.[0];
     if (file) {
-      handleFile(file);
+      handleFileUpload(file);
     }
   };
 
