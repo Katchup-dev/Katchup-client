@@ -18,13 +18,14 @@ import {
   IcWorkCardFilter,
 } from 'public/assets/icons';
 import { useState } from 'react';
-import { WorkCardInfo, middleCtxType } from 'types/output';
+import { MiddleCategoryInfo, WorkCardInfo, middleCtxType } from 'types/output';
 
 const WorkCardPage = ({ mainId, middleId }: { mainId: string; middleId: string }) => {
   const { mainCategoryList } = useGetMainCategoryList();
   const { middleCategoryList } = useGetMiddleCategoryList(
     mainCategoryList && mainCategoryList[Number(mainId)].categoryId,
   );
+
   const [isDeleteMode, setIsDeleteMode] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
@@ -66,7 +67,10 @@ const WorkCardPage = ({ mainId, middleId }: { mainId: string; middleId: string }
           </StSettingButtonWrapper>
 
           <header>
-            <h1>{middleCategoryList && middleCategoryList?.find((item) => item.taskId === Number(middleId)).name}</h1>
+            <h1>
+              {middleCategoryList &&
+                middleCategoryList?.find((item: MiddleCategoryInfo) => item.taskId === Number(middleId)).name}
+            </h1>
             <button>
               <IcMiddleCategoryMeatball />
             </button>

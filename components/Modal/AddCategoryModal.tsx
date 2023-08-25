@@ -7,6 +7,7 @@ import { useGetMiddleCategoryList } from 'lib/hooks/useGetMiddleCategory';
 
 import { IcDeleteModal } from 'public/assets/icons';
 import { useRef, useState } from 'react';
+import { MiddleCategoryInfo, mainCategoryInfo } from 'types/output';
 
 export interface AddCategoryModalProps {
   isMainCategory: boolean;
@@ -66,9 +67,9 @@ const AddCategoryModal = (props: AddCategoryModalProps & { mainId: string }) => 
     if (NEW_CATEGORY_REGEX.test(currentInputValue)) {
       const duplicateValue =
         mainCategoryList && isMainCategory
-          ? mainCategoryList.find((item) => item.name === currentInputValue)
+          ? mainCategoryList.find((item: mainCategoryInfo) => item.name === currentInputValue)
           : middleCategoryList && !isMainCategory
-          ? middleCategoryList.find((item) => item.name === currentInputValue)
+          ? middleCategoryList.find((item: MiddleCategoryInfo) => item.name === currentInputValue)
           : undefined;
       if (duplicateValue === undefined) {
         setIsCategoryAvailable(true);
