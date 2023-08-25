@@ -39,29 +39,26 @@ const FileInput = () => {
     }
   };
 
+  const handleFile = async (file: File) => {
+    if (file.size <= sizeLimit) {
+      handlePostFile(file.name, file);
+    } else {
+      fileSizeModal.toggle();
+    }
+  };
+
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (files && files.length > 0) {
-      const file = files[0];
-      if (file.size > sizeLimit) {
-        fileSizeModal.toggle();
-      } else {
-        handlePostFile(file.name, file);
-      }
+    const file = e.target.files?.[0];
+    if (file) {
+      handleFile(file);
     }
   };
 
   const handleFileDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
-    const files = e.dataTransfer.files;
-    if (files && files.length > 0) {
-      const file = files[0];
-
-      if (file.size > sizeLimit) {
-        fileSizeModal.toggle();
-      } else {
-        handlePostFile(file.name, file);
-      }
+    const file = e.dataTransfer.files?.[0];
+    if (file) {
+      handleFile(file);
     }
   };
 
