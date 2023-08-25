@@ -1,9 +1,5 @@
 import styled from '@emotion/styled';
-import { useMutation } from '@tanstack/react-query';
-import { deleteMiddleCategory } from 'core/apis/output';
-import { useGetMainCategoryList } from 'lib/hooks/useGetMainCategoryList';
-import { useGetMiddleCategoryList } from 'lib/hooks/useGetMiddleCategory';
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import DeleteCategoryModal from './DeleteCategoryModal';
 import { IcDeleteMiddleCategory, IcEditMiddleCategory } from 'public/assets/icons';
 import PatchCategoryModal from './PatchCategoryModal';
