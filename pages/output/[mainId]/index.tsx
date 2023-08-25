@@ -37,7 +37,7 @@ const OutputMain = ({ mainId }: { mainId: string }) => {
           </header>
 
           <div>
-            {middleCategoryList.length > 0 ? (
+            {middleCategoryList && middleCategoryList.length > 0 ? (
               <>
                 {middleCategoryList.map((category: MiddleCategoryInfo, idx: number) => (
                   <MiddleCategory

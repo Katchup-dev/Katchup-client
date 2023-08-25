@@ -29,6 +29,10 @@ const WorkCard = (props: WorkCardProps, { mainId }: { mainId: string }) => {
   const [deleteWorkCardIdxArr, setDeleteWorkCardIdxArr] = useRecoilState(deleteWorkCard);
 
   useEffect(() => {
+    if (!isDeleteWorkCard) setIsWorkCardChosen(false);
+  }, [isDeleteWorkCard]);
+
+  useEffect(() => {
     isWorkCardChosen
       ? setDeleteWorkCardIdxArr((prev) => [...prev, cardId])
       : setDeleteWorkCardIdxArr((prev) => prev.filter((item) => item !== cardId));
