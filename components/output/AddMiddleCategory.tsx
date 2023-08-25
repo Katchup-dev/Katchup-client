@@ -3,7 +3,6 @@ import { StMiddleFolder } from './MiddleCategory';
 import { IcAddMiddle } from 'public/assets/icons';
 import { useState } from 'react';
 import AddCategoryModal from 'components/Modal/AddCategoryModal';
-import { useRouter } from 'next/router';
 
 const AddMiddleCategory = ({ mainId }: { mainId: string }) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
