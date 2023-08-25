@@ -1,33 +1,23 @@
 import { ModalOneButton } from 'components/common/Modal';
 import { MODAL_FILE_SIZE } from 'constants/modal';
 import { getFilePresignedUrl, putFile } from 'core/apis/input';
-import {
-  categorySelectState,
-  fileNameChangeState,
-  fileSelectState,
-  subTaskSelectState,
-  taskSelectState,
-} from 'core/atom';
+import { fileNameChangeState, fileSelectState } from 'core/atom';
 import useModal from 'lib/hooks/useModal';
 import { IcBtnDeleteFile, IcFileCheckbox, IcFileCheckboxAfter, IcKatchupLogo } from 'public/assets/icons';
-import { useEffect, useRef, useState } from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRef, useState } from 'react';
+import { useRecoilState } from 'recoil';
 import { PostFileListInfo } from 'types/input';
 
 import styled from '@emotion/styled';
 
 const FileInput = () => {
   const [fileInput, setFileInput] = useState<File[]>([]);
-  const [fileSelectList, setFileSelectList] = useRecoilState<PostFileListInfo[]>(fileSelectState);
+  const [, setFileSelectList] = useRecoilState<PostFileListInfo[]>(fileSelectState);
   const [isChecked, setIsChecked] = useRecoilState(fileNameChangeState);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const sizeLimit = 10 * 1024 * 1024;
 
   const fileSizeModal = useModal();
-
-  const selectedCatecory = useRecoilValue(categorySelectState);
-  const selectedTask = useRecoilValue(subTaskSelectState);
-  const selectedSubTask = useRecoilValue(taskSelectState);
 
   // 파일 업로드 시 presigned url 받아오고 put 요청으로 s3에 올리는 코드
   const handlePostFile = async (fileUrl: string, file: File) => {
