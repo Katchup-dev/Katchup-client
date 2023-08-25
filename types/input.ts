@@ -49,6 +49,7 @@ export interface PostCardInfo {
   subTaskId: number;
   keywordIdList: number[];
   screenshotList: PostScreenshotListInfo[];
+  fiseList: PostFileListInfo[];
   note: string;
   content: string;
 }
@@ -63,4 +64,11 @@ export interface PostStickerListInfo {
   order: string;
   x: string;
   y: string;
+}
+
+export interface PostFileListInfo {
+  fileUUID: string;
+  fileName: string;
+  fileUploadDate: string;
+  size: number;
 }

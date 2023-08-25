@@ -1,8 +1,8 @@
 import {
   categorySelectState,
   etcState,
+  fileSelectState,
   keywordListState,
-  keywordSelectState,
   subTaskSelectState,
   taskSelectState,
   workInputState,
@@ -11,7 +11,7 @@ import { usePostCard } from 'lib/hooks/input/usePostCard';
 import { IcBtnDeletePopup } from 'public/assets/icons';
 import React from 'react';
 import { useRecoilValue } from 'recoil';
-import { InputKeywordInfo, PostCardInfo, PostScreenshotListInfo, PostStickerListInfo } from 'types/input';
+import { PostCardInfo, PostFileListInfo, PostScreenshotListInfo, PostStickerListInfo } from 'types/input';
 
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
@@ -26,26 +26,27 @@ interface ModalProps {
 const ModalCard = (props: ModalProps) => {
   const { isShowing, handleHide } = props;
 
-  const workInput = useRecoilValue(workInputState);
+  const currentWorkInput = useRecoilValue(workInputState);
   const selectedCategory = useRecoilValue(categorySelectState);
   const selectedTask = useRecoilValue(taskSelectState);
   const selectedSubTask = useRecoilValue(subTaskSelectState);
-  const keywordList = useRecoilValue<number[]>(keywordListState);
-  const etc = useRecoilValue(etcState);
+  const selectedKeywordList = useRecoilValue(keywordListState);
+  const selectedFileList = useRecoilValue(fileSelectState);
+  const currentEtc = useRecoilValue(etcState);
 
   // 임시 스크린샷, 스티커
-  const stickerList: PostStickerListInfo[] = [
+  const currentStickerList: PostStickerListInfo[] = [
     {
       order: '',
       x: '',
       y: '',
     },
   ];
-  const screenshotList: PostScreenshotListInfo[] = [
+  const currentScreenshotList: PostScreenshotListInfo[] = [
     {
       screenshotUUID: '',
       screenshotUrl: '',
-      stickerList: stickerList,
+      stickerList: currentStickerList,
     },
   ];
 
@@ -56,10 +57,11 @@ const ModalCard = (props: ModalProps) => {
       categoryId: selectedCategory.categoryId,
       taskId: selectedTask.taskId,
       subTaskId: selectedSubTask.subTaskId,
-      keywordIdList: keywordList,
-      screenshotList: screenshotList,
-      note: etc,
-      content: workInput,
+      keywordIdList: selectedKeywordList,
+      screenshotList: currentScreenshotList,
+      fiseList: selectedFileList,
+      note: currentEtc,
+      content: currentWorkInput,
     };
 
     console.log(cardData);

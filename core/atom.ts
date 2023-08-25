@@ -1,6 +1,6 @@
 import { atom } from 'recoil';
 import { recoilPersist } from 'recoil-persist';
-import { InputCategoryInfo, InputKeywordInfo, InputSubTaskInfo, InputTaskInfo } from 'types/input';
+import { InputCategoryInfo, InputKeywordInfo, InputSubTaskInfo, InputTaskInfo, PostFileListInfo } from 'types/input';
 import { SelectMainCategoryInfo, SelectMiddleCategoryInfo } from 'types/output';
 
 const { persistAtom } = recoilPersist();
@@ -59,4 +59,9 @@ export const keywordListState = atom<number[]>({
 export const etcState = atom<string>({
   key: 'etc',
   default: '',
+});
+
+export const fileSelectState = atom<PostFileListInfo[]>({
+  key: 'fileSelect',
+  default: [],
 });
