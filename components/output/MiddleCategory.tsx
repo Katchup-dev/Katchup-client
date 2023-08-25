@@ -13,13 +13,18 @@ const MiddleCategory = (props: MiddleCategoryProps & { mainId: string }) => {
   const { categoryName, folderId, handleClick, mainId } = props;
   const [isMoreModalOpen, setIsMoreModalOpen] = useState(false);
 
+  const handleMoreButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    setIsMoreModalOpen(!isMoreModalOpen);
+  };
+
   return (
     <>
-      <StMiddleFolder>
-        <StMoreButton onClick={() => setIsMoreModalOpen(!isMoreModalOpen)}>
+      <StMiddleFolder onClick={() => handleClick(folderId)}>
+        <StMoreButton onClick={(e) => handleMoreButtonClick(e)}>
           <IcMore />
         </StMoreButton>
-        <div onClick={() => handleClick(folderId)}>
+        <div>
           <h2>{categoryName}</h2>
         </div>
         {isMoreModalOpen && (
