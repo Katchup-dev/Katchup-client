@@ -87,7 +87,12 @@ const FileInput = () => {
             <h2>
               <IcKatchupLogo /> 파일 첨부
             </h2>
-            <input ref={fileInputRef} type="file" onChange={handleFileSelect} />
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept=".doc,.docx,.gdoc,.pdf,.txt,.hwp,.xls,.xlsx,.gsheet,.ppt,.pptx,.gslides,.jpeg,.jpg,.png,.gif,.bmp,.tiff,.tif,.svg,.ai,.psd,.mp3,.wav,.aiff,.flac,.zip,.rar,.7z,.py,.pyc,.pyo,.js,.jsx,.ts,.tsx,.jsp,.c,.cc,.cpp,.h,.java,.php,.asp,.html,.xml,.css,.exe"
+              onChange={handleFileSelect}
+            />
             <button onClick={handleFileBtnClick}>파일선택</button>
           </StFileBtnWrapper>
           <label>
