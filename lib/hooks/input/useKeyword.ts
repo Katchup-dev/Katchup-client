@@ -17,10 +17,10 @@ export const useGetKeywords = (taskId: number) => {
 };
 
 export const usePostKeyword = () => {
-  const { mutate, isLoading, isError } = useMutation(postKeywords);
+  const { mutateAsync, isLoading, isError } = useMutation(postKeywords);
 
   return {
-    createKeyword: mutate,
+    createKeyword: mutateAsync,
     isLoading: isLoading,
     error: isError,
   };

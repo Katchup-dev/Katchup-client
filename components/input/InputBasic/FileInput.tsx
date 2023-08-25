@@ -37,6 +37,7 @@ const FileInput = () => {
       const originalName = file.name.substring(0, file.name.lastIndexOf('.'));
       const extension = file.name.substring(file.name.lastIndexOf('.'));
       modifiedName = `${selectedCatecory.name}_${selectedTask.name}_${selectedSubTask.name}_${originalName}${extension}`;
+      console.log(modifiedName);
     }
 
     if (file.size > sizeLimit) {

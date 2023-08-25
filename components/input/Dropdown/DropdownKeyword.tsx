@@ -1,5 +1,5 @@
 import { KEYWORDS_COLOR } from 'constants/keywords';
-import { keywordSelectState, taskSelectState } from 'core/atom';
+import { keywordListState, keywordSelectState, taskSelectState } from 'core/atom';
 import { useGetKeywords, usePostKeyword } from 'lib/hooks/input/useKeyword';
 import { IcBtnAddIndex } from 'public/assets/icons';
 import { useState } from 'react';
@@ -22,8 +22,9 @@ interface DropdownKeywordProps {
 const DropdownKeyword = ({ inputValue, keywordColor }: DropdownKeywordProps) => {
   const taskSelect = useRecoilValue(taskSelectState);
   const { keywords } = useGetKeywords(taskSelect.taskId);
-  const postKeyword = usePostKeyword();
+  const { createKeyword } = usePostKeyword();
   const [keywordSelect, setKeywordSelect] = useRecoilState<InputKeywordInfo[]>(keywordSelectState);
+  const [keywordList, setKeywordList] = useRecoilState<number[]>(keywordListState);
   let addArr: InputKeywordInfo[] = [];
   let isAdd = true;
 
@@ -32,13 +33,16 @@ const DropdownKeyword = ({ inputValue, keywordColor }: DropdownKeywordProps) => 
       return;
     } else {
       setKeywordSelect((prevSelected) => [...prevSelected, option]);
+      setKeywordList((prevKeywordList) => [...prevKeywordList, option.keywordId]);
     }
   };
-  console.log('keywordSelect', keywordSelect);
 
-  const handleAddIndex = () => {
+  const handleAddIndex = async () => {
     const keywordData = { taskId: taskSelect.taskId, name: inputValue, color: keywordColor.name };
-    postKeyword.createKeyword(keywordData);
+    const location = await createKeyword(keywordData);
+    if (location) {
+      setKeywordList((prevKeywordList) => [...prevKeywordList, parseInt(location)]);
+    }
   };
 
   const displayNewOptions = () => {
