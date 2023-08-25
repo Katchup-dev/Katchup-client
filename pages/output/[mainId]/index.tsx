@@ -7,13 +7,17 @@ import { useGetMainCategoryList } from 'lib/hooks/useGetMainCategoryList';
 import MainCategoryList from 'components/output/MainCategoryList';
 import MiddleCategory from 'components/output/MiddleCategory';
 import AddMiddleCategory from 'components/output/AddMiddleCategory';
-import { useEffect } from 'react';
+import { useState } from 'react';
+import PatchCategoryModal from 'components/Modal/PatchCategoryModal';
 
 const OutputMain = ({ mainId }: { mainId: string }) => {
   const router = useRouter();
   const { mainCategoryList } = useGetMainCategoryList();
-  const { middleCategoryList } = useGetMiddleCategoryList(Number(mainId));
+  const { middleCategoryList } = useGetMiddleCategoryList(
+    mainCategoryList && mainCategoryList[Number(mainId)]?.categoryId,
+  );
 
+  const [isEditMainCategoryOpen, setIsEditMainCategoryOpen] = useState(false);
   const handleGoToWorkCard = (middleId: number) => {
     router.push({ pathname: `/output/${mainId}/middleCategory/${middleId}` });
   };
@@ -25,24 +29,36 @@ const OutputMain = ({ mainId }: { mainId: string }) => {
 
         <StMiddleBoard>
           <header>
-            <StMainTitle isShouldWrap={true}>{mainCategoryList && mainCategoryList[Number(mainId)].name}</StMainTitle>
-            <IcEditMain />
+            <StMainTitle isShouldWrap={true}>{mainCategoryList && mainCategoryList[Number(mainId)]?.name}</StMainTitle>
+            <button onClick={() => setIsEditMainCategoryOpen(!isEditMainCategoryOpen)}>
+              <IcEditMain />
+            </button>
           </header>
 
           <div>
             {middleCategoryList?.map((category: MiddleCategoryInfo, idx: number) => (
               <MiddleCategory
+                mainId={mainId}
                 categoryName={category.name}
                 key={idx}
-                folderId={category.folderId}
+                folderId={category.taskId}
                 handleClick={() => {
-                  handleGoToWorkCard(category.folderId);
+                  handleGoToWorkCard(category.taskId);
                 }}
               />
             ))}
-            <AddMiddleCategory />
+            <AddMiddleCategory mainId={mainId} />
           </div>
         </StMiddleBoard>
+
+        {isEditMainCategoryOpen && (
+          <PatchCategoryModal
+            isMainCategory={true}
+            isOpen={isEditMainCategoryOpen}
+            setIsOpen={setIsEditMainCategoryOpen}
+            mainId={mainId}
+          />
+        )}
       </StOutputMainWrapper>
     </>
   );
@@ -79,6 +95,11 @@ const StMiddleBoard = styled.section`
 
     > svg {
       cursor: pointer;
+    }
+
+    > button {
+      border: none;
+      background: none;
     }
   }
 
