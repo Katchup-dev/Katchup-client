@@ -110,7 +110,7 @@ export const postCard = async (cardInfo: PostCardInfo) => {
 // ---- 스크린샷 presigned url 생성 ----
 export const getPresignedUrl = async (screenshotName: string) => {
   try {
-    const { data } = await client.get(`/screenshots/presigned`, { params: { screenshotName } });
+    const { data } = await client.get(`/screenshots/presigned?screenshotName=${screenshotName}`);
     return data;
   } catch (error) {
     console.error(error);
@@ -130,7 +130,7 @@ export const putScreenshot = async (presignedUrl: string, file: File) => {
 // ---- 파일 presigned url 생성 ----
 export const getFilePresignedUrl = async (fileName: string) => {
   try {
-    const { data } = await client.get(`/files/presigned`, { params: { fileName } });
+    const { data } = await client.get(`/files/presigned?fileName=${fileName}`);
     return data;
   } catch (error) {
     console.error(error);
