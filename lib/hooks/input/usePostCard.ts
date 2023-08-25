@@ -3,10 +3,10 @@ import { postCard } from 'core/apis/input';
 import { useMutation } from '@tanstack/react-query';
 
 export const usePostCard = () => {
-  const { mutate, isLoading, isError } = useMutation(postCard);
+  const { mutateAsync, isLoading, isError } = useMutation(postCard);
 
   return {
-    createCard: mutate,
+    createCard: mutateAsync,
     isLoading: isLoading,
     error: isError,
   };

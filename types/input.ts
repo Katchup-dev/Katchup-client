@@ -56,7 +56,7 @@ export interface PostCardInfo {
 
 export interface PostScreenshotListInfo {
   screenshotUUID: string;
-  screenshotUrl: string;
+  screenshotName: string;
   screenshotUploadDate: string;
   stickerList: PostStickerListInfo[];
 }

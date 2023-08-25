@@ -10,10 +10,11 @@ import {
   workInputState,
 } from 'core/atom';
 import { usePostCard } from 'lib/hooks/input/usePostCard';
+import { useRouter } from 'next/router';
 import { IcBtnDeletePopup } from 'public/assets/icons';
 import React from 'react';
 import { useRecoilValue } from 'recoil';
-import { PostCardInfo, PostFileListInfo, PostScreenshotListInfo, PostStickerListInfo } from 'types/input';
+import { PostCardInfo, PostFileListInfo } from 'types/input';
 
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
@@ -39,6 +40,7 @@ const ModalCard = (props: ModalProps) => {
   const isFileNameChangeChecked = useRecoilValue(fileNameChangeState);
 
   const { createCard } = usePostCard();
+  const router = useRouter();
 
   const modifiedFileList: PostFileListInfo[] = selectedFileList.map((fileInfo) => {
     const modifiedFileName = `${selectedCategory.name}_${selectedTask.name}_${selectedSubTask.name}_${fileInfo.fileName}`;
@@ -48,7 +50,7 @@ const ModalCard = (props: ModalProps) => {
     };
   });
 
-  const handleNext = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleNext = async (e: React.MouseEvent<HTMLButtonElement>) => {
     const postFileList = isFileNameChangeChecked ? modifiedFileList : selectedFileList;
 
     const cardData: PostCardInfo = {
@@ -63,7 +65,11 @@ const ModalCard = (props: ModalProps) => {
     };
 
     console.log(cardData);
-    createCard(cardData);
+    const result = await createCard(cardData);
+
+    if (result.status === 'SSS') {
+      router.push(`/output/${selectedCategory.categoryId}`);
+    }
   };
 
   return (
