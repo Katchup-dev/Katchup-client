@@ -84,9 +84,11 @@ export const getKeywords = async (taskId: number) => {
 export const postKeywords = async (keywordInfo: PostKeywordInfo) => {
   try {
     console.log(keywordInfo);
-    const { data } = await client.post(`/keywords`, keywordInfo);
-    console.log(data);
-    return data;
+    const response = await client.post(`/keywords`, keywordInfo);
+    const location = response.headers['location'];
+
+    console.log(location);
+    return location;
   } catch (error) {
     console.error(error);
   }

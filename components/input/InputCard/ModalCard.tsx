@@ -1,6 +1,7 @@
 import {
   categorySelectState,
   etcState,
+  keywordListState,
   keywordSelectState,
   subTaskSelectState,
   taskSelectState,
@@ -29,7 +30,7 @@ const ModalCard = (props: ModalProps) => {
   const selectedCategory = useRecoilValue(categorySelectState);
   const selectedTask = useRecoilValue(taskSelectState);
   const selectedSubTask = useRecoilValue(subTaskSelectState);
-  const selectedKeywords = useRecoilValue<InputKeywordInfo[]>(keywordSelectState);
+  const keywordList = useRecoilValue<number[]>(keywordListState);
   const etc = useRecoilValue(etcState);
 
   // 임시 스크린샷, 스티커
@@ -51,13 +52,11 @@ const ModalCard = (props: ModalProps) => {
   const { createCard } = usePostCard();
 
   const handleNext = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const keywordIdArray: number[] = selectedKeywords.map((keywordInfo) => keywordInfo.keywordId);
-
     const cardData: PostCardInfo = {
       categoryId: selectedCategory.categoryId,
       taskId: selectedTask.taskId,
       subTaskId: selectedSubTask.subTaskId,
-      keywordIdList: keywordIdArray,
+      keywordIdList: keywordList,
       screenshotList: screenshotList,
       note: etc,
       content: workInput,
