@@ -1,5 +1,6 @@
 export { default as IcLogo } from './ic_logo.svg';
 export { default as IcMore } from './ic_more.svg';
+export { default as IcCheck } from './ic_check.svg';
 export { default as IcAddMiddle } from './ic_addMiddle.svg';
 export { default as IcAddMain } from './ic_addMain.svg';
 export { default as IcTrash } from './ic_trash.svg';

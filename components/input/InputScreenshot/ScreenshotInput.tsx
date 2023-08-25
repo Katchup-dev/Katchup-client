@@ -1,15 +1,19 @@
 import Toast from 'components/common/Toast';
+import { getPresignedUrl, putScreenshot } from 'core/apis/input';
+import { screenshotSelectState } from 'core/atom';
 import { IcBtnDeleteScreenshot, IcKatchupLogo, IcScreenshotEmpty } from 'public/assets/icons';
 import React, { useEffect, useRef, useState } from 'react';
+import { useRecoilState } from 'recoil';
 
 import styled from '@emotion/styled';
-import { getPresignedUrl, putScreenshot } from 'core/apis/input';
 
 const ScreenshotInput = () => {
   const [screenshotInput, setScreenshotInput] = useState<File[]>([]);
   const [inputScreenshot, setInputScreenshot] = useState<[]>([]);
   const [URLThumbnails, setURLThumbnails] = useState<string[]>([]);
   const screenshotInputRef = useRef<HTMLInputElement>(null);
+  const [creenshotSelect, setScreenshotSelect] = useRecoilState(screenshotSelectState);
+
   const [toastMessage, setToastMessage] = useState('');
   const [toastKey, setToastKey] = useState<number>();
 
@@ -17,16 +21,26 @@ const ScreenshotInput = () => {
   const handlePostScreenShot = async (screenshot: string, file: File) => {
     const response = await getPresignedUrl(screenshot);
     if (response) {
-      await putScreenshot(response.data.screenshotPreSignedUrl, file);
+      await putScreenshot(response.screenshotPreSignedUrl, file);
+      setScreenshotSelect((prev) => [
+        ...prev,
+        {
+          screenshotUUID: response.screenshotUUID,
+          screenshotName: response.screenshotName,
+          screenshotUploadDate: response.screenshotUploadDate,
+          stickerList: [],
+        },
+      ]);
     }
   };
+
+  console.log(creenshotSelect);
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files && files.length > 0) {
       const newFiles = Array.from(files);
       handlePostScreenShot(newFiles[0].name, newFiles[0]);
-
       setScreenshotInput((prev) => [...prev, ...newFiles]);
     }
   };
@@ -42,6 +56,7 @@ const ScreenshotInput = () => {
 
   const handleDeleteFile = (file: File) => {
     setScreenshotInput((prev) => prev.filter((selectedFile) => selectedFile !== file));
+    setScreenshotSelect((prev) => prev.filter((selectedFile) => selectedFile.screenshotName !== file.name));
     setInputScreenshot([]);
   };
 

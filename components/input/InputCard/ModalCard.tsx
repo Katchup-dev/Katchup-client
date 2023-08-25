@@ -1,19 +1,21 @@
+import Toast from 'components/common/Toast';
 import {
   categorySelectState,
   etcState,
+  fileNameChangeState,
   fileSelectState,
   keywordListState,
+  screenshotSelectState,
   subTaskSelectState,
   taskSelectState,
   workInputState,
 } from 'core/atom';
 import { usePostCard } from 'lib/hooks/input/usePostCard';
 import { IcBtnDeletePopup } from 'public/assets/icons';
-import React from 'react';
+import React, { useState } from 'react';
 import { useRecoilValue } from 'recoil';
-import { PostCardInfo, PostFileListInfo, PostScreenshotListInfo, PostStickerListInfo } from 'types/input';
+import { PostCardInfo, PostFileListInfo } from 'types/input';
 
-import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import { InputCategory, InputEtc, InputKeyWord, InputSubTask, InputTask } from './ModalInput.tsx';
@@ -32,59 +34,64 @@ const ModalCard = (props: ModalProps) => {
   const selectedSubTask = useRecoilValue(subTaskSelectState);
   const selectedKeywordList = useRecoilValue(keywordListState);
   const selectedFileList = useRecoilValue(fileSelectState);
+  const selectedScreenshotList = useRecoilValue(screenshotSelectState);
   const currentEtc = useRecoilValue(etcState);
-
-  // 임시 스크린샷, 스티커
-  const currentStickerList: PostStickerListInfo[] = [
-    {
-      order: '',
-      x: '',
-      y: '',
-    },
-  ];
-  const currentScreenshotList: PostScreenshotListInfo[] = [
-    {
-      screenshotUUID: '',
-      screenshotUrl: '',
-      stickerList: currentStickerList,
-    },
-  ];
+  const isFileNameChangeChecked = useRecoilValue(fileNameChangeState);
 
   const { createCard } = usePostCard();
 
-  const handleNext = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const modifiedFileList: PostFileListInfo[] = selectedFileList.map((fileInfo) => {
+    const modifiedFileName = `${selectedCategory.name}_${selectedTask.name}_${selectedSubTask.name}_${fileInfo.fileName}`;
+    return {
+      ...fileInfo,
+      fileName: modifiedFileName,
+    };
+  });
+
+  const handleNext = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    const postFileList = isFileNameChangeChecked ? modifiedFileList : selectedFileList;
+
     const cardData: PostCardInfo = {
       categoryId: selectedCategory.categoryId,
       taskId: selectedTask.taskId,
       subTaskId: selectedSubTask.subTaskId,
       keywordIdList: selectedKeywordList,
-      screenshotList: currentScreenshotList,
-      fiseList: selectedFileList,
+      screenshotList: selectedScreenshotList,
+      fileList: postFileList,
       note: currentEtc,
       content: currentWorkInput,
     };
 
-    console.log(cardData);
-    createCard(cardData);
+    const result = await createCard(cardData);
+
+    if (result.status === 'SSS') {
+      localStorage.setItem('toastMessage', '업무 카드가 추가되었어요.');
+      window.location.reload();
+    }
   };
 
   return (
     <>
       {isShowing && (
-        <StModalWrapper>
-          <StCardModal>
-            <IcBtnDeletePopup onClick={handleHide} />
-            <h2>업무 카드 작성</h2>
-            <InputCategory />
-            <InputTask />
-            <InputSubTask />
-            <InputKeyWord />
-            <InputEtc />
-            <StNextBtn type="button" disabled={!selectedCategory || !selectedTask} onClick={handleNext}>
-              작성 완료
-            </StNextBtn>
-          </StCardModal>
-        </StModalWrapper>
+        <>
+          <StModalWrapper>
+            <StCardModal>
+              <IcBtnDeletePopup onClick={handleHide} />
+              <h2>업무 카드 작성</h2>
+              <InputCategory />
+              <InputTask />
+              <InputSubTask />
+              <InputKeyWord />
+              <InputEtc />
+              <StNextBtn
+                type="button"
+                disabled={selectedCategory.categoryId === 0 || selectedTask.taskId === 0}
+                onClick={handleNext}>
+                작성 완료
+              </StNextBtn>
+            </StCardModal>
+          </StModalWrapper>
+        </>
       )}
     </>
   );
@@ -136,52 +143,6 @@ const StCardModal = styled.section`
   }
 `;
 
-const StInputIndex = styled.label<{ isFocused: boolean }>`
-  display: flex;
-  flex-direction: column;
-  position: relative;
-
-  ${({ theme }) => theme.fonts.p1_text};
-
-  & > input {
-    margin-top: 0.4rem;
-    margin-bottom: 2.2rem;
-
-    padding: 1.4rem 11.1rem 1.2rem 1.4rem;
-    border: 0.1rem solid ${({ theme }) => theme.colors.katchup_line_gray};
-    border-radius: 0.8rem;
-    ${({ theme }) => theme.fonts.h2_smalltitle};
-
-    ${({ isFocused, theme }) =>
-      isFocused
-        ? css`
-            background-color: ${theme.colors.katchup_light_gray};
-            box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.23);
-          `
-        : css`
-            background-color: ${theme.colors.katchup_white};
-          `}
-
-    ::placeholder {
-      color: ${({ theme }) => theme.colors.katchup_gray};
-    }
-    outline: none;
-  }
-
-  & > p {
-    position: absolute;
-    top: 4rem;
-    right: 1.4rem;
-
-    ${({ theme }) => theme.fonts.p1_text};
-    color: ${({ theme }) => theme.colors.katchup_dark_gray};
-
-    & > span {
-      ${({ theme }) => theme.fonts.p1_text};
-      color: ${({ theme }) => theme.colors.katchup_main};
-    }
-  }
-`;
 const StNextBtn = styled.button<{ disabled: boolean }>`
   width: 13.6rem;
   height: 4rem;

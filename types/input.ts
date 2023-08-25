@@ -49,21 +49,22 @@ export interface PostCardInfo {
   subTaskId: number;
   keywordIdList: number[];
   screenshotList: PostScreenshotListInfo[];
-  fiseList: PostFileListInfo[];
+  fileList: PostFileListInfo[];
   note: string;
   content: string;
 }
 
 export interface PostScreenshotListInfo {
   screenshotUUID: string;
-  screenshotUrl: string;
+  screenshotName: string;
+  screenshotUploadDate: string;
   stickerList: PostStickerListInfo[];
 }
 
 export interface PostStickerListInfo {
-  order: string;
-  x: string;
-  y: string;
+  order: number;
+  x: number;
+  y: number;
 }
 
 export interface PostFileListInfo {

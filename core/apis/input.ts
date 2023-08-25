@@ -37,8 +37,6 @@ export const postCategories = async (name: string) => {
   try {
     const response = await client.post(`/categories`, name);
     const location = response.headers['location'];
-
-    console.log('response', response);
     return location;
   } catch (error) {
     console.error(error);
@@ -50,8 +48,6 @@ export const postTasks = async (taskInfo: PostTaskInfo) => {
     try {
       const response = await client.post(`/tasks`, taskInfo);
       const location = response.headers['location'];
-
-      console.log(location);
       return location;
     } catch (error) {
       console.error(error);
@@ -63,8 +59,6 @@ export const postSubTasks = async (subTaskInfo: PostSubTaskInfo) => {
   try {
     const response = await client.post(`/subTasks`, subTaskInfo);
     const location = response.headers['location'];
-
-    console.log(location);
     return location;
   } catch (error) {
     console.error(error);
@@ -84,11 +78,8 @@ export const getKeywords = async (taskId: number) => {
 
 export const postKeywords = async (keywordInfo: PostKeywordInfo) => {
   try {
-    console.log(keywordInfo);
     const response = await client.post(`/keywords`, keywordInfo);
     const location = response.headers['location'];
-
-    console.log(location);
     return location;
   } catch (error) {
     console.error(error);
@@ -110,8 +101,8 @@ export const postCard = async (cardInfo: PostCardInfo) => {
 // ---- 스크린샷 presigned url 생성 ----
 export const getPresignedUrl = async (screenshotName: string) => {
   try {
-    const { data } = await client.get(`/screenshots/presigned`, { params: { screenshotName } });
-    return data;
+    const { data } = await client.get(`/screenshots/presigned?screenshotName=${screenshotName}`);
+    return data.data;
   } catch (error) {
     console.error(error);
   }
@@ -120,7 +111,7 @@ export const getPresignedUrl = async (screenshotName: string) => {
 // ---- 스크린샷 업로드 ----
 export const putScreenshot = async (presignedUrl: string, file: File) => {
   try {
-    const { data } = await axios.put(`${presignedUrl}`, file);
+    const data = await axios.put(`${presignedUrl}`, file);
     return data;
   } catch (error) {
     console.error(error);
@@ -130,8 +121,8 @@ export const putScreenshot = async (presignedUrl: string, file: File) => {
 // ---- 파일 presigned url 생성 ----
 export const getFilePresignedUrl = async (fileName: string) => {
   try {
-    const { data } = await client.get(`/files/presigned`, { params: { fileName } });
-    return data;
+    const { data } = await client.get(`/files/presigned?fileName=${fileName}`);
+    return data.data;
   } catch (error) {
     console.error(error);
   }
@@ -140,7 +131,7 @@ export const getFilePresignedUrl = async (fileName: string) => {
 // ---- 파일 업로드 ----
 export const putFile = async (presignedUrl: string, file: File) => {
   try {
-    const { data } = await axios.put(`${presignedUrl}`, file);
+    const data = await axios.put(`${presignedUrl}`, file);
     return data;
   } catch (error) {
     console.error(error);
