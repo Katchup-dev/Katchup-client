@@ -62,7 +62,6 @@ const ModalCard = (props: ModalProps) => {
       content: currentWorkInput,
     };
 
-    console.log(cardData);
     const result = await createCard(cardData);
 
     if (result.status === 'SSS') {
@@ -71,7 +70,6 @@ const ModalCard = (props: ModalProps) => {
     }
   };
 
-  console.log(selectedCategory, selectedTask);
   return (
     <>
       {isShowing && (

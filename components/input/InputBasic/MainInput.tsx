@@ -55,7 +55,7 @@ const MainInput = () => {
           </StNextBtn>
           <CardModal isShowing={cardModal.isShowing} handleHide={cardModal.toggle} />
           <StToastWrapper>
-            <Toast key={toastKey} message={toastMessage} />
+            <Toast key={toastKey} message={toastMessage} isCheck />
           </StToastWrapper>
         </StMainInput>
         {isScreenshotShowing ? (
