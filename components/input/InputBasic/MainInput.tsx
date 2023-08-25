@@ -1,4 +1,5 @@
 import { ModalTwoButton } from 'components/common/Modal';
+import Toast from 'components/common/Toast';
 import { MODAL_DELETE_SCREENSHOT, MODAL_LEAVE_PAGE } from 'constants/modal';
 import { workInputState } from 'core/atom';
 import useRouteChangeBlocking from 'lib/hooks/input/useRouteChangeBlocking';
@@ -29,60 +30,65 @@ const MainInput = () => {
     screenshotCancelModal.toggle();
   };
 
-  const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-    e.preventDefault();
-    e.returnValue = '';
-  };
+  const [toastMessage, setToastMessage] = useState('');
+  const [toastKey, setToastKey] = useState<number>();
 
   useEffect(() => {
-    window.addEventListener('beforeunload', handleBeforeUnload);
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-    };
+    const storedMessage = localStorage.getItem('toastMessage');
+    if (storedMessage) {
+      setToastMessage(storedMessage);
+      setToastKey(Date.now());
+      localStorage.removeItem('toastMessage');
+    }
   }, []);
 
   return (
-    <StMainInputWrapper>
-      <StMainInput>
-        <WorkInput />
-        <FileInput />
-        <StNextBtn disabled={!workInput.length}>
-          <button type="button" onClick={cardModal.toggle}>
-            다음 단계
-          </button>
-        </StNextBtn>
-        <CardModal isShowing={cardModal.isShowing} handleHide={cardModal.toggle} />
-      </StMainInput>
-      {isScreenshotShowing ? (
-        <>
-          <ScreenshotInput />
-          <IcBtnScreenshotHide onClick={screenshotCancelModal.toggle} />
-        </>
-      ) : (
-        <IcBtnScreenshot
-          onClick={() => {
-            setIsScreenshotShowing((prev) => !prev);
-          }}
+    <>
+      <StMainInputWrapper>
+        <StMainInput>
+          <WorkInput />
+          <FileInput />
+          <StNextBtn disabled={!workInput.length}>
+            <button type="button" onClick={cardModal.toggle}>
+              다음 단계
+            </button>
+          </StNextBtn>
+          <CardModal isShowing={cardModal.isShowing} handleHide={cardModal.toggle} />
+          <StToastWrapper>
+            <Toast key={toastKey} message={toastMessage} />
+          </StToastWrapper>
+        </StMainInput>
+        {isScreenshotShowing ? (
+          <>
+            <ScreenshotInput />
+            <IcBtnScreenshotHide onClick={screenshotCancelModal.toggle} />
+          </>
+        ) : (
+          <IcBtnScreenshot
+            onClick={() => {
+              setIsScreenshotShowing((prev) => !prev);
+            }}
+          />
+        )}
+        <ModalTwoButton
+          isShowing={leavePageModal.isShowing}
+          contents={MODAL_LEAVE_PAGE}
+          leftButtonName={'돌아가기'}
+          rightButtonName={'벗어나기'}
+          handleLeftButton={leavePageModal.toggle}
+          handleRightButton={() => offRouteChangeBlocking()}
         />
-      )}
-      <ModalTwoButton
-        isShowing={leavePageModal.isShowing}
-        contents={MODAL_LEAVE_PAGE}
-        leftButtonName={'돌아가기'}
-        rightButtonName={'벗어나기'}
-        handleLeftButton={leavePageModal.toggle}
-        handleRightButton={() => offRouteChangeBlocking()}
-      />
-      <ModalTwoButton
-        isShowing={screenshotCancelModal.isShowing}
-        contents={MODAL_DELETE_SCREENSHOT}
-        leftButtonName={'취소하기'}
-        rightButtonName={'그만두기'}
-        handleLeftButton={screenshotCancelModal.toggle}
-        handleRightButton={handleScreenshotShowing}
-        isSubContent={true}
-      />
-    </StMainInputWrapper>
+        <ModalTwoButton
+          isShowing={screenshotCancelModal.isShowing}
+          contents={MODAL_DELETE_SCREENSHOT}
+          leftButtonName={'취소하기'}
+          rightButtonName={'그만두기'}
+          handleLeftButton={screenshotCancelModal.toggle}
+          handleRightButton={handleScreenshotShowing}
+          isSubContent={true}
+        />
+      </StMainInputWrapper>
+    </>
   );
 };
 
@@ -133,6 +139,13 @@ const StNextBtn = styled.div<{ disabled: boolean }>`
     background-color: ${({ theme, disabled }) => (disabled ? theme.colors.katchup_gray : theme.colors.katchup_main)};
     ${({ theme }) => theme.fonts.h3_title};
   }
+`;
+
+const StToastWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+
+  width: 100%;
 `;
 
 export default MainInput;
