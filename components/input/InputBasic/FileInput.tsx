@@ -49,8 +49,6 @@ const FileInput = () => {
     }
   };
 
-  console.log(fileSelectList);
-
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files && files.length > 0) {
@@ -69,7 +67,6 @@ const FileInput = () => {
     if (files && files.length > 0) {
       const file = files[0];
 
-      console.log(file);
       if (file.size > sizeLimit) {
         fileSizeModal.toggle();
       } else {

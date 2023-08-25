@@ -39,15 +39,16 @@ const ModalCard = (props: ModalProps) => {
   // 임시 스크린샷, 스티커
   const currentStickerList: PostStickerListInfo[] = [
     {
-      order: '',
-      x: '',
-      y: '',
+      order: 0,
+      x: 0,
+      y: 0,
     },
   ];
   const currentScreenshotList: PostScreenshotListInfo[] = [
     {
       screenshotUUID: '',
       screenshotUrl: '',
+      screenshotUploadDate: '',
       stickerList: currentStickerList,
     },
   ];
@@ -65,8 +66,6 @@ const ModalCard = (props: ModalProps) => {
 
   const handleNext = (e: React.MouseEvent<HTMLButtonElement>) => {
     const postFileList = isFileNameChangeChecked ? modifiedFileList : selectedFileList;
-    console.log('originalFileList', selectedFileList);
-    console.log('postFileList', postFileList);
 
     const cardData: PostCardInfo = {
       categoryId: selectedCategory.categoryId,
