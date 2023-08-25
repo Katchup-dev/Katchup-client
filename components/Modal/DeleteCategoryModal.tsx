@@ -1,19 +1,24 @@
 import styled from '@emotion/styled';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { deleteMainCategory, getMainCategoryList } from 'core/apis/output';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { deleteMainCategory, deleteMiddleCategory, deleteWorkCards } from 'core/apis/output';
+import { deleteWorkCard } from 'core/atom';
 import { useGetMainCategoryList } from 'lib/hooks/useGetMainCategoryList';
 import { useRouter } from 'next/router';
 import { IcDeleteCategoryLogo } from 'public/assets/icons';
 import { useEffect } from 'react';
+import { useRecoilValue } from 'recoil';
 
 interface DeleteCategoryModalProps {
+  setIsMoreModalOpen?: (isMoreModalOpen: boolean) => void;
+  setIsDeleteMode?: (isDeleteMode: boolean) => void;
+  folderIdx?: number;
   categoryType: string;
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
 }
 
-export default function DeleteCategoryModal(props: DeleteCategoryModalProps & { mainId: string }) {
-  const { categoryType, isOpen, setIsOpen, mainId } = props;
+export default function DeleteCategoryModal(props: DeleteCategoryModalProps & { mainId?: string }) {
+  const { setIsMoreModalOpen, setIsDeleteMode, folderIdx, categoryType, isOpen, setIsOpen, mainId } = props;
   const { mainCategoryList } = useGetMainCategoryList();
 
   const queryClient = useQueryClient();
@@ -21,22 +26,42 @@ export default function DeleteCategoryModal(props: DeleteCategoryModalProps & { 
 
   const handleDeleteMainCategory = async () => {
     const nextPageIndex = Number(mainId) > 0 ? Number(mainId) - 1 : 0;
-    deleteMainCategoryMutation(mainCategoryList[Number(mainId)].categoryId);
+    deleteMainCategoryMutation(mainCategoryList[Number(mainId)]?.categoryId);
     router.replace(`/output/${nextPageIndex}`);
   };
 
-  const { mutate: deleteMainCategoryMutation, isSuccess } = useMutation(deleteMainCategory, {
+  const { mutate: deleteMainCategoryMutation } = useMutation(deleteMainCategory, {
     onSuccess: () => {
       setIsOpen(false);
+      queryClient.invalidateQueries(['main-category']);
     },
   });
 
-  useEffect(() => {
-    if (isSuccess) {
-      queryClient.invalidateQueries(['main-category']);
-      console.log('mutate');
-    }
-  }, [isSuccess, queryClient]);
+  const handleDeleteMiddleCategory = async () => {
+    if (folderIdx) deleteMiddleCategoryMutation(folderIdx);
+  };
+
+  const { mutate: deleteMiddleCategoryMutation } = useMutation(deleteMiddleCategory, {
+    onSuccess: () => {
+      setIsOpen(false);
+      if (setIsMoreModalOpen) setIsMoreModalOpen(false);
+      queryClient.invalidateQueries(['middle-category']);
+    },
+  });
+
+  const chosenWorkCardArr = useRecoilValue(deleteWorkCard);
+
+  const handleDeleteWorkCards = async () => {
+    deleteWorkCardMutation(chosenWorkCardArr);
+  };
+
+  const { mutate: deleteWorkCardMutation } = useMutation(deleteWorkCards, {
+    onSuccess: () => {
+      setIsOpen(false);
+      queryClient.invalidateQueries(['work-card']);
+      if (setIsDeleteMode) setIsDeleteMode(false);
+    },
+  });
 
   return isOpen ? (
     <StBackgroundWrapper>
@@ -55,7 +80,16 @@ export default function DeleteCategoryModal(props: DeleteCategoryModalProps & { 
 
         <StButtonWrapper>
           <StCancelBtn onClick={() => setIsOpen(false)}>취소하기</StCancelBtn>
-          <StDeleteBtn onClick={() => handleDeleteMainCategory()}>삭제하기</StDeleteBtn>
+          <StDeleteBtn
+            onClick={() => {
+              categoryType === 'main'
+                ? handleDeleteMainCategory()
+                : categoryType === 'middle'
+                ? handleDeleteMiddleCategory()
+                : handleDeleteWorkCards();
+            }}>
+            삭제하기
+          </StDeleteBtn>
         </StButtonWrapper>
       </StDeleteCategoryModalWrapper>
     </StBackgroundWrapper>

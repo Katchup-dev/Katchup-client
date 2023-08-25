@@ -6,19 +6,23 @@ import { useGetMiddleCategoryList } from 'lib/hooks/useGetMiddleCategory';
 import { useEffect, useRef, useState } from 'react';
 import DeleteCategoryModal from './DeleteCategoryModal';
 import { IcDeleteMiddleCategory, IcEditMiddleCategory } from 'public/assets/icons';
+import PatchCategoryModal from './PatchCategoryModal';
 
 interface MiddleCategoryMoreModalProps {
+  setIsMoreModalOpen?: (isMoreModalOpen: boolean) => void;
   folderIdx: number;
   isOpen: boolean;
+  mainId: string;
 }
 
 export default function MiddleCategoryMoreModal(props: MiddleCategoryMoreModalProps) {
-  const { folderIdx, isOpen } = props;
+  const { mainId, setIsMoreModalOpen, folderIdx, isOpen } = props;
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   return isOpen ? (
     <StMiddleCategoryMoreModalWrapper>
-      <StEditBtn>
+      <StEditBtn onClick={() => setIsEditModalOpen(true)}>
         <IcEditMiddleCategory />
         <p>수정하기</p>
       </StEditBtn>
@@ -28,10 +32,21 @@ export default function MiddleCategoryMoreModal(props: MiddleCategoryMoreModalPr
       </StDeleteBtn>
       {isDeleteModalOpen && (
         <DeleteCategoryModal
+          setIsMoreModalOpen={setIsMoreModalOpen}
           folderIdx={folderIdx}
           categoryType="middle"
           isOpen={isDeleteModalOpen}
           setIsOpen={setIsDeleteModalOpen}
+        />
+      )}
+      {isEditModalOpen && (
+        <PatchCategoryModal
+          folderIdx={folderIdx}
+          mainId={mainId}
+          isMainCategory={false}
+          isOpen={isEditModalOpen}
+          setIsOpen={setIsEditModalOpen}
+          setIsMoreModalOpen={setIsMoreModalOpen}
         />
       )}
     </StMiddleCategoryMoreModalWrapper>

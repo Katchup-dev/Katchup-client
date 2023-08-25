@@ -9,14 +9,14 @@ interface MiddleCategoryProps {
   handleClick: (id: number) => void;
 }
 
-const MiddleCategory = (props: MiddleCategoryProps) => {
-  const { categoryName, folderId, handleClick } = props;
+const MiddleCategory = (props: MiddleCategoryProps & { mainId: string }) => {
+  const { categoryName, folderId, handleClick, mainId } = props;
   const [isMoreModalOpen, setIsMoreModalOpen] = useState(false);
 
   return (
     <>
       <StMiddleFolder>
-        <StMoreButton onClick={() => setIsMoreModalOpen(true)}>
+        <StMoreButton onClick={() => setIsMoreModalOpen(!isMoreModalOpen)}>
           <IcMore />
         </StMoreButton>
         <div onClick={() => handleClick(folderId)}>
@@ -24,7 +24,12 @@ const MiddleCategory = (props: MiddleCategoryProps) => {
         </div>
         {isMoreModalOpen && (
           <StMiddleCategoryMoreModalContainer>
-            <MiddleCategoryMoreModal folderIdx={folderId} isOpen={isMoreModalOpen} />
+            <MiddleCategoryMoreModal
+              mainId={mainId}
+              setIsMoreModalOpen={setIsMoreModalOpen}
+              folderIdx={folderId}
+              isOpen={isMoreModalOpen}
+            />
           </StMiddleCategoryMoreModalContainer>
         )}
       </StMiddleFolder>
