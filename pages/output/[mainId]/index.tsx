@@ -9,6 +9,7 @@ import MiddleCategory from 'components/output/MiddleCategory';
 import AddMiddleCategory from 'components/output/AddMiddleCategory';
 import { useState } from 'react';
 import PatchCategoryModal from 'components/Modal/PatchCategoryModal';
+import NoMiddleCategory from 'components/output/NoMiddleCategory';
 
 const OutputMain = ({ mainId }: { mainId: string }) => {
   const router = useRouter();
@@ -36,18 +37,24 @@ const OutputMain = ({ mainId }: { mainId: string }) => {
           </header>
 
           <div>
-            {middleCategoryList?.map((category: MiddleCategoryInfo, idx: number) => (
-              <MiddleCategory
-                mainId={mainId}
-                categoryName={category.name}
-                key={idx}
-                folderId={category.taskId}
-                handleClick={() => {
-                  handleGoToWorkCard(category.taskId);
-                }}
-              />
-            ))}
-            <AddMiddleCategory mainId={mainId} />
+            {middleCategoryList.length > 0 ? (
+              <>
+                {middleCategoryList.map((category: MiddleCategoryInfo, idx: number) => (
+                  <MiddleCategory
+                    mainId={mainId}
+                    categoryName={category.name}
+                    key={idx}
+                    folderId={category.taskId}
+                    handleClick={() => {
+                      handleGoToWorkCard(category.taskId);
+                    }}
+                  />
+                ))}
+                <AddMiddleCategory mainId={mainId} />
+              </>
+            ) : (
+              <NoMiddleCategory />
+            )}
           </div>
         </StMiddleBoard>
 
@@ -107,6 +114,8 @@ const StMiddleBoard = styled.section`
     display: flex;
     flex-wrap: wrap;
     gap: 3rem;
+
+    position: relative;
   }
 `;
 
