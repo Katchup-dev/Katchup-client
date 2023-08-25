@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { getWorkCard } from 'core/apis/output';
 
-const useGetWorkCard = (folderId: number) => {
-  const { data, error } = useQuery(['work-card', folderId], () => getWorkCard(folderId), {
+const useGetWorkCard = (taskId: number) => {
+  const { data, error } = useQuery(['work-card', taskId], () => getWorkCard(taskId), {
     retry: 3,
   });
 

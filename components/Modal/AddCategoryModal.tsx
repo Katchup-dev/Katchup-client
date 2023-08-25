@@ -20,7 +20,9 @@ const AddCategoryModal = (props: AddCategoryModalProps & { mainId: string }) => 
   const [isCategoryAvailable, setIsCategoryAvailable] = useState(false);
 
   const { mainCategoryList } = useGetMainCategoryList();
-  const { middleCategoryList } = useGetMiddleCategoryList(Number(mainId));
+  const { middleCategoryList } = useGetMiddleCategoryList(
+    mainCategoryList && mainCategoryList[Number(mainId)]?.categoryId,
+  );
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -53,7 +55,7 @@ const AddCategoryModal = (props: AddCategoryModalProps & { mainId: string }) => 
       if (isMainCategory) {
         mutateMainCategory(inputRef.current.value);
       } else {
-        mutateMiddleCategory({ categoryId: Number(mainId), name: inputRef.current.value });
+        mutateMiddleCategory({ categoryId: mainCategoryList[Number(mainId)].categoryId, name: inputRef.current.value });
       }
     }
   };
