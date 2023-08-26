@@ -3,8 +3,14 @@ import { StMiddleFolder } from './MiddleCategory';
 import { IcAddMiddle } from 'public/assets/icons';
 import { useState } from 'react';
 import AddCategoryModal from 'components/Modal/AddCategoryModal';
+import { useGetMainCategoryList } from 'lib/hooks/useGetMainCategoryList';
 
-const AddMiddleCategory = ({ mainId }: { mainId: string }) => {
+export interface AddMiddleCategoryProps {
+  mainId: string;
+}
+
+const AddMiddleCategory = (props: AddMiddleCategoryProps) => {
+  const { mainId } = props;
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   return (

@@ -7,7 +7,7 @@ import { useGetMiddleCategoryList } from 'lib/hooks/useGetMiddleCategory';
 
 import { IcDeleteModal } from 'public/assets/icons';
 import { useRef, useState } from 'react';
-import { MiddleCategoryInfo, mainCategoryInfo } from 'types/output';
+import { MiddleCategoryInfo, mainCategoryInfo, mainCtxType } from 'types/output';
 
 export interface AddCategoryModalProps {
   isMainCategory: boolean;
@@ -21,9 +21,9 @@ const AddCategoryModal = (props: AddCategoryModalProps & { mainId: string }) => 
   const [isCategoryAvailable, setIsCategoryAvailable] = useState(false);
 
   const { mainCategoryList } = useGetMainCategoryList();
-  const { middleCategoryList } = useGetMiddleCategoryList(
-    mainCategoryList && mainCategoryList[Number(mainId)]?.categoryId,
-  );
+
+  const categoryId = mainCategoryList && mainCategoryList[Number(mainId)]?.categoryId;
+  const { middleCategoryList } = useGetMiddleCategoryList(categoryId);
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -56,7 +56,10 @@ const AddCategoryModal = (props: AddCategoryModalProps & { mainId: string }) => 
       if (isMainCategory) {
         mutateMainCategory(inputRef.current.value);
       } else {
-        mutateMiddleCategory({ categoryId: mainCategoryList[Number(mainId)].categoryId, name: inputRef.current.value });
+        mutateMiddleCategory({
+          categoryId: mainCategoryList[Number(mainId)]?.categoryId,
+          name: inputRef.current.value,
+        });
       }
     }
   };
@@ -128,9 +131,13 @@ const AddCategoryModal = (props: AddCategoryModalProps & { mainId: string }) => 
         </StSubmitCategoryBtn>
       </StModal>
     </StWrapper>
-  ) : (
-    <div></div>
-  );
+  ) : null;
+};
+
+export const getServerSideProps = async (ctx: mainCtxType) => {
+  const mainId = ctx.query.mainId;
+
+  return { props: { mainId } };
 };
 
 const StWrapper = styled.div`

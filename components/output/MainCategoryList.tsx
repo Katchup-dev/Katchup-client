@@ -65,18 +65,22 @@ const MainCategoryList = ({ mainId }: { mainId: string }) => {
           </StDeleteBtn>
         </StMainCategoryWrapper>
 
-        <AddCategoryModal
-          mainId={mainId}
-          isMainCategory={true}
-          isOpen={isAddModalShowing}
-          setIsOpen={setIsAddModalShowing}
-        />
-        <DeleteCategoryModal
-          mainId={mainId}
-          categoryType="main"
-          isOpen={isDeleteModalShowing}
-          setIsOpen={setIsDeleteModalShowing}
-        />
+        {isAddModalShowing && (
+          <AddCategoryModal
+            mainId={mainId}
+            isMainCategory={true}
+            isOpen={isAddModalShowing}
+            setIsOpen={setIsAddModalShowing}
+          />
+        )}
+        {isDeleteModalShowing && (
+          <DeleteCategoryModal
+            mainId={mainId}
+            categoryType="main"
+            isOpen={isDeleteModalShowing}
+            setIsOpen={setIsDeleteModalShowing}
+          />
+        )}
       </StWrapper>
     </>
   );

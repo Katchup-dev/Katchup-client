@@ -7,16 +7,19 @@ import { useGetMainCategoryList } from 'lib/hooks/useGetMainCategoryList';
 import MainCategoryList from 'components/output/MainCategoryList';
 import MiddleCategory from 'components/output/MiddleCategory';
 import AddMiddleCategory from 'components/output/AddMiddleCategory';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import PatchCategoryModal from 'components/Modal/PatchCategoryModal';
 import NoMiddleCategory from 'components/output/NoMiddleCategory';
 
 const OutputMain = ({ mainId }: { mainId: string }) => {
   const router = useRouter();
   const { mainCategoryList } = useGetMainCategoryList();
-  const { middleCategoryList } = useGetMiddleCategoryList(
-    mainCategoryList && mainCategoryList[Number(mainId)]?.categoryId,
-  );
+  const [middleCategoryId, setMiddleCategoryId] = useState<number>(0);
+  const { middleCategoryList } = useGetMiddleCategoryList(middleCategoryId);
+
+  useEffect(() => {
+    mainCategoryList && setMiddleCategoryId(mainCategoryList && mainCategoryList[Number(mainId)]?.categoryId);
+  }, [mainCategoryList, mainId]);
 
   const [isEditMainCategoryOpen, setIsEditMainCategoryOpen] = useState(false);
   const handleGoToWorkCard = (middleId: number) => {
@@ -37,20 +40,20 @@ const OutputMain = ({ mainId }: { mainId: string }) => {
           </header>
 
           <div>
-            {middleCategoryList && middleCategoryList.length > 0 ? (
+            {mainCategoryList && middleCategoryList && middleCategoryList.length > 0 ? (
               <>
-                {middleCategoryList.map((category: MiddleCategoryInfo, idx: number) => (
+                {middleCategoryList?.map((category: MiddleCategoryInfo, idx: number) => (
                   <MiddleCategory
                     mainId={mainId}
                     categoryName={category.name}
                     key={idx}
-                    folderId={category.taskId}
+                    folderId={category?.taskId}
                     handleClick={() => {
                       handleGoToWorkCard(category.taskId);
                     }}
                   />
                 ))}
-                <AddMiddleCategory mainId={mainId} />
+                {<AddMiddleCategory mainId={mainId} />}
               </>
             ) : (
               <NoMiddleCategory />

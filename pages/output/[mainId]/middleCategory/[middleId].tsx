@@ -23,7 +23,7 @@ import { MiddleCategoryInfo, WorkCardInfo, middleCtxType } from 'types/output';
 const WorkCardPage = ({ mainId, middleId }: { mainId: string; middleId: string }) => {
   const { mainCategoryList } = useGetMainCategoryList();
   const { middleCategoryList } = useGetMiddleCategoryList(
-    mainCategoryList && mainCategoryList[Number(mainId)].categoryId,
+    mainCategoryList && mainCategoryList[Number(mainId)]?.categoryId,
   );
 
   const [isDeleteMode, setIsDeleteMode] = useState(false);
