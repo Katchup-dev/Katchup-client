@@ -97,3 +97,12 @@ export const patchMiddleCategory = async (taskId: number, name: string) => {
     console.error(error);
   }
 };
+
+export const getFileDownload = async (fileUUID: string, fileName: string) => {
+  try {
+    const res = await client.get(`files/presigned/download?fileUUID=${fileUUID}&fileName=${fileName}`);
+    return res.data.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
