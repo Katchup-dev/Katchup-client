@@ -1,3 +1,4 @@
+import Toast from 'components/common/Toast';
 import PatchCategoryModal from 'components/Modal/PatchCategoryModal';
 import AddMiddleCategory from 'components/output/AddMiddleCategory';
 import MainCategoryList from 'components/output/MainCategoryList';
@@ -23,6 +24,8 @@ const OutputMain = ({ mainId }: { mainId: string }) => {
 
   const { isShowing, toggle } = useModal();
   const [isShareOn, setIsShareOn] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
+  const [toastKey, setToastKey] = useState<number>();
 
   const toggleShare = () => {
     setIsShareOn(!isShareOn);
@@ -30,6 +33,11 @@ const OutputMain = ({ mainId }: { mainId: string }) => {
 
   const handleGoToWorkCard = (middleId: number) => {
     router.push({ pathname: `/output/${mainId}/middleCategory/${middleId}` });
+  };
+
+  const handleCopyClick = () => {
+    setToastMessage('공유 링크를 클립보드에 복사했어요');
+    setToastKey(Date.now());
   };
 
   useEffect(() => {
@@ -40,7 +48,6 @@ const OutputMain = ({ mainId }: { mainId: string }) => {
     <>
       <StOutputMainWrapper>
         <MainCategoryList mainId={mainId} />
-
         <StMiddleBoard>
           <header>
             <StMainTitle isShouldWrap={true}>
@@ -53,7 +60,9 @@ const OutputMain = ({ mainId }: { mainId: string }) => {
               <IcShare />
             </StShrareBtn>
             <StShareModalWrapper>
-              {isShowing && <ShareModal isShareOn={isShareOn} handleCopyClick={toggle} toggleShare={toggleShare} />}
+              {isShowing && (
+                <ShareModal isShareOn={isShareOn} handleCopyClick={handleCopyClick} toggleShare={toggleShare} />
+              )}
             </StShareModalWrapper>
           </header>
           <div>
@@ -77,7 +86,6 @@ const OutputMain = ({ mainId }: { mainId: string }) => {
             )}
           </div>
         </StMiddleBoard>
-
         {isEditMainCategoryOpen && (
           <PatchCategoryModal
             isMainCategory={true}
@@ -86,6 +94,9 @@ const OutputMain = ({ mainId }: { mainId: string }) => {
             mainId={mainId}
           />
         )}
+        <StToastWrapper>
+          <Toast key={toastKey} message={toastMessage} isLink />
+        </StToastWrapper>
       </StOutputMainWrapper>
     </>
   );
@@ -161,6 +172,14 @@ const StShareModalWrapper = styled.div`
   right: 10.2rem;
 
   z-index: 1;
+`;
+
+const StToastWrapper = styled.div`
+  position: absolute;
+  display: flex;
+  justify-content: center;
+
+  width: 100%;
 `;
 
 export default OutputMain;
