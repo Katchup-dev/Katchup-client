@@ -1,7 +1,8 @@
-import styled from '@emotion/styled';
 import MiddleCategoryMoreModal from 'components/Modal/MiddleCategoryMoreModal';
 import { IcMore } from 'public/assets/icons';
 import { useState } from 'react';
+
+import styled from '@emotion/styled';
 
 interface MiddleCategoryProps {
   categoryName: string;

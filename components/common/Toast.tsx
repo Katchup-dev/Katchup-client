@@ -1,4 +1,4 @@
-import { IcCheck } from 'public/assets/icons';
+import { IcCheck, IcLink } from 'public/assets/icons';
 
 import { keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
@@ -6,10 +6,11 @@ import styled from '@emotion/styled';
 interface ToastProps {
   message: string;
   isCheck?: boolean;
+  isLink?: boolean;
 }
 
 const Toast = (props: ToastProps) => {
-  const { message, isCheck } = props;
+  const { message, isCheck, isLink } = props;
 
   return (
     <>
@@ -17,6 +18,7 @@ const Toast = (props: ToastProps) => {
         <StToast>
           <p>
             {isCheck ? <IcCheck /> : null}
+            {isLink ? <IcLink /> : null}
             {message}
           </p>
         </StToast>
