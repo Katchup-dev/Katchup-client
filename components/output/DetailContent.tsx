@@ -56,10 +56,6 @@ const DetailContent = (props: DetailContentProps) => {
 
         <StDetailContent>
           <p>{content}</p>
-
-          <span>
-            <p>343</p>/2000자
-          </span>
         </StDetailContent>
 
         {fileList?.length > 0 && (
