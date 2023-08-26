@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import axios from 'axios';
 import { getFileDownload } from 'core/apis/output';
+import { useRouter } from 'next/router';
 
 import { IcBack, IcDeleteFile, IcSubLogo } from 'public/assets/icons';
 
@@ -13,7 +14,7 @@ export interface DetailContentProps {
 
 const DetailContent = (props: DetailContentProps) => {
   const { fileList, content } = props;
-  console.log(fileList);
+  const router = useRouter();
 
   const handleFileDownload = async (id: string, name: string) => {
     try {
@@ -30,9 +31,9 @@ const DetailContent = (props: DetailContentProps) => {
 
   return (
     <StDetailWrapper>
-      <button>
+      <button onClick={() => router.back()}>
         <IcBack />
-        중분류로 돌아가기
+        돌아가기
       </button>
 
       <StSectionDetail>
