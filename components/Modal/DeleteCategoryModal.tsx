@@ -64,7 +64,7 @@ export default function DeleteCategoryModal(props: DeleteCategoryModalProps & { 
   });
 
   const handleDeleteSingleWorkCard = async () => {
-    await deleteWorkCards([workCardId]);
+    if (workCardId) await deleteWorkCards([workCardId]);
     router.back();
   };
 
