@@ -48,3 +48,6 @@ export { default as IcConfetti4 } from './ic_confetti_4.svg';
 export { default as IcSurprise } from './ic_surprise.svg';
 export { default as IcShare } from './ic_share.svg';
 export { default as IcKatchupLogoBig } from './ic_katchup_big.svg';
+export { default as IcToggleBefore } from './ic_toggle_before.svg';
+export { default as IcToggleAfter } from './ic_toggle_after.svg';
+export { default as IcBtnCopylink } from './ic_btn_copylink.svg';

@@ -3,8 +3,10 @@ import AddMiddleCategory from 'components/output/AddMiddleCategory';
 import MainCategoryList from 'components/output/MainCategoryList';
 import MiddleCategory from 'components/output/MiddleCategory';
 import NoMiddleCategory from 'components/output/NoMiddleCategory';
+import { ShareModal } from 'components/share/ShareModal';
 import { useGetMainCategoryList } from 'lib/hooks/useGetMainCategoryList';
 import { useGetMiddleCategoryList } from 'lib/hooks/useGetMiddleCategory';
+import useModal from 'lib/hooks/useModal';
 import { useRouter } from 'next/router';
 import { IcEditMain, IcShare } from 'public/assets/icons';
 import { useEffect, useState } from 'react';
@@ -17,6 +19,7 @@ const OutputMain = ({ mainId }: { mainId: string }) => {
   const { mainCategoryList } = useGetMainCategoryList();
   const [middleCategoryId, setMiddleCategoryId] = useState<number>(0);
   const { middleCategoryList } = useGetMiddleCategoryList(middleCategoryId);
+  const { isShowing, toggle } = useModal();
 
   useEffect(() => {
     mainCategoryList && setMiddleCategoryId(mainCategoryList && mainCategoryList[Number(mainId)]?.categoryId);
@@ -40,11 +43,11 @@ const OutputMain = ({ mainId }: { mainId: string }) => {
                 <IcEditMain />
               </button>
             </StMainTitle>
-            <StShrareBtn type="button" onClick={() => setIsEditMainCategoryOpen(!isEditMainCategoryOpen)}>
+            <StShrareBtn type="button" onClick={toggle}>
               <IcShare />
             </StShrareBtn>
+            <StShareModalWrapper>{isShowing && <ShareModal handleCopyClick={toggle} />}</StShareModalWrapper>
           </header>
-
           <div>
             {mainCategoryList && middleCategoryList && middleCategoryList.length > 0 ? (
               <>
@@ -143,5 +146,13 @@ const StMainTitle = styled.h1<{ isShouldWrap: boolean }>`
 `;
 
 const StShrareBtn = styled.button``;
+
+const StShareModalWrapper = styled.div`
+  position: fixed;
+  top: 25.5rem;
+  right: 10.2rem;
+
+  z-index: 1;
+`;
 
 export default OutputMain;
