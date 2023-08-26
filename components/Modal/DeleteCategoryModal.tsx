@@ -14,7 +14,7 @@ interface DeleteCategoryModalProps {
   categoryType: string;
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
-  workCardId: number;
+  workCardId?: number;
 }
 
 export default function DeleteCategoryModal(props: DeleteCategoryModalProps & { mainId?: string }) {
