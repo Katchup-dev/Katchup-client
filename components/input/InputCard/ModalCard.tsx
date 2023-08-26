@@ -41,10 +41,10 @@ const ModalCard = (props: ModalProps) => {
   const { createCard } = usePostCard();
 
   const modifiedFileList: PostFileListInfo[] = selectedFileList.map((fileInfo) => {
-    const modifiedFileName = `${selectedCategory.name}_${selectedTask.name}_${selectedSubTask.name}_${fileInfo.fileName}`;
+    const modifiedFileName = `${selectedCategory.name}_${selectedTask.name}_${selectedSubTask.name}_${fileInfo.fileOriginalName}`;
     return {
       ...fileInfo,
-      fileName: modifiedFileName,
+      fileChangedName: modifiedFileName,
     };
   });
 
