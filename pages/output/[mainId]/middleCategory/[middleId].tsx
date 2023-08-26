@@ -1,10 +1,8 @@
 import styled from '@emotion/styled';
-import { useMutation } from '@tanstack/react-query';
 import DeleteCategoryModal from 'components/Modal/DeleteCategoryModal';
 import MainCategoryList from 'components/output/MainCategoryList';
 import NoMiddleCategory from 'components/output/NoMiddleCategory';
 import WorkCard from 'components/output/WorkCard';
-import { deleteWorkCard } from 'core/atom';
 import { useGetMainCategoryList } from 'lib/hooks/useGetMainCategoryList';
 import { useGetMiddleCategoryList } from 'lib/hooks/useGetMiddleCategory';
 import useGetWorkCard from 'lib/hooks/useGetWorkCard';

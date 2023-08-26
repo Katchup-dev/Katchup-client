@@ -5,7 +5,6 @@ import { deleteWorkCard } from 'core/atom';
 import { useGetMainCategoryList } from 'lib/hooks/useGetMainCategoryList';
 import { useRouter } from 'next/router';
 import { IcDeleteCategoryLogo } from 'public/assets/icons';
-import { useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
 
 interface DeleteCategoryModalProps {

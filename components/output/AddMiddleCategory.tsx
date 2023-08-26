@@ -3,7 +3,6 @@ import { StMiddleFolder } from './MiddleCategory';
 import { IcAddMiddle } from 'public/assets/icons';
 import { useState } from 'react';
 import AddCategoryModal from 'components/Modal/AddCategoryModal';
-import { useGetMainCategoryList } from 'lib/hooks/useGetMainCategoryList';
 
 export interface AddMiddleCategoryProps {
   mainId: string;
