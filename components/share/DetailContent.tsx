@@ -2,6 +2,7 @@ import { IcBack, IcDeleteFile, IcSubLogo } from 'public/assets/icons';
 import { FileInfo } from 'types/output';
 
 import styled from '@emotion/styled';
+import { getFileDownload } from 'core/apis/output';
 
 export interface DetailContentProps {
   fileList: FileInfo[];
@@ -10,6 +11,19 @@ export interface DetailContentProps {
 
 const DetailContent = (props: DetailContentProps) => {
   const { fileList, content } = props;
+
+  const handleFileDownload = async (id: string, name: string) => {
+    try {
+      const { filePreSignedUrl } = await getFileDownload(id, name);
+
+      // 파일 다운로드를 위한 링크 생성
+      const downloadLink = document.createElement('a');
+      downloadLink.href = filePreSignedUrl;
+      downloadLink.click();
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <StDetailWrapper>
@@ -26,10 +40,6 @@ const DetailContent = (props: DetailContentProps) => {
 
         <StDetailContent>
           <p>{content}</p>
-
-          <span>
-            <p>343</p>/2000자
-          </span>
         </StDetailContent>
 
         {fileList?.length > 0 && (
@@ -40,9 +50,9 @@ const DetailContent = (props: DetailContentProps) => {
             </div>
             <StFileWrapper>
               {fileList?.map((file) => (
-                <a href={file.url} download>
+                <a download key={file.id} onClick={() => handleFileDownload(file.id, file.changedName)}>
                   <li key={file.id}>
-                    <IcDeleteFile /> {file.name} <p>{file.size}MB</p>
+                    <IcDeleteFile /> {file.changedName} <p>{file.size}MB</p>
                   </li>
                 </a>
               ))}
