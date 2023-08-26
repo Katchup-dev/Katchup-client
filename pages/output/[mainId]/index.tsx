@@ -10,7 +10,7 @@ import { useGetMainCategoryList } from 'lib/hooks/useGetMainCategoryList';
 import { useGetMiddleCategoryList } from 'lib/hooks/useGetMiddleCategory';
 import useModal from 'lib/hooks/useModal';
 import { useRouter } from 'next/router';
-import { IcEditMain, IcShare } from 'public/assets/icons';
+import { IcMiddleCategoryMeatball, IcShare } from 'public/assets/icons';
 import { mainCtxType, MiddleCategoryInfo } from 'types/output';
 
 import styled from '@emotion/styled';
@@ -57,7 +57,7 @@ const OutputMain = ({ mainId }: { mainId: string }) => {
             <StMainTitle isShouldWrap={true}>
               {mainCategoryList && mainCategoryList[Number(mainId)]?.name}
               <button type="button" onClick={() => setIsEditMainCategoryOpen(!isEditMainCategoryOpen)}>
-                <IcEditMain />
+                <IcMiddleCategoryMeatball />
               </button>
             </StMainTitle>
             <StShrareBtn type="button" onClick={toggle}>
