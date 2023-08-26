@@ -1,5 +1,6 @@
-import { useQuery } from '@tanstack/react-query';
 import { getWorkCard } from 'core/apis/output';
+
+import { useQuery } from '@tanstack/react-query';
 
 const useGetWorkCard = (taskId: number) => {
   const { data, error } = useQuery(['work-card', taskId], () => getWorkCard(taskId), {

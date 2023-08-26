@@ -1,9 +1,11 @@
-import styled from '@emotion/styled';
-import { IcHelp, IcLogo } from 'public/assets/icons';
-import SearchBox from './SearchBox';
-import { css } from '@emotion/react';
 import { useRouter } from 'next/router';
+import { IcHelp, IcLogo } from 'public/assets/icons';
 import { useRecoilValue } from 'recoil';
+
+import { css } from '@emotion/react';
+import styled from '@emotion/styled';
+
+import SearchBox from './SearchBox';
 
 export interface HeaderProps {
   profileImgSrc: string;
@@ -13,6 +15,7 @@ const Header = (props: HeaderProps) => {
   const { profileImgSrc } = props;
 
   const router = useRouter();
+  const { asPath } = router;
 
   const handleNavigate = (e: React.MouseEvent) => {
     const target = e.target as HTMLLIElement;
@@ -24,9 +27,9 @@ const Header = (props: HeaderProps) => {
 
   return (
     <>
-      <StHeaderWrapper>
+      <StHeaderWrapper path={asPath}>
         <div>
-          <IcLogo />
+          <IcLogo style={{ cursor: 'pointer' }} onClick={() => router.push('/')} />
 
           <StMenuNav>
             <ul>
@@ -53,7 +56,7 @@ const Header = (props: HeaderProps) => {
   );
 };
 
-const StHeaderWrapper = styled.header`
+const StHeaderWrapper = styled.header<{ path: string }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -78,6 +81,12 @@ const StHeaderWrapper = styled.header`
 
     margin-right: 5rem;
   }
+
+  ${({ path }) =>
+    path === '/' &&
+    css`
+      display: none;
+    `}
 `;
 
 const StMenuNav = styled.nav`

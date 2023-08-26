@@ -7,7 +7,7 @@
   },
   "parser": "@typescript-eslint/parser",
   //기본으로 제공되는 규칙(rule) 외에도 추가적인 규칙(rule)을 사용할 수 있도록 만들어주는 다양한 플러그인(plugin)
-  "plugins": ["react", "@typescript-eslint", "prettier", "react-hooks", "import"],
+  "plugins": ["react", "@typescript-eslint", "prettier", "react-hooks", "import", "@emotion"],
   //대부분의 ESLint 플러그인은 추천 설정을 제공하는데, extends 옵션은 이러한 추천 설정을 사용할 때 사용됨
   "extends": [
     "eslint:recommended",
@@ -15,6 +15,7 @@
     "plugin:@typescript-eslint/recommended",
     "plugin:import/typescript",
     "plugin:prettier/recommended",
+    "plugin:@emotion/recommended",
     "plugin:import/recommended"
   ],
   "rules": {
@@ -39,11 +40,6 @@
     "object-shorthand": ["error", "always"], // const obj = {a, b} 가능
     "arrow-parens": ["error", "always"], // arrow-function 인자가 2개 이상이면 괄호 필수
     "no-multi-spaces": "error", // 스페이스 여러개 금지
-    "extends": [
-      {
-        "plugins": ["@emotion"]
-      }
-    ],
     "import/order": [
       "error",
       {

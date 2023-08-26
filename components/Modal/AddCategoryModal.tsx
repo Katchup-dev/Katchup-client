@@ -1,13 +1,13 @@
-import styled from '@emotion/styled';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { NEW_CATEGORY_REGEX } from 'constants/output';
 import { postNewMainCategory, postNewMiddleCategory } from 'core/apis/output';
 import { useGetMainCategoryList } from 'lib/hooks/useGetMainCategoryList';
 import { useGetMiddleCategoryList } from 'lib/hooks/useGetMiddleCategory';
-
 import { IcDeleteModal } from 'public/assets/icons';
 import { useRef, useState } from 'react';
 import { MiddleCategoryInfo, mainCategoryInfo, mainCtxType } from 'types/output';
+
+import styled from '@emotion/styled';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 export interface AddCategoryModalProps {
   isMainCategory: boolean;
@@ -74,6 +74,7 @@ const AddCategoryModal = (props: AddCategoryModalProps & { mainId: string }) => 
           : middleCategoryList && !isMainCategory
           ? middleCategoryList.find((item: MiddleCategoryInfo) => item.name === currentInputValue)
           : undefined;
+        
       if (duplicateValue === undefined) {
         setIsCategoryAvailable(true);
         setWarningMsg('');

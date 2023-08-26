@@ -11,22 +11,65 @@ export interface InputCategoryInfo {
   isShared: boolean;
 }
 
-export interface InputFolderInfo {
-  folderId: number;
-  name: string;
-}
-
 export interface InputTaskInfo {
   taskId: number;
   name: string;
 }
 
-export interface postFolderInfo {
+export interface InputSubTaskInfo {
+  subTaskId: number;
+  name: string;
+}
+
+export interface InputKeywordInfo {
+  keywordId: number;
+  name: string;
+  color: string;
+}
+
+export interface PostTaskInfo {
   categoryId: number;
   name: string;
 }
 
-export interface postTaskInfo {
-  folderId: number;
+export interface PostSubTaskInfo {
+  taskId: number;
   name: string;
+}
+
+export interface PostKeywordInfo {
+  taskId: number;
+  name: string;
+  color: string;
+}
+
+export interface PostCardInfo {
+  categoryId: number;
+  taskId: number;
+  subTaskId: number;
+  keywordIdList: number[];
+  screenshotList: PostScreenshotListInfo[];
+  fileList: PostFileListInfo[];
+  note: string;
+  content: string;
+}
+
+export interface PostScreenshotListInfo {
+  screenshotUUID: string;
+  screenshotName: string;
+  screenshotUploadDate: string;
+  stickerList: PostStickerListInfo[];
+}
+
+export interface PostStickerListInfo {
+  order: number;
+  x: number;
+  y: number;
+}
+
+export interface PostFileListInfo {
+  fileUUID: string;
+  fileName: string;
+  fileUploadDate: string;
+  size: number;
 }

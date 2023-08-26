@@ -1,8 +1,11 @@
-import styled from '@emotion/styled';
-import { StMiddleFolder } from './MiddleCategory';
+import AddCategoryModal from 'components/Modal/AddCategoryModal';
+import { useRouter } from 'next/router';
 import { IcAddMiddle } from 'public/assets/icons';
 import { useState } from 'react';
-import AddCategoryModal from 'components/Modal/AddCategoryModal';
+
+import styled from '@emotion/styled';
+
+import { StMiddleFolder } from './MiddleCategory';
 
 export interface AddMiddleCategoryProps {
   mainId: string;
@@ -14,9 +17,9 @@ const AddMiddleCategory = (props: AddMiddleCategoryProps) => {
 
   return (
     <>
-      {isModalOpen && (
+      {/* {isModalOpen && (
         <AddCategoryModal mainId={mainId} isMainCategory={false} isOpen={isModalOpen} setIsOpen={setIsModalOpen} />
-      )}
+      )} */}
       <StAddMiddleCategory onClick={() => setIsModalOpen(true)}>
         <IcAddMiddle />
       </StAddMiddleCategory>

@@ -1,5 +1,6 @@
-import styled from '@emotion/styled';
 import { IcFilter, IcSearch } from 'public/assets/icons';
+
+import styled from '@emotion/styled';
 
 const SearchBox = () => {
   return (
@@ -8,7 +9,7 @@ const SearchBox = () => {
         <label>
           <IcSearch />
           <IcFilter />
-          <input placeholder="search" />
+          <input placeholder="검색" />
         </label>
       </StSearchForm>
     </>
@@ -44,9 +45,16 @@ const StSearchForm = styled.form`
       padding-left: 6.2rem;
       padding-right: 5rem;
 
+      border: 0.1rem solid ${({ theme }) => theme.colors.katchup_dark_gray};
       border-radius: 2.5rem;
       font-size: 1.8rem;
       color: ${({ theme }) => theme.colors.katchup_gray};
+
+      outline: none;
+
+      &::placeholder {
+        color: ${({ theme }) => theme.colors.katchup_gray};
+      }
     }
   }
 `;

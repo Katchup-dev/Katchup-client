@@ -1,6 +1,15 @@
-import { atom } from 'recoil';
-import { recoilPersist } from 'recoil-persist';
-import { InputCategoryInfo, InputFolderInfo, InputTaskInfo } from 'types/input';
+import { atom } from "recoil";
+import { recoilPersist } from "recoil-persist";
+import {
+  InputCategoryInfo,
+  InputKeywordInfo,
+  InputSubTaskInfo,
+  InputTaskInfo,
+  PostFileListInfo,
+  PostScreenshotListInfo
+} from "types/input";
+import { SelectMainCategoryInfo, SelectMiddleCategoryInfo } from "types/output";
+
 
 const { persistAtom } = recoilPersist();
 
@@ -24,14 +33,6 @@ export const categorySelectState = atom<InputCategoryInfo>({
   },
 });
 
-export const folderSelectState = atom<InputFolderInfo>({
-  key: `folderSelect`,
-  default: {
-    folderId: 0,
-    name: '',
-  },
-});
-
 export const taskSelectState = atom<InputTaskInfo>({
   key: `taskSelect`,
   default: {
@@ -40,7 +41,48 @@ export const taskSelectState = atom<InputTaskInfo>({
   },
 });
 
+export const keywordSelectState = atom<InputKeywordInfo[]>({
+  key: 'keywordSelect',
+  default: [],
+});
+
+export const subTaskSelectState = atom<InputSubTaskInfo>({
+  key: `subTaskSelect`,
+  default: {
+    subTaskId: 0,
+    name: '',
+  },
+});
+
 export const deleteWorkCard = atom<number[]>({
   key: `deleteWorkCard`,
+
+export const workInputState = atom<string>({
+  key: `workInput`,
+  default: '',
+});
+
+export const keywordListState = atom<number[]>({
+  key: 'keywordList',
+  default: [],
+});
+
+export const etcState = atom<string>({
+  key: 'etc',
+  default: '',
+});
+
+export const fileSelectState = atom<PostFileListInfo[]>({
+  key: 'fileSelect',
+  default: [],
+});
+
+export const fileNameChangeState = atom<boolean>({
+  key: 'isFileNameChangeChecked',
+  default: true,
+});
+
+export const screenshotSelectState = atom<PostScreenshotListInfo[]>({
+  key: 'screenshotSelect',
   default: [],
 });
