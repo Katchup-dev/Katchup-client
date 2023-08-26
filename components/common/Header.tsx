@@ -6,6 +6,7 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import SearchBox from './SearchBox';
+import { useEffect, useState } from 'react';
 
 export interface HeaderProps {
   profileImgSrc: string;
@@ -13,8 +14,10 @@ export interface HeaderProps {
 
 const Header = (props: HeaderProps) => {
   const { profileImgSrc } = props;
+  const [isShowNav, setIsShowNav] = useState(false);
 
   const router = useRouter();
+
   const { asPath } = router;
 
   const handleNavigate = (e: React.MouseEvent) => {
@@ -25,22 +28,30 @@ const Header = (props: HeaderProps) => {
     if (target.innerText === '모아보기') router.push('/output/0');
   };
 
+  useEffect(() => {
+    if (router.pathname.includes('share')) {
+      setIsShowNav((prev) => !prev);
+    }
+  }, []);
+
   return (
     <>
       <StHeaderWrapper path={asPath}>
         <div>
           <IcLogo style={{ cursor: 'pointer' }} onClick={() => router.push('/')} />
 
-          <StMenuNav>
-            <ul>
-              <StMenuItem isSelected={router.pathname.includes('input')} onClick={(e) => handleNavigate(e)}>
-                작성하기
-              </StMenuItem>
-              <StMenuItem isSelected={router.pathname.includes('output')} onClick={(e) => handleNavigate(e)}>
-                모아보기
-              </StMenuItem>
-            </ul>
-          </StMenuNav>
+          {!router.pathname.includes('share') && (
+            <StMenuNav>
+              <ul>
+                <StMenuItem isSelected={router.pathname.includes('input')} onClick={(e) => handleNavigate(e)}>
+                  작성하기
+                </StMenuItem>
+                <StMenuItem isSelected={router.pathname.includes('output')} onClick={(e) => handleNavigate(e)}>
+                  모아보기
+                </StMenuItem>
+              </ul>
+            </StMenuNav>
+          )}
         </div>
 
         <div>
