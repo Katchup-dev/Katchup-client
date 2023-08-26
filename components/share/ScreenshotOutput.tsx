@@ -1,6 +1,7 @@
-import styled from '@emotion/styled';
 import { IcScreenshot } from 'public/assets/icons';
 import { ScreenshotInfo } from 'types/output';
+
+import styled from '@emotion/styled';
 
 export interface ScreenshotOutputProps {
   screenshotList: ScreenshotInfo[];
@@ -14,11 +15,6 @@ const ScreenshotOutput = (props: ScreenshotOutputProps) => {
         <IcScreenshot />
         <h2>스크린샷</h2>
       </div>
-
-      <StScreenshotGuide>
-        <p>이미지를 클릭하여 번호를 매겨주세요.</p>
-      </StScreenshotGuide>
-
       <StScreenshot>
         {screenshotList?.map((screenshot: ScreenshotInfo) => (
           <img src={screenshot.url} key={screenshot.id} />
@@ -46,24 +42,6 @@ const StScreenshotWrapper = styled.article`
     > h2 {
       ${({ theme }) => theme.fonts.h1_title};
     }
-  }
-`;
-
-const StScreenshotGuide = styled.div`
-  display: flex;
-  align-items: center;
-  margin-bottom: 1.8rem;
-  padding-left: 3.1rem;
-
-  width: 71.8rem;
-  height: 4.1rem;
-
-  border-radius: 0.8rem;
-  background-color: ${({ theme }) => theme.colors.katchup_light_gray};
-
-  > p {
-    ${({ theme }) => theme.fonts.p2_text};
-    color: ${({ theme }) => theme.colors.katchup_dark_gray};
   }
 `;
 

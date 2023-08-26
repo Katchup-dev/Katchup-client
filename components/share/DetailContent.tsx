@@ -50,10 +50,6 @@ const DetailContent = (props: DetailContentProps) => {
           </>
         )}
       </StSectionDetail>
-      <StButtonWrapper>
-        <button type="button">삭제하기</button>
-        <button type="button">수정하기</button>
-      </StButtonWrapper>
     </StDetailWrapper>
   );
 };
@@ -175,41 +171,6 @@ const StFileWrapper = styled.ul`
         color: ${({ theme }) => theme.colors.katchup_dark_gray};
       }
     }
-  }
-`;
-
-const StButtonWrapper = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  gap: 1.6rem;
-
-  margin-top: 3.2rem;
-
-  > button {
-    padding: 0;
-
-    width: 11.8rem;
-    height: 4.2rem;
-
-    border-radius: 0.8rem;
-
-    ${({ theme }) => theme.fonts.h3_title};
-  }
-
-  > button:nth-of-type(1) {
-    border: 0.1rem solid ${({ theme }) => theme.colors.katchup_main};
-
-    background-color: ${({ theme }) => theme.colors.katchup_white};
-
-    color: ${({ theme }) => theme.colors.katchup_main};
-  }
-
-  > button:nth-of-type(2) {
-    border: none;
-
-    background-color: ${({ theme }) => theme.colors.katchup_main};
-
-    color: ${({ theme }) => theme.colors.katchup_white};
   }
 `;
 
