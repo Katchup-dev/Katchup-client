@@ -9,12 +9,15 @@ const detail = () => {
   const { detailId, content } = router.query;
 
   const { detailPageInfo } = useGetDetailPage(Number(detailId));
-  console.log(detailPageInfo);
 
   return (
     <>
       <StWrapper>
-        <DetailContent fileList={detailPageInfo?.fileList} content={content as string} />
+        <DetailContent
+          cardId={detailPageInfo?.cardId}
+          fileList={detailPageInfo?.fileList}
+          content={content as string}
+        />
         {detailPageInfo?.screenshotList.length > 0 && (
           <ScreenshotOutput screenshotList={detailPageInfo?.screenshotList} />
         )}

@@ -1,20 +1,32 @@
 import styled from '@emotion/styled';
-import axios from 'axios';
-import { getFileDownload } from 'core/apis/output';
+import DeleteCategoryModal from 'components/Modal/DeleteCategoryModal';
+import { deleteWorkCards, getFileDownload } from 'core/apis/output';
 import { useRouter } from 'next/router';
 
-import { IcBack, IcDeleteFile, IcSubLogo } from 'public/assets/icons';
+import { IcBack, IcSubLogo } from 'public/assets/icons';
+import { useState } from 'react';
 
 import { FileInfo } from 'types/output';
 
 export interface DetailContentProps {
   fileList: FileInfo[];
   content: string;
+  cardId: number;
+}
+
+interface DeleteCategoryModalProps {
+  setIsMoreModalOpen?: (isMoreModalOpen: boolean) => void;
+  setIsDeleteMode?: (isDeleteMode: boolean) => void;
+  folderIdx?: number;
+  categoryType: string;
+  isOpen: boolean;
+  setIsOpen: (isOpen: boolean) => void;
 }
 
 const DetailContent = (props: DetailContentProps) => {
-  const { fileList, content } = props;
+  const { fileList, content, cardId } = props;
   const router = useRouter();
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const handleFileDownload = async (id: string, name: string) => {
     try {
@@ -69,9 +81,20 @@ const DetailContent = (props: DetailContentProps) => {
         )}
       </StSectionDetail>
       <StButtonWrapper>
-        <button type="button">삭제하기</button>
+        <button type="button" onClick={() => setIsDeleteModalOpen(true)}>
+          삭제하기
+        </button>
         <button type="button">수정하기</button>
       </StButtonWrapper>
+
+      {
+        <DeleteCategoryModal
+          workCardId={cardId}
+          categoryType="workCard"
+          setIsOpen={setIsDeleteModalOpen}
+          isOpen={isDeleteModalOpen}
+        />
+      }
     </StDetailWrapper>
   );
 };
