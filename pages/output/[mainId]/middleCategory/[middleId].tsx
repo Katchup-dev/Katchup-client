@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import DeleteCategoryModal from 'components/Modal/DeleteCategoryModal';
 import MainCategoryList from 'components/output/MainCategoryList';
-import NoMiddleCategory from 'components/output/NoMiddleCategory';
+import NoWorkCard from 'components/output/NoWorkCard';
 import WorkCard from 'components/output/WorkCard';
 import { useGetMainCategoryList } from 'lib/hooks/useGetMainCategoryList';
 import { useGetMiddleCategoryList } from 'lib/hooks/useGetMiddleCategory';
@@ -100,7 +100,7 @@ const WorkCardPage = ({ mainId, middleId }: { mainId: string; middleId: string }
               ))}
             </>
           ) : (
-            <NoMiddleCategory />
+            <NoWorkCard />
           )}
         </StMiddleBoard>
 

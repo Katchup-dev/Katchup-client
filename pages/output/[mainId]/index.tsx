@@ -9,7 +9,6 @@ import MiddleCategory from 'components/output/MiddleCategory';
 import AddMiddleCategory from 'components/output/AddMiddleCategory';
 import { useEffect, useState } from 'react';
 import PatchCategoryModal from 'components/Modal/PatchCategoryModal';
-import NoMiddleCategory from 'components/output/NoMiddleCategory';
 
 const OutputMain = ({ mainId }: { mainId: string }) => {
   const router = useRouter();
@@ -40,7 +39,7 @@ const OutputMain = ({ mainId }: { mainId: string }) => {
           </header>
 
           <div>
-            {mainCategoryList && middleCategoryList && middleCategoryList.length > 0 ? (
+            {mainCategoryList && middleCategoryList && middleCategoryList.length > 0 && (
               <>
                 {middleCategoryList?.map((category: MiddleCategoryInfo, idx: number) => (
                   <MiddleCategory
@@ -53,11 +52,9 @@ const OutputMain = ({ mainId }: { mainId: string }) => {
                     }}
                   />
                 ))}
-                {<AddMiddleCategory mainId={mainId} />}
               </>
-            ) : (
-              <NoMiddleCategory />
             )}
+            {<AddMiddleCategory mainId={mainId} />}
           </div>
         </StMiddleBoard>
 
