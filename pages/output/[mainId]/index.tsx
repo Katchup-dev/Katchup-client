@@ -4,9 +4,7 @@ import AddMiddleCategory from 'components/output/AddMiddleCategory';
 import MainCategoryList from 'components/output/MainCategoryList';
 import MiddleCategory from 'components/output/MiddleCategory';
 
-import AddMiddleCategory from 'components/output/AddMiddleCategory';
 import { useEffect, useState } from 'react';
-import PatchCategoryModal from 'components/Modal/PatchCategoryModal';
 import { ShareModal } from 'components/share/ShareModal';
 import { useGetMainCategoryList } from 'lib/hooks/useGetMainCategoryList';
 import { useGetMiddleCategoryList } from 'lib/hooks/useGetMiddleCategory';
