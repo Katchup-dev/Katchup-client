@@ -88,6 +88,7 @@ const WorkCardPage = ({ mainId, middleId }: { mainId: string; middleId: string }
               {workCardList?.map((card: WorkCardInfo) => (
                 <WorkCard
                   isDeleteWorkCard={isDeleteMode}
+                  screenshotList={card.screenshotList}
                   mainId={mainId}
                   key={card.cardId}
                   cardId={card.cardId}
