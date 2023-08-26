@@ -17,7 +17,6 @@ import {
 } from 'public/assets/icons';
 import { useState } from 'react';
 import { MiddleCategoryInfo, WorkCardInfo, middleCtxType } from 'types/output';
-import { middleCtxType, WorkCardInfo } from 'types/output';
 
 const WorkCardPage = ({ mainId, middleId }: { mainId: string; middleId: string }) => {
   const { mainCategoryList } = useGetMainCategoryList();
