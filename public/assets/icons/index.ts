@@ -34,7 +34,6 @@ export { default as IcLogoBig } from './ic_logoBig.svg';
 export { default as IcDeleteModal } from './ic_deleteModal.svg';
 export { default as IcFileIcon } from './ic_fileIcon.svg';
 export { default as IcMoreDetail } from './ic_moreDetail.svg';
-export { default as IcScreenshotTag } from './ic_ScreenShotTag.svg';
 export { default as IcDeleteCategoryLogo } from './ic_deleteCategoryLogo.svg';
 export { default as IcDeleteMiddleCategory } from './ic_deleteMiddleCategory.svg';
 export { default as IcEditMiddleCategory } from './ic_editMiddleCategory.svg';
