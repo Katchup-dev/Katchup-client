@@ -8,7 +8,7 @@ const detail = () => {
   const router = useRouter();
   const { detailId, content } = router.query;
 
-  const { detailPageInfo, isError } = useGetDetailPage(Number(detailId));
+  const { detailPageInfo } = useGetDetailPage(Number(detailId));
 
   return (
     <>

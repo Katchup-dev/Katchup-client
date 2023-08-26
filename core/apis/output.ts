@@ -6,7 +6,7 @@ export const getMainCategoryList = async () => {
 };
 
 export const getMiddleCategoryList = async (categoryId: number) => {
-  const { data } = await client.get(`/folders/categories/${categoryId}`);
+  const { data } = await client.get(`/tasks/categories/${categoryId}`);
 
   return data;
 };
@@ -32,10 +32,68 @@ export const postNewMainCategory = async (name: string) => {
 };
 
 export const postNewMiddleCategory = async (categoryId: number, name: string) => {
-  const { data } = await client.post(`/folders`, {
+  const { data } = await client.post(`/tasks`, {
     categoryId,
     name,
   });
+  console.log('hi', data);
 
   return data;
+};
+
+export const deleteMainCategory = async (mainId: number) => {
+  try {
+    const res = await client.delete(`/categories/${mainId}`);
+    return res;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const deleteMiddleCategory = async (taskId: number) => {
+  try {
+    const res = await client.delete(`/tasks/${taskId}`);
+    return res;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const deleteWorkCards = async (cardIdList: number[]) => {
+  try {
+    const res = await client.delete(`/cards`, {
+      data: {
+        cardIdList: cardIdList,
+      },
+    });
+
+    return res;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const patchMainCategory = async (categoryId: number, name: string) => {
+  try {
+    const res = await client.patch(`/categories/${categoryId}`, {
+      name,
+    });
+
+    return res;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const patchMiddleCategory = async (taskId: number, name: string) => {
+  try {
+    const res = await client.patch(`/tasks/${taskId}`, {
+      name,
+    });
+
+    console.log(res);
+    return res;
+  } catch (error) {
+    console.error(error);
+  }
 };

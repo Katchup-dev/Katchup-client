@@ -1,63 +1,79 @@
-import { NEW_CATEGORY_REGEX } from 'constants/output';
-import { postNewMainCategory, postNewMiddleCategory } from 'core/apis/output';
-import { useGetMainCategoryList } from 'lib/hooks/useGetMainCategoryList';
-import { useGetMiddleCategoryList } from 'lib/hooks/useGetMiddleCategory';
-import { IcDeleteModal } from 'public/assets/icons';
-import { useRef, useState } from 'react';
-import { MiddleCategoryInfo, mainCategoryInfo, mainCtxType } from 'types/output';
-
 import styled from '@emotion/styled';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { NEW_CATEGORY_REGEX } from 'constants/output';
+import { patchMainCategory, patchMiddleCategory, postNewMiddleCategory } from 'core/apis/output';
+import { useGetMainCategoryList } from 'lib/hooks/useGetMainCategoryList';
+import { useGetMiddleCategoryList } from 'lib/hooks/useGetMiddleCategory';
 
-export interface AddCategoryModalProps {
+import { IcDeleteModal } from 'public/assets/icons';
+import { useEffect, useRef, useState } from 'react';
+import { MiddleCategoryInfo, mainCategoryInfo } from 'types/output';
+
+export interface PatchCategoryModalProps {
+  folderIdx?: number;
   isMainCategory: boolean;
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
+  setIsMoreModalOpen?: (isMoreModalOpen: boolean) => void;
 }
 
-const AddCategoryModal = (props: AddCategoryModalProps & { mainId: string }) => {
-  const { isMainCategory, isOpen, setIsOpen, mainId } = props;
+const PatchCategoryModal = (props: PatchCategoryModalProps & { mainId: string }) => {
+  const { folderIdx, isMainCategory, isOpen, setIsOpen, setIsMoreModalOpen, mainId } = props;
   const [warningMsg, setWarningMsg] = useState('');
-  const [isCategoryAvailable, setIsCategoryAvailable] = useState(false);
+  const [isCategoryAvailable, setIsCategoryAvailable] = useState(true);
+  const [initialValue, setInitialValue] = useState('');
+
+  useEffect(() => {
+    if (inputRef.current) setInitialValue(inputRef.current.value);
+  }, []);
 
   const { mainCategoryList } = useGetMainCategoryList();
-
-  const categoryId = mainCategoryList && mainCategoryList[Number(mainId)]?.categoryId;
-  const { middleCategoryList } = useGetMiddleCategoryList(categoryId);
+  const { middleCategoryList } = useGetMiddleCategoryList(
+    mainCategoryList && mainCategoryList[Number(mainId)]?.categoryId,
+  );
 
   const inputRef = useRef<HTMLInputElement>(null);
 
   //넣자마자 바로 반영되게 하는 로직
   const queryClient = useQueryClient();
 
-  const { mutate: mutateMainCategory } = useMutation(postNewMainCategory, {
+  const patchNewMainCategory = (params: { categoryId: number; name: string }) => {
+    const { categoryId, name } = params;
+    return patchMainCategory(categoryId, name);
+  };
+
+  const { mutate: mutateMainCategory } = useMutation(patchNewMainCategory, {
     onSuccess: () => {
       setIsOpen(false);
       queryClient.invalidateQueries(['main-category']);
     },
   });
 
-  const postNewMiddleCategoryMutation = (params: { categoryId: number; name: string }) => {
-    const { categoryId, name } = params;
-    return postNewMiddleCategory(categoryId, name);
+  const patchNewMiddleCategory = (params: { taskId: number; name: string }) => {
+    const { taskId, name } = params;
+    return patchMiddleCategory(taskId, name);
   };
 
-  const { mutate: mutateMiddleCategory } = useMutation(postNewMiddleCategoryMutation, {
+  const { mutate: mutateMiddleCategory } = useMutation(patchNewMiddleCategory, {
     onSuccess: () => {
       setIsOpen(false);
+      if (setIsMoreModalOpen) setIsMoreModalOpen(false);
       queryClient.invalidateQueries(['middle-category']);
     },
   });
 
-  const handleAddCategory = async (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handlePatchCategory = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
     if (inputRef.current) {
       if (isMainCategory) {
-        mutateMainCategory(inputRef.current.value);
+        mutateMainCategory({
+          categoryId: mainCategoryList && mainCategoryList[Number(mainId)].categoryId,
+          name: inputRef.current.value,
+        });
       } else {
         mutateMiddleCategory({
-          categoryId: mainCategoryList[Number(mainId)]?.categoryId,
+          taskId: folderIdx as number,
           name: inputRef.current.value,
         });
       }
@@ -70,11 +86,14 @@ const AddCategoryModal = (props: AddCategoryModalProps & { mainId: string }) => 
     if (NEW_CATEGORY_REGEX.test(currentInputValue)) {
       const duplicateValue =
         mainCategoryList && isMainCategory
-          ? mainCategoryList.find((item: mainCategoryInfo) => item.name === currentInputValue)
+          ? mainCategoryList?.find(
+              (item: mainCategoryInfo) => item.name === currentInputValue && item.name !== initialValue,
+            )
           : middleCategoryList && !isMainCategory
-          ? middleCategoryList.find((item: MiddleCategoryInfo) => item.name === currentInputValue)
+          ? middleCategoryList?.find(
+              (item: mainCategoryInfo) => item.name === currentInputValue && item.name !== initialValue,
+            )
           : undefined;
-        
       if (duplicateValue === undefined) {
         setIsCategoryAvailable(true);
         setWarningMsg('');
@@ -107,7 +126,7 @@ const AddCategoryModal = (props: AddCategoryModalProps & { mainId: string }) => 
     <StWrapper>
       <StModal>
         <StModalHeader>
-          <h1>{isMainCategory ? '카테고리 추가' : '업무 추가'}</h1>
+          <h1>{isMainCategory ? '카테고리명 설정' : '업무명 설정'}</h1>
 
           <button onClick={() => setIsOpen(false)}>
             <IcDeleteModal />
@@ -117,6 +136,13 @@ const AddCategoryModal = (props: AddCategoryModalProps & { mainId: string }) => 
         <StModalForm>
           <h2>{isMainCategory ? '카테고리명' : '업무명'}</h2>
           <input
+            defaultValue={
+              isMainCategory && mainCategoryList
+                ? mainCategoryList[Number(mainId)].name
+                : !isMainCategory && middleCategoryList
+                ? middleCategoryList.find((item: MiddleCategoryInfo) => item.taskId === folderIdx).name
+                : undefined
+            }
             type="text"
             ref={inputRef}
             onChange={(e) => {
@@ -124,21 +150,18 @@ const AddCategoryModal = (props: AddCategoryModalProps & { mainId: string }) => 
               handleCheckMainCategory(e);
             }}
           />
+
           <p>{warningMsg}</p>
         </StModalForm>
 
-        <StSubmitCategoryBtn onClick={(e) => handleAddCategory(e)} disabled={!isCategoryAvailable}>
-          추가하기
+        <StSubmitCategoryBtn onClick={(e) => handlePatchCategory(e)} disabled={!isCategoryAvailable}>
+          저장하기
         </StSubmitCategoryBtn>
       </StModal>
     </StWrapper>
-  ) : null;
-};
-
-export const getServerSideProps = async (ctx: mainCtxType) => {
-  const mainId = ctx.query.mainId;
-
-  return { props: { mainId } };
+  ) : (
+    <div></div>
+  );
 };
 
 const StWrapper = styled.div`
@@ -244,4 +267,4 @@ const StSubmitCategoryBtn = styled.button<{ disabled: boolean }>`
   border-radius: 0.8rem;
 `;
 
-export default AddCategoryModal;
+export default PatchCategoryModal;

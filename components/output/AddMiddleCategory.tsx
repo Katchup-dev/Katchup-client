@@ -7,11 +7,13 @@ import styled from '@emotion/styled';
 
 import { StMiddleFolder } from './MiddleCategory';
 
-const AddMiddleCategory = () => {
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+export interface AddMiddleCategoryProps {
+  mainId: string;
+}
 
-  const router = useRouter();
-  const mainId = router.query.mainId;
+const AddMiddleCategory = (props: AddMiddleCategoryProps) => {
+  const { mainId } = props;
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   return (
     <>

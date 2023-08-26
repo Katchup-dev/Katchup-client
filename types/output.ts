@@ -27,7 +27,7 @@ export interface SelectMiddleCategoryInfo {
 }
 
 export interface MiddleCategoryInfo {
-  folderId: number;
+  taskId: number;
   name: string;
 }
 
@@ -35,7 +35,7 @@ export interface WorkCardInfo {
   taskId: number;
   cardId: number;
   placementOrder: number;
-  cardName: string;
+  subTaskName: string;
   keywordList: KeywordInfo[];
   content: string;
   existFile: boolean;

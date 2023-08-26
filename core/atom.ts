@@ -1,14 +1,14 @@
-import { atom } from "recoil";
-import { recoilPersist } from "recoil-persist";
+import { atom } from 'recoil';
+import { recoilPersist } from 'recoil-persist';
 import {
   InputCategoryInfo,
   InputKeywordInfo,
   InputSubTaskInfo,
   InputTaskInfo,
   PostFileListInfo,
-  PostScreenshotListInfo
-} from "types/input";
-import { SelectMainCategoryInfo, SelectMiddleCategoryInfo } from "types/output";
+  PostScreenshotListInfo,
+} from 'types/input';
+import { SelectMainCategoryInfo, SelectMiddleCategoryInfo } from 'types/output';
 
 const { persistAtom } = recoilPersist();
 
@@ -51,6 +51,11 @@ export const subTaskSelectState = atom<InputSubTaskInfo>({
     subTaskId: 0,
     name: '',
   },
+});
+
+export const deleteWorkCard = atom<number[]>({
+  key: `deleteWorkCard`,
+  default: [],
 });
 
 export const workInputState = atom<string>({
