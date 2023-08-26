@@ -1,4 +1,12 @@
+import { deleteWorkCard } from 'core/atom';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { useRecoilState } from 'recoil';
+import { KeywordInfo } from 'types/output';
+
 import styled from '@emotion/styled';
+
+import { keywordColors } from '../../constants/output';
 import {
   IcDeleteWorkCardChosen,
   IcDeleteWorkCardUnchosen,
@@ -6,12 +14,6 @@ import {
   IcMoreDetail,
   IcScreenshotTag,
 } from '../../public/assets/icons';
-import { keywordColors } from '../../constants/output';
-import { KeywordInfo } from 'types/output';
-import Link from 'next/link';
-import { useEffect, useState } from 'react';
-import { useRecoilState } from 'recoil';
-import { deleteWorkCard } from 'core/atom';
 
 export interface WorkCardProps {
   mainId: string;
@@ -74,7 +76,7 @@ const WorkCard = (props: WorkCardProps, { mainId }: { mainId: string }) => {
 
       <Link
         href={{
-          pathname: `/output/${mainId}/middleCategory/detail/${cardId}`,
+          pathname: `/share/${mainId}/middleCategory/detail/${cardId}`,
           query: { content: content },
         }}>
         <StMoreDetailBtn>

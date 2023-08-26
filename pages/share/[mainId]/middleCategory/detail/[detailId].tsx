@@ -1,8 +1,9 @@
-import styled from '@emotion/styled';
-import DetailContent from 'components/output/DetailContent';
-import ScreenshotOutput from 'components/output/ScreenshotOutput';
+import DetailContent from 'components/share/DetailContent';
+import ScreenshotOutput from 'components/share/ScreenshotOutput';
 import { useGetDetailPage } from 'lib/hooks/useGetDetailPage';
 import { useRouter } from 'next/router';
+
+import styled from '@emotion/styled';
 
 const detail = () => {
   const router = useRouter();

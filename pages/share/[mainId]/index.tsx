@@ -1,14 +1,10 @@
-import PatchCategoryModal from 'components/Modal/PatchCategoryModal';
-import AddMiddleCategory from 'components/output/AddMiddleCategory';
-import MainCategoryList from 'components/output/MainCategoryList';
-import MiddleCategory from 'components/output/MiddleCategory';
-import NoMiddleCategory from 'components/output/NoMiddleCategory';
-import { ShareModal } from 'components/share/ShareModal';
+import MainCategoryList from 'components/share/MainCategoryList';
+import MiddleCategory from 'components/share/MiddleCategory';
+import NoMiddleCategory from 'components/share/NoMiddleCategory';
 import { useGetMainCategoryList } from 'lib/hooks/useGetMainCategoryList';
 import { useGetMiddleCategoryList } from 'lib/hooks/useGetMiddleCategory';
 import useModal from 'lib/hooks/useModal';
 import { useRouter } from 'next/router';
-import { IcEditMain, IcShare } from 'public/assets/icons';
 import { useEffect, useState } from 'react';
 import { mainCtxType, MiddleCategoryInfo } from 'types/output';
 
@@ -19,9 +15,7 @@ const OutputMain = ({ mainId }: { mainId: string }) => {
   const { mainCategoryList } = useGetMainCategoryList();
   const [middleCategoryId, setMiddleCategoryId] = useState<number>(0);
   const { middleCategoryList } = useGetMiddleCategoryList(middleCategoryId);
-  const [isEditMainCategoryOpen, setIsEditMainCategoryOpen] = useState(false);
 
-  const { isShowing, toggle } = useModal();
   const [isShareOn, setIsShareOn] = useState(false);
 
   const toggleShare = () => {
@@ -29,7 +23,7 @@ const OutputMain = ({ mainId }: { mainId: string }) => {
   };
 
   const handleGoToWorkCard = (middleId: number) => {
-    router.push({ pathname: `/output/${mainId}/middleCategory/${middleId}` });
+    router.push({ pathname: `/share/${mainId}/middleCategory/${middleId}` });
   };
 
   useEffect(() => {
@@ -43,18 +37,7 @@ const OutputMain = ({ mainId }: { mainId: string }) => {
 
         <StMiddleBoard>
           <header>
-            <StMainTitle isShouldWrap={true}>
-              {mainCategoryList && mainCategoryList[Number(mainId)]?.name}
-              <button type="button" onClick={() => setIsEditMainCategoryOpen(!isEditMainCategoryOpen)}>
-                <IcEditMain />
-              </button>
-            </StMainTitle>
-            <StShrareBtn type="button" onClick={toggle}>
-              <IcShare />
-            </StShrareBtn>
-            <StShareModalWrapper>
-              {isShowing && <ShareModal isShareOn={isShareOn} handleCopyClick={toggle} toggleShare={toggleShare} />}
-            </StShareModalWrapper>
+            <StMainTitle isShouldWrap={true}>{mainCategoryList && mainCategoryList[Number(mainId)]?.name}</StMainTitle>
           </header>
           <div>
             {mainCategoryList && middleCategoryList && middleCategoryList.length > 0 ? (
@@ -70,22 +53,12 @@ const OutputMain = ({ mainId }: { mainId: string }) => {
                     }}
                   />
                 ))}
-                {<AddMiddleCategory mainId={mainId} />}
               </>
             ) : (
               <NoMiddleCategory />
             )}
           </div>
         </StMiddleBoard>
-
-        {isEditMainCategoryOpen && (
-          <PatchCategoryModal
-            isMainCategory={true}
-            isOpen={isEditMainCategoryOpen}
-            setIsOpen={setIsEditMainCategoryOpen}
-            mainId={mainId}
-          />
-        )}
       </StOutputMainWrapper>
     </>
   );
@@ -151,16 +124,6 @@ const StMainTitle = styled.h1<{ isShouldWrap: boolean }>`
   > button {
     margin-left: 1.6rem;
   }
-`;
-
-const StShrareBtn = styled.button``;
-
-const StShareModalWrapper = styled.div`
-  position: fixed;
-  top: 25.5rem;
-  right: 10.2rem;
-
-  z-index: 1;
 `;
 
 export default OutputMain;

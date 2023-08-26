@@ -32,7 +32,7 @@ const MainCategoryList = ({ mainId }: { mainId: string }) => {
     const tempIsCurrentCategoryArray = Array(mainCategoryList?.length).fill(false);
     tempIsCurrentCategoryArray[idx] = true;
     setIsCurrentCategoryArray(tempIsCurrentCategoryArray);
-    router.push(`/output/${idx}`);
+    router.push(`/share/${idx}`);
   };
 
   return (
