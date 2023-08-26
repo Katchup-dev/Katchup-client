@@ -36,8 +36,12 @@ const OutputMain = ({ mainId }: { mainId: string }) => {
   };
 
   const handleCopyClick = () => {
-    setToastMessage('공유 링크를 클립보드에 복사했어요');
-    setToastKey(Date.now());
+    const linkToCopy = `https://katchup.kr/share/${mainId}`;
+
+    navigator.clipboard.writeText(linkToCopy).then(() => {
+      setToastMessage('공유 링크를 클립보드에 복사했어요');
+      setToastKey(Date.now());
+    });
   };
 
   useEffect(() => {
