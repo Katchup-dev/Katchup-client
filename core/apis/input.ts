@@ -109,9 +109,15 @@ export const getPresignedUrl = async (screenshotName: string) => {
 };
 
 // ---- 스크린샷 삭제 ----
-export const deleteScreenshot = async (screenshotUUID: string) => {
+export const deleteScreenshot = async (
+  screenshotName: string,
+  screenshotUUID: string,
+  screenshotUploadDate: string,
+) => {
   try {
-    const { data } = await client.delete(`/screenshots/${screenshotUUID}`);
+    const { data } = await client.delete(
+      `/screenshots?screenshotName=${screenshotName}&screenshotUploadDate=${screenshotUploadDate}&screenshotUUID=${screenshotUUID}`,
+    );
     return data.data;
   } catch (error) {
     console.error(error);
@@ -131,7 +137,7 @@ export const putScreenshot = async (presignedUrl: string, file: File) => {
 // ---- 파일 presigned url 생성 ----
 export const getFilePresignedUrl = async (fileName: string) => {
   try {
-    const { data } = await client.get(`/files/presigned?fileName=${fileName}`);
+    const { data } = await client.get(`/files/presigned/upload?fileName=${fileName}`);
     return data.data;
   } catch (error) {
     console.error(error);
@@ -149,9 +155,11 @@ export const putFile = async (presignedUrl: string, file: File) => {
 };
 
 // ---- 파일 삭제 ----
-export const deleteFile = async (fileUUID: string) => {
+export const deleteFile = async (fileOriginalName: string, fileUploadDate: string, fileUUID: string) => {
   try {
-    const { data } = await client.delete(`/files/${fileUUID}`);
+    const { data } = await client.delete(
+      `/files?fileOriginalName=${fileOriginalName}&fileUploadDate=${fileUploadDate}&fileUUID=${fileUUID}`,
+    );
     return data.data;
   } catch (error) {
     console.log(error);
