@@ -23,7 +23,7 @@ const OutputMain = ({ mainId }: { mainId: string }) => {
   const [isEditMainCategoryOpen, setIsEditMainCategoryOpen] = useState(false);
 
   const { isShowing, toggle } = useModal();
-  const [isShareOn, setIsShareOn] = useState(false);
+  const [isShareOn, setIsShareOn] = useState(true);
   const [toastMessage, setToastMessage] = useState('');
   const [toastKey, setToastKey] = useState<number>();
 
@@ -36,8 +36,8 @@ const OutputMain = ({ mainId }: { mainId: string }) => {
   };
 
   const handleCopyClick = () => {
+    if (!isShareOn) return;
     const linkToCopy = `https://katchup.kr/share/${mainId}`;
-
     navigator.clipboard.writeText(linkToCopy).then(() => {
       setToastMessage('공유 링크를 클립보드에 복사했어요');
       setToastKey(Date.now());

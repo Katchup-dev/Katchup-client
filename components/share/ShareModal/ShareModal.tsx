@@ -1,11 +1,7 @@
-import Toast from "components/common/Toast";
-import {
-  IcBtnCopylink,
-  IcToggleAfter,
-  IcToggleBefore
-} from "public/assets/icons";
+import Toast from 'components/common/Toast';
+import { IcBtnCopylink, IcToggleAfter, IcToggleBefore } from 'public/assets/icons';
 
-import styled from "@emotion/styled";
+import styled from '@emotion/styled';
 
 interface ShareModalProps {
   isShareOn: boolean;
@@ -14,14 +10,13 @@ interface ShareModalProps {
 }
 
 const ShareModal = ({ isShareOn, toggleShare, handleCopyClick }: ShareModalProps) => {
-
   return (
     <>
       <StShareModal>
         <StModalTitle>
           <p>공유 기능 활성화</p>
           <button type="button" onClick={toggleShare}>
-            {isShareOn ? <IcToggleBefore /> : <IcToggleAfter />}
+            {isShareOn ? <IcToggleAfter /> : <IcToggleBefore />}
           </button>
         </StModalTitle>
         <p>보안에 유의할 것을 권장드립니다.</p>
