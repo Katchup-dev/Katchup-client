@@ -1,21 +1,24 @@
 import Toast from 'components/common/Toast';
-import { getPresignedUrl, putScreenshot } from 'core/apis/input';
+import { deleteScreenshot, getPresignedUrl, putScreenshot } from 'core/apis/input';
 import { screenshotSelectState } from 'core/atom';
 import { IcBtnDeleteScreenshot, IcKatchupLogo, IcScreenshotEmpty } from 'public/assets/icons';
 import React, { useEffect, useRef, useState } from 'react';
 import { useRecoilState } from 'recoil';
 
 import styled from '@emotion/styled';
+import { useDeleteScreenshot } from 'lib/hooks/input/useDeletePresigned';
 
 const ScreenshotInput = () => {
   const [screenshotInput, setScreenshotInput] = useState<File[]>([]);
   const [inputScreenshot, setInputScreenshot] = useState<[]>([]);
   const [URLThumbnails, setURLThumbnails] = useState<string[]>([]);
   const screenshotInputRef = useRef<HTMLInputElement>(null);
-  const [creenshotSelect, setScreenshotSelect] = useRecoilState(screenshotSelectState);
+  const [screenshotSelect, setScreenshotSelect] = useRecoilState(screenshotSelectState);
 
   const [toastMessage, setToastMessage] = useState('');
   const [toastKey, setToastKey] = useState<number>();
+
+  const { deleteScreenshot } = useDeleteScreenshot();
 
   // 스크린 샷 업로드 시 presigned url 받아오고 put 요청으로 s3에 올리는 코드
   const handlePostScreenShot = async (screenshot: string, file: File) => {
@@ -33,8 +36,6 @@ const ScreenshotInput = () => {
       ]);
     }
   };
-
-  console.log(creenshotSelect);
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -54,7 +55,8 @@ const ScreenshotInput = () => {
     screenshotInputRef.current?.click();
   };
 
-  const handleDeleteFile = (file: File) => {
+  const handleDeleteFile = async (file: File, idx: number) => {
+    const response = await deleteScreenshot(screenshotSelect[idx].screenshotUUID);
     setScreenshotInput((prev) => prev.filter((selectedFile) => selectedFile !== file));
     setScreenshotSelect((prev) => prev.filter((selectedFile) => selectedFile.screenshotName !== file.name));
     setInputScreenshot([]);
@@ -104,7 +106,7 @@ const ScreenshotInput = () => {
           screenshotInput.map((file, index) => (
             <StScreenshotWrapper>
               <StScreenshotImg key={index} src={URLThumbnails[index]} alt={`스크린샷 ${index + 1}`} />
-              <button onClick={() => handleDeleteFile(file)}>
+              <button onClick={() => handleDeleteFile(file, index)}>
                 <IcBtnDeleteScreenshot />
               </button>
             </StScreenshotWrapper>
