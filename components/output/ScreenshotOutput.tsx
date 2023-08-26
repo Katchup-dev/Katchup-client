@@ -15,10 +15,6 @@ const ScreenshotOutput = (props: ScreenshotOutputProps) => {
         <h2>스크린샷</h2>
       </div>
 
-      <StScreenshotGuide>
-        <p>이미지를 클릭하여 번호를 매겨주세요.</p>
-      </StScreenshotGuide>
-
       <StScreenshot>
         {screenshotList?.map((screenshot: ScreenshotInfo) => (
           <img src={screenshot.url} key={screenshot.id} />
