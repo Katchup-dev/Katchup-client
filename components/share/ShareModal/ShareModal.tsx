@@ -1,15 +1,21 @@
-import { IcBtnCopylink } from 'public/assets/icons';
+import { IcBtnCopylink, IcToggleAfter, IcToggleBefore } from 'public/assets/icons';
 
 import styled from '@emotion/styled';
 
 interface ShareModalProps {
+  isShareOn: boolean;
+  toggleShare: () => void;
   handleCopyClick: () => void;
 }
-const ShareModal = ({ handleCopyClick }: ShareModalProps) => {
+
+const ShareModal = ({ isShareOn, toggleShare, handleCopyClick }: ShareModalProps) => {
   return (
     <StShareModal>
       <StModalTitle>
         <p>공유 기능 활성화</p>
+        <button type="button" onClick={toggleShare}>
+          {isShareOn ? <IcToggleBefore /> : <IcToggleAfter />}
+        </button>
       </StModalTitle>
       <p>보안에 유의할 것을 권장드립니다.</p>
       <button type="button" onClick={handleCopyClick}>
@@ -49,5 +55,11 @@ const StModalTitle = styled.div`
 
   & > p {
     ${({ theme }) => theme.fonts.h2_title};
+  }
+
+  & > button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 `;

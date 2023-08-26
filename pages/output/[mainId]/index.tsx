@@ -19,16 +19,22 @@ const OutputMain = ({ mainId }: { mainId: string }) => {
   const { mainCategoryList } = useGetMainCategoryList();
   const [middleCategoryId, setMiddleCategoryId] = useState<number>(0);
   const { middleCategoryList } = useGetMiddleCategoryList(middleCategoryId);
+  const [isEditMainCategoryOpen, setIsEditMainCategoryOpen] = useState(false);
+
   const { isShowing, toggle } = useModal();
+  const [isShareOn, setIsShareOn] = useState(false);
+
+  const toggleShare = () => {
+    setIsShareOn(!isShareOn);
+  };
+
+  const handleGoToWorkCard = (middleId: number) => {
+    router.push({ pathname: `/output/${mainId}/middleCategory/${middleId}` });
+  };
 
   useEffect(() => {
     mainCategoryList && setMiddleCategoryId(mainCategoryList && mainCategoryList[Number(mainId)]?.categoryId);
   }, [mainCategoryList, mainId]);
-
-  const [isEditMainCategoryOpen, setIsEditMainCategoryOpen] = useState(false);
-  const handleGoToWorkCard = (middleId: number) => {
-    router.push({ pathname: `/output/${mainId}/middleCategory/${middleId}` });
-  };
 
   return (
     <>
@@ -46,7 +52,9 @@ const OutputMain = ({ mainId }: { mainId: string }) => {
             <StShrareBtn type="button" onClick={toggle}>
               <IcShare />
             </StShrareBtn>
-            <StShareModalWrapper>{isShowing && <ShareModal handleCopyClick={toggle} />}</StShareModalWrapper>
+            <StShareModalWrapper>
+              {isShowing && <ShareModal isShareOn={isShareOn} handleCopyClick={toggle} toggleShare={toggleShare} />}
+            </StShareModalWrapper>
           </header>
           <div>
             {mainCategoryList && middleCategoryList && middleCategoryList.length > 0 ? (
