@@ -6,7 +6,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useRecoilState } from 'recoil';
 
 import styled from '@emotion/styled';
-import { useDeleteScreenshot } from 'lib/hooks/input/useDeletePresigned';
 
 const ScreenshotInput = () => {
   const [screenshotInput, setScreenshotInput] = useState<File[]>([]);
@@ -17,8 +16,6 @@ const ScreenshotInput = () => {
 
   const [toastMessage, setToastMessage] = useState('');
   const [toastKey, setToastKey] = useState<number>();
-
-  const { deleteScreenshot } = useDeleteScreenshot();
 
   // 스크린 샷 업로드 시 presigned url 받아오고 put 요청으로 s3에 올리는 코드
   const handlePostScreenShot = async (screenshot: string, file: File) => {
@@ -56,7 +53,12 @@ const ScreenshotInput = () => {
   };
 
   const handleDeleteFile = async (file: File, idx: number) => {
-    const response = await deleteScreenshot(screenshotSelect[idx].screenshotUUID);
+    await deleteScreenshot(
+      screenshotSelect[idx].screenshotName,
+      screenshotSelect[idx].screenshotUUID,
+      screenshotSelect[idx].screenshotUploadDate,
+    );
+
     setScreenshotInput((prev) => prev.filter((selectedFile) => selectedFile !== file));
     setScreenshotSelect((prev) => prev.filter((selectedFile) => selectedFile.screenshotName !== file.name));
     setInputScreenshot([]);
