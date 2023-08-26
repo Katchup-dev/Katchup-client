@@ -133,6 +133,8 @@ export const resetStyle = css`
     border-spacing: 0;
   }
   button {
+    border: none;
+    background: none;
     cursor: pointer;
   }
 `;
