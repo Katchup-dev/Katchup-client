@@ -9,6 +9,7 @@ const detail = () => {
   const { detailId, content } = router.query;
 
   const { detailPageInfo } = useGetDetailPage(Number(detailId));
+  console.log(detailPageInfo);
 
   return (
     <>
