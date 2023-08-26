@@ -108,11 +108,21 @@ export const getPresignedUrl = async (screenshotName: string) => {
   }
 };
 
+// ---- 스크린샷 삭제 ----
+export const deleteScreenshot = async (screenshotUUID: string) => {
+  try {
+    const { data } = await client.delete(`/screenshots/${screenshotUUID}`);
+    return data.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 // ---- 스크린샷 업로드 ----
 export const putScreenshot = async (presignedUrl: string, file: File) => {
   try {
     const data = await axios.put(`${presignedUrl}`, file);
-    return data;
+    console.log(data);
   } catch (error) {
     console.error(error);
   }
@@ -135,5 +145,15 @@ export const putFile = async (presignedUrl: string, file: File) => {
     return data;
   } catch (error) {
     console.error(error);
+  }
+};
+
+// ---- 파일 삭제 ----
+export const deleteFile = async (fileUUID: string) => {
+  try {
+    const { data } = await client.delete(`/files/${fileUUID}`);
+    return data.data;
+  } catch (error) {
+    console.log(error);
   }
 };
