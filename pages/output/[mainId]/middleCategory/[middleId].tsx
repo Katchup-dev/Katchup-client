@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import DeleteCategoryModal from 'components/Modal/DeleteCategoryModal';
 import MainCategoryList from 'components/output/MainCategoryList';
 import NoMiddleCategory from 'components/output/NoMiddleCategory';
 import WorkCard from 'components/output/WorkCard';
@@ -6,14 +7,27 @@ import { useGetMainCategoryList } from 'lib/hooks/useGetMainCategoryList';
 import { useGetMiddleCategoryList } from 'lib/hooks/useGetMiddleCategory';
 import useGetWorkCard from 'lib/hooks/useGetWorkCard';
 import Link from 'next/link';
-import { IcBack, IcDeleteWorkCard, IcEditMiddleCategory, IcWorkCardFilter } from 'public/assets/icons';
-import { WorkCardInfo, middleCtxType } from 'types/output';
+import {
+  IcBack,
+  IcCancelDeleteMiddleCategory,
+  IcDeleteChosenWorkCards,
+  IcDeleteWorkCard,
+  IcMiddleCategoryMeatball,
+  IcWorkCardFilter,
+} from 'public/assets/icons';
+import { useState } from 'react';
+import { MiddleCategoryInfo, WorkCardInfo, middleCtxType } from 'types/output';
 
 const WorkCardPage = ({ mainId, middleId }: { mainId: string; middleId: string }) => {
   const { mainCategoryList } = useGetMainCategoryList();
-  const { middleCategoryList } = useGetMiddleCategoryList(Number(mainId));
+  const { middleCategoryList } = useGetMiddleCategoryList(
+    mainCategoryList && mainCategoryList[Number(mainId)]?.categoryId,
+  );
 
-  const { workCardList, isError } = useGetWorkCard(Number(middleId));
+  const [isDeleteMode, setIsDeleteMode] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
+  const { workCardList } = useGetWorkCard(Number(middleId));
 
   return (
     <>
@@ -24,23 +38,39 @@ const WorkCardPage = ({ mainId, middleId }: { mainId: string; middleId: string }
           <Link href={`/output/${mainId}`}>
             <button>
               <IcBack />
-              <p>{mainCategoryList && mainCategoryList[Number(mainId)].name}</p>
+              <p>{mainCategoryList && mainCategoryList[Number(mainId)]?.name}</p>
             </button>
           </Link>
 
           <StSettingButtonWrapper>
-            <button>
-              <IcDeleteWorkCard />
-            </button>
-            <button>
-              <IcWorkCardFilter />
-            </button>
+            {isDeleteMode ? (
+              <>
+                <button>
+                  <IcDeleteChosenWorkCards onClick={() => setIsDeleteModalOpen(true)} />
+                </button>
+                <button onClick={() => setIsDeleteMode(false)}>
+                  <IcCancelDeleteMiddleCategory />
+                </button>
+              </>
+            ) : (
+              <>
+                <button onClick={() => setIsDeleteMode(true)}>
+                  <IcDeleteWorkCard />
+                </button>
+                <button>
+                  <IcWorkCardFilter />
+                </button>
+              </>
+            )}
           </StSettingButtonWrapper>
 
           <header>
-            <h1>{middleCategoryList && middleCategoryList.find((item) => item.folderId === Number(middleId)).name}</h1>
+            <h1>
+              {middleCategoryList &&
+                middleCategoryList?.find((item: MiddleCategoryInfo) => item.taskId === Number(middleId)).name}
+            </h1>
             <button>
-              <IcEditMiddleCategory />
+              <IcMiddleCategoryMeatball />
             </button>
           </header>
 
@@ -57,11 +87,13 @@ const WorkCardPage = ({ mainId, middleId }: { mainId: string; middleId: string }
 
               {workCardList?.map((card: WorkCardInfo) => (
                 <WorkCard
+                  isDeleteWorkCard={isDeleteMode}
+                  mainId={mainId}
                   key={card.cardId}
                   cardId={card.cardId}
                   content={card.content}
                   keywordList={card.keywordList}
-                  cardName={card.cardName}
+                  cardName={card.subTaskName}
                   existFile={card.existFile}
                 />
               ))}
@@ -70,6 +102,15 @@ const WorkCardPage = ({ mainId, middleId }: { mainId: string; middleId: string }
             <NoMiddleCategory />
           )}
         </StMiddleBoard>
+
+        {isDeleteModalOpen && (
+          <DeleteCategoryModal
+            setIsDeleteMode={setIsDeleteMode}
+            isOpen={isDeleteModalOpen}
+            setIsOpen={setIsDeleteModalOpen}
+            categoryType="workcard"
+          />
+        )}
       </StOutputMainWrapper>
     </>
   );
@@ -179,24 +220,33 @@ const StMiddleBoardNav = styled.nav`
   }
 
   p:nth-of-type(1) {
-    margin-left: 3.477%;
-    margin-right: 9.318%;
+    width: 3.4rem;
+    margin-left: 3.9rem;
+    margin-right: 11.4rem;
   }
 
   p:nth-of-type(2) {
-    margin-right: 14.882%;
+    width: 6.7rem;
+    margin-right: 20.4rem;
   }
 
   p:nth-of-type(3) {
-    margin-right: 26.495%;
+    width: 5.3rem;
+    margin-right: 38.1rem;
   }
 
   p:nth-of-type(4) {
-    margin-right: 21.07%;
+    width: 3.5rem;
+    margin-right: 28.7rem;
   }
 
   p:nth-of-type(5) {
-    margin-right: 6.12%;
+    width: 3.5rem;
+    margin-right: 7rem;
+  }
+
+  p:nth-of-type(6) {
+    width: 6.3rem;
   }
 `;
 

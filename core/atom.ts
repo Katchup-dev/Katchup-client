@@ -1,7 +1,6 @@
 import { atom } from 'recoil';
 import { recoilPersist } from 'recoil-persist';
 import { InputCategoryInfo, InputFolderInfo, InputTaskInfo } from 'types/input';
-import { SelectMainCategoryInfo, SelectMiddleCategoryInfo } from 'types/output';
 
 const { persistAtom } = recoilPersist();
 
@@ -39,4 +38,9 @@ export const taskSelectState = atom<InputTaskInfo>({
     taskId: 0,
     name: '',
   },
+});
+
+export const deleteWorkCard = atom<number[]>({
+  key: `deleteWorkCard`,
+  default: [],
 });
