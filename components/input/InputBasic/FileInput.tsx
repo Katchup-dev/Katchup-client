@@ -1,6 +1,6 @@
 import { ModalOneButton } from 'components/common/Modal';
 import { MODAL_FILE_SIZE } from 'constants/modal';
-import { getFilePresignedUrl, putFile } from 'core/apis/input';
+import { deleteFile, getFilePresignedUrl, putFile } from 'core/apis/input';
 import { fileNameChangeState, fileSelectState } from 'core/atom';
 import useModal from 'lib/hooks/useModal';
 import { IcBtnDeleteFile, IcFileCheckbox, IcFileCheckboxAfter, IcKatchupLogo } from 'public/assets/icons';
@@ -12,7 +12,7 @@ import styled from '@emotion/styled';
 
 const FileInput = () => {
   const [fileInput, setFileInput] = useState<File[]>([]);
-  const [, setFileSelectList] = useRecoilState<PostFileListInfo[]>(fileSelectState);
+  const [fileSelectList, setFileSelectList] = useRecoilState<PostFileListInfo[]>(fileSelectState);
   const [isChecked, setIsChecked] = useRecoilState(fileNameChangeState);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const sizeLimit = 10 * 1024 * 1024;
@@ -31,7 +31,7 @@ const FileInput = () => {
         ...prev,
         {
           fileUUID: response.fileUUID,
-          fileName: response.fileName,
+          fileOriginalName: response.fileName,
           fileUploadDate: response.fileUploadDate,
           size: file.size,
         },
@@ -70,9 +70,14 @@ const FileInput = () => {
     fileInputRef.current?.click();
   };
 
-  const handleDeleteFile = (file: File) => {
+  const handleDeleteFile = async (file: File, idx: number) => {
+    const response = await deleteFile(
+      fileSelectList[idx].fileOriginalName,
+      fileSelectList[idx].fileUploadDate,
+      fileSelectList[idx].fileUUID,
+    );
     setFileInput((prev) => prev.filter((selectedFile) => selectedFile !== file));
-    setFileSelectList((prev) => prev.filter((selectedFile) => selectedFile.fileName !== file.name));
+    setFileSelectList((prev) => prev.filter((selectedFile) => selectedFile.fileOriginalName !== file.name));
   };
 
   const handleCheckboxChange = () => {
@@ -105,7 +110,7 @@ const FileInput = () => {
           {fileInput.length ? (
             fileInput.map((file, index) => (
               <p key={index}>
-                <button type="button" onClick={() => handleDeleteFile(file)}>
+                <button type="button" onClick={() => handleDeleteFile(file, index)}>
                   <IcBtnDeleteFile />
                 </button>
                 {file.name}

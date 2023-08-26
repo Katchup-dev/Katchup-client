@@ -1,18 +1,12 @@
 import MainCategoryList from 'components/share/MainCategoryList';
 import NoMiddleCategory from 'components/share/NoMiddleCategory';
 import WorkCard from 'components/share/WorkCard';
+import { keywordColors } from 'constants/output';
 import { useGetMainCategoryList } from 'lib/hooks/useGetMainCategoryList';
 import { useGetMiddleCategoryList } from 'lib/hooks/useGetMiddleCategory';
 import useGetWorkCard from 'lib/hooks/useGetWorkCard';
 import Link from 'next/link';
-import {
-  IcBack,
-  IcCancelDeleteMiddleCategory,
-  IcDeleteChosenWorkCards,
-  IcDeleteWorkCard,
-  IcMiddleCategoryMeatball,
-  IcWorkCardFilter,
-} from 'public/assets/icons';
+import { IcBack, IcMiddleCategoryMeatball, IcWorkCardFilter } from 'public/assets/icons';
 import { useState } from 'react';
 import { MiddleCategoryInfo, middleCtxType, WorkCardInfo } from 'types/output';
 
@@ -25,9 +19,20 @@ const WorkCardPage = ({ mainId, middleId }: { mainId: string; middleId: string }
   );
 
   const [isDeleteMode, setIsDeleteMode] = useState(false);
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-
   const { workCardList } = useGetWorkCard(Number(middleId));
+
+  const groupedworkCardList = new Map();
+
+  workCardList &&
+    workCardList?.forEach((item: WorkCardInfo) => {
+      const { subTaskName } = item;
+      if (!groupedworkCardList.has(subTaskName)) {
+        groupedworkCardList.set(subTaskName, []);
+      }
+      groupedworkCardList.get(subTaskName).push(item);
+    });
+
+  const groupedArray = Array.from(groupedworkCardList.values());
 
   return (
     <>
@@ -53,6 +58,9 @@ const WorkCardPage = ({ mainId, middleId }: { mainId: string; middleId: string }
               {middleCategoryList &&
                 middleCategoryList?.find((item: MiddleCategoryInfo) => item.taskId === Number(middleId)).name}
             </h1>
+            <button>
+              <IcMiddleCategoryMeatball />
+            </button>
           </header>
 
           {workCardList?.length ? (
@@ -66,18 +74,26 @@ const WorkCardPage = ({ mainId, middleId }: { mainId: string; middleId: string }
                 <p>더보기</p>
               </StMiddleBoardNav>
 
-              {workCardList?.map((card: WorkCardInfo) => (
-                <WorkCard
-                  isDeleteWorkCard={isDeleteMode}
-                  mainId={mainId}
-                  key={card.cardId}
-                  cardId={card.cardId}
-                  content={card.content}
-                  keywordList={card.keywordList}
-                  cardName={card.subTaskName}
-                  existFile={card.existFile}
-                />
-              ))}
+              <StWorkCardContainer>
+                {groupedArray?.map((item: WorkCardInfo[], idx) => {
+                  return (
+                    <StGroupedArrayWrapper key={idx} idx={idx}>
+                      {item?.map((card: WorkCardInfo) => (
+                        <WorkCard
+                          isDeleteWorkCard={isDeleteMode}
+                          mainId={mainId}
+                          key={card.cardId}
+                          cardId={card.cardId}
+                          content={card.content}
+                          keywordList={card.keywordList}
+                          cardName={card.subTaskName}
+                          existFile={card.existFile}
+                        />
+                      ))}
+                    </StGroupedArrayWrapper>
+                  );
+                })}
+              </StWorkCardContainer>
             </>
           ) : (
             <NoMiddleCategory />
@@ -220,6 +236,20 @@ const StMiddleBoardNav = styled.nav`
   p:nth-of-type(6) {
     width: 6.3rem;
   }
+`;
+
+const StWorkCardContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+`;
+
+const StGroupedArrayWrapper = styled.div<{ idx: number }>`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  border-left: 4px solid ${({ idx }) => keywordColors[idx]};
 `;
 
 export default WorkCardPage;

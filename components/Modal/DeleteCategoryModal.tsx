@@ -14,10 +14,11 @@ interface DeleteCategoryModalProps {
   categoryType: string;
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
+  workCardId?: number;
 }
 
 export default function DeleteCategoryModal(props: DeleteCategoryModalProps & { mainId?: string }) {
-  const { setIsMoreModalOpen, setIsDeleteMode, folderIdx, categoryType, isOpen, setIsOpen, mainId } = props;
+  const { setIsMoreModalOpen, setIsDeleteMode, folderIdx, categoryType, isOpen, setIsOpen, mainId, workCardId } = props;
   const { mainCategoryList } = useGetMainCategoryList();
 
   const queryClient = useQueryClient();
@@ -62,6 +63,11 @@ export default function DeleteCategoryModal(props: DeleteCategoryModalProps & { 
     },
   });
 
+  const handleDeleteSingleWorkCard = async () => {
+    if (workCardId) await deleteWorkCards([workCardId]);
+    router.back();
+  };
+
   return isOpen ? (
     <StBackgroundWrapper>
       <StDeleteCategoryModalWrapper>
@@ -72,7 +78,9 @@ export default function DeleteCategoryModal(props: DeleteCategoryModalProps & { 
             ? '카테고리 내 모든 업무 파일을 삭제할까요?'
             : categoryType === 'middle'
             ? '해당 업무 내 모든 업무 카드를 삭제할까요?'
-            : '선택된 업무 카드를 모두 삭제할까요?'}
+            : categoryType === 'etc'
+            ? '선택된 업무 카드를 모두 삭제할까요?'
+            : '해당 업무 카드를 삭제할까요?'}
         </h1>
 
         <h2>해당 내용은 영구 삭제되며 복구가 불가능합니다.</h2>
@@ -85,7 +93,9 @@ export default function DeleteCategoryModal(props: DeleteCategoryModalProps & { 
                 ? handleDeleteMainCategory()
                 : categoryType === 'middle'
                 ? handleDeleteMiddleCategory()
-                : handleDeleteWorkCards();
+                : categoryType === 'etc'
+                ? handleDeleteWorkCards()
+                : handleDeleteSingleWorkCard();
             }}>
             삭제하기
           </StDeleteBtn>

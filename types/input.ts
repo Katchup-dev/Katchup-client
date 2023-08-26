@@ -69,7 +69,8 @@ export interface PostStickerListInfo {
 
 export interface PostFileListInfo {
   fileUUID: string;
-  fileName: string;
+  fileOriginalName: string;
+  fileChangedName?: string;
   fileUploadDate: string;
   size: number;
 }

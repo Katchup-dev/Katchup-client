@@ -13,7 +13,11 @@ const detail = () => {
   return (
     <>
       <StWrapper>
-        <DetailContent fileList={detailPageInfo?.fileList} content={content as string} />
+        <DetailContent
+          cardId={detailPageInfo?.cardId}
+          fileList={detailPageInfo?.fileList}
+          content={content as string}
+        />
         {detailPageInfo?.screenshotList.length > 0 && (
           <ScreenshotOutput screenshotList={detailPageInfo?.screenshotList} />
         )}
