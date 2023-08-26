@@ -88,8 +88,12 @@ export const getServerSideProps = async (ctx: mainCtxType) => {
 
 const StOutputMainWrapper = styled.main`
   display: flex;
-  margin: 0rem 5rem 5rem 5rem;
   gap: 3rem;
+
+  padding: 0rem 5rem 5rem 5rem;
+  height: fit-content;
+
+  background-color: ${({ theme }) => theme.colors.katchup_bg_gray};
 `;
 
 const StMiddleBoard = styled.section`
@@ -99,6 +103,7 @@ const StMiddleBoard = styled.section`
 
   border: 0.1rem solid ${({ theme }) => theme.colors.katchup_line_gray};
   border-radius: 2.6rem;
+  background-color: ${({ theme }) => theme.colors.katchup_white};
 
   overflow-y: scroll;
 
@@ -109,10 +114,6 @@ const StMiddleBoard = styled.section`
 
     width: 100%;
     padding-bottom: 5rem;
-
-    > svg {
-      cursor: pointer;
-    }
   }
 
   > div {
@@ -122,6 +123,11 @@ const StMiddleBoard = styled.section`
 
     position: relative;
   }
+
+  -ms-overflow-style: none;
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const StMainTitle = styled.h1<{ isShouldWrap: boolean }>`
@@ -130,6 +136,10 @@ const StMainTitle = styled.h1<{ isShouldWrap: boolean }>`
 
   ${({ theme }) => theme.fonts.h1_bigtitle_eng};
   margin-right: 1.6rem;
+
+  > button {
+    margin-left: 1.6rem;
+  }
 `;
 
 const StShrareBtn = styled.button``;

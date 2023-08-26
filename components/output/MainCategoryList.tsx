@@ -1,12 +1,12 @@
-import styled from '@emotion/styled';
+import AddCategoryModal from 'components/Modal/AddCategoryModal';
+import DeleteCategoryModal from 'components/Modal/DeleteCategoryModal';
 import { useGetMainCategoryList } from 'lib/hooks/useGetMainCategoryList';
+import { useRouter } from 'next/router';
 import { IcAddMain, IcTrash } from 'public/assets/icons';
 import React, { useEffect, useState } from 'react';
 import { mainCategoryInfo } from 'types/output';
-import { useRouter } from 'next/router';
-import AddCategoryModal from 'components/Modal/AddCategoryModal';
 
-import DeleteCategoryModal from 'components/Modal/DeleteCategoryModal';
+import styled from '@emotion/styled';
 
 export interface MainCategoryListProps {
   currentMain: string;
@@ -98,6 +98,7 @@ const StWrapper = styled.aside`
 
   border: 0.1rem solid ${({ theme }) => theme.colors.katchup_line_gray};
   border-radius: 2.6rem;
+  background-color: ${({ theme }) => theme.colors.katchup_white};
 
   > header {
     display: flex;
