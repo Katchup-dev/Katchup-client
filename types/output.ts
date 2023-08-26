@@ -37,7 +37,7 @@ export interface WorkCardInfo {
   placementOrder: number;
   subTaskName: string;
   keywordList: KeywordInfo[];
-  screenshotList: ScreenshotInfo[];
+  existScreenshot: boolean;
   content: string;
   existFile: boolean;
 }

@@ -21,11 +21,11 @@ export interface WorkCardProps {
   content: string;
   existFile: boolean;
   isDeleteWorkCard: boolean;
-  screenshotList: ScreenshotInfo[];
+  existScreenshot: boolean;
 }
 
 const WorkCard = (props: WorkCardProps, { mainId }: { mainId: string }) => {
-  const { cardId, keywordList, cardName, content, existFile, isDeleteWorkCard, screenshotList } = props;
+  const { cardId, keywordList, cardName, content, existFile, isDeleteWorkCard, existScreenshot } = props;
   const [isWorkCardChosen, setIsWorkCardChosen] = useState(false);
   const [deleteWorkCardIdxArr, setDeleteWorkCardIdxArr] = useRecoilState(deleteWorkCard);
 
@@ -55,7 +55,7 @@ const WorkCard = (props: WorkCardProps, { mainId }: { mainId: string }) => {
       </StCardNumber>
 
       <StSmallCategory>
-        {screenshotList?.length > 0 ? <IcScreenshotTag /> : <></>}
+        {existScreenshot && <IcScreenshotTag />}
         <p>{cardName}</p>
       </StSmallCategory>
 
