@@ -60,7 +60,7 @@ const DetailContent = (props: DetailContentProps) => {
               {fileList?.map((file) => (
                 <a download key={file.id} onClick={() => handleFileDownload(file.id, file.changedName)}>
                   <li>
-                    <IcDeleteFile /> {file.changedName} <p>{file.size}MB</p>
+                    {file.changedName} <p>{file.size}MB</p>
                   </li>
                 </a>
               ))}
