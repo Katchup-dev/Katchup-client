@@ -7,7 +7,7 @@ import {
   IcScreenshotTag,
 } from '../../public/assets/icons';
 import { keywordColors } from '../../constants/output';
-import { KeywordInfo } from 'types/output';
+import { KeywordInfo, ScreenshotInfo } from 'types/output';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
@@ -21,10 +21,11 @@ export interface WorkCardProps {
   content: string;
   existFile: boolean;
   isDeleteWorkCard: boolean;
+  existScreenshot: boolean;
 }
 
 const WorkCard = (props: WorkCardProps, { mainId }: { mainId: string }) => {
-  const { cardId, keywordList, cardName, content, existFile, isDeleteWorkCard } = props;
+  const { cardId, keywordList, cardName, content, existFile, isDeleteWorkCard, existScreenshot } = props;
   const [isWorkCardChosen, setIsWorkCardChosen] = useState(false);
   const [deleteWorkCardIdxArr, setDeleteWorkCardIdxArr] = useRecoilState(deleteWorkCard);
 
@@ -54,7 +55,7 @@ const WorkCard = (props: WorkCardProps, { mainId }: { mainId: string }) => {
       </StCardNumber>
 
       <StSmallCategory>
-        <IcScreenshotTag />
+        {existScreenshot && <IcScreenshotTag />}
         <p>{cardName}</p>
       </StSmallCategory>
 

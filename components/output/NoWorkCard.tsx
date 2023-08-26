@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import Link from 'next/link';
 import { IcLogoBig } from 'public/assets/icons';
 
-const NoMiddleCategory = () => {
+const NoWorkCard = () => {
   return (
     <StWrapper>
       <IcLogoBig />
@@ -29,7 +29,7 @@ const StWrapper = styled.article`
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, 0%);
+  transform: translate(-50%, -50%);
 
   > svg {
     margin-bottom: 3rem;
@@ -66,4 +66,4 @@ const StWrapper = styled.article`
   }
 `;
 
-export default NoMiddleCategory;
+export default NoWorkCard;
