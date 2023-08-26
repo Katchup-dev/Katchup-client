@@ -1,15 +1,16 @@
-import styled from '@emotion/styled';
-import { IcEditMain } from 'public/assets/icons';
-import { useGetMiddleCategoryList } from 'lib/hooks/useGetMiddleCategory';
-import { MiddleCategoryInfo, mainCtxType } from 'types/output';
-import { useRouter } from 'next/router';
-import { useGetMainCategoryList } from 'lib/hooks/useGetMainCategoryList';
+import PatchCategoryModal from 'components/Modal/PatchCategoryModal';
+import AddMiddleCategory from 'components/output/AddMiddleCategory';
 import MainCategoryList from 'components/output/MainCategoryList';
 import MiddleCategory from 'components/output/MiddleCategory';
-import AddMiddleCategory from 'components/output/AddMiddleCategory';
-import { useEffect, useState } from 'react';
-import PatchCategoryModal from 'components/Modal/PatchCategoryModal';
 import NoMiddleCategory from 'components/output/NoMiddleCategory';
+import { useGetMainCategoryList } from 'lib/hooks/useGetMainCategoryList';
+import { useGetMiddleCategoryList } from 'lib/hooks/useGetMiddleCategory';
+import { useRouter } from 'next/router';
+import { IcEditMain, IcShare } from 'public/assets/icons';
+import { useEffect, useState } from 'react';
+import { mainCtxType, MiddleCategoryInfo } from 'types/output';
+
+import styled from '@emotion/styled';
 
 const OutputMain = ({ mainId }: { mainId: string }) => {
   const router = useRouter();
@@ -33,10 +34,15 @@ const OutputMain = ({ mainId }: { mainId: string }) => {
 
         <StMiddleBoard>
           <header>
-            <StMainTitle isShouldWrap={true}>{mainCategoryList && mainCategoryList[Number(mainId)]?.name}</StMainTitle>
-            <button onClick={() => setIsEditMainCategoryOpen(!isEditMainCategoryOpen)}>
-              <IcEditMain />
-            </button>
+            <StMainTitle isShouldWrap={true}>
+              {mainCategoryList && mainCategoryList[Number(mainId)]?.name}
+              <button type="button" onClick={() => setIsEditMainCategoryOpen(!isEditMainCategoryOpen)}>
+                <IcEditMain />
+              </button>
+            </StMainTitle>
+            <StShrareBtn type="button" onClick={() => setIsEditMainCategoryOpen(!isEditMainCategoryOpen)}>
+              <IcShare />
+            </StShrareBtn>
           </header>
 
           <div>
@@ -98,6 +104,7 @@ const StMiddleBoard = styled.section`
 
   > header {
     display: flex;
+    justify-content: space-between;
     align-items: center;
 
     width: 100%;
@@ -105,11 +112,6 @@ const StMiddleBoard = styled.section`
 
     > svg {
       cursor: pointer;
-    }
-
-    > button {
-      border: none;
-      background: none;
     }
   }
 
@@ -123,8 +125,13 @@ const StMiddleBoard = styled.section`
 `;
 
 const StMainTitle = styled.h1<{ isShouldWrap: boolean }>`
+  display: flex;
+  align-items: center;
+
   ${({ theme }) => theme.fonts.h1_bigtitle_eng};
   margin-right: 1.6rem;
 `;
+
+const StShrareBtn = styled.button``;
 
 export default OutputMain;
