@@ -1,5 +1,5 @@
 import Toast from 'components/common/Toast';
-import { getPresignedUrl, putScreenshot } from 'core/apis/input';
+import { deleteScreenshot, getPresignedUrl, putScreenshot } from 'core/apis/input';
 import { screenshotSelectState } from 'core/atom';
 import { IcBtnDeleteScreenshot, IcKatchupLogo, IcScreenshotEmpty } from 'public/assets/icons';
 import React, { useEffect, useRef, useState } from 'react';
@@ -12,7 +12,7 @@ const ScreenshotInput = () => {
   const [inputScreenshot, setInputScreenshot] = useState<[]>([]);
   const [URLThumbnails, setURLThumbnails] = useState<string[]>([]);
   const screenshotInputRef = useRef<HTMLInputElement>(null);
-  const [creenshotSelect, setScreenshotSelect] = useRecoilState(screenshotSelectState);
+  const [screenshotSelect, setScreenshotSelect] = useRecoilState(screenshotSelectState);
 
   const [toastMessage, setToastMessage] = useState('');
   const [toastKey, setToastKey] = useState<number>();
@@ -34,8 +34,6 @@ const ScreenshotInput = () => {
     }
   };
 
-  console.log(creenshotSelect);
-
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files && files.length > 0) {
@@ -54,7 +52,13 @@ const ScreenshotInput = () => {
     screenshotInputRef.current?.click();
   };
 
-  const handleDeleteFile = (file: File) => {
+  const handleDeleteFile = async (file: File, idx: number) => {
+    await deleteScreenshot(
+      screenshotSelect[idx].screenshotName,
+      screenshotSelect[idx].screenshotUUID,
+      screenshotSelect[idx].screenshotUploadDate,
+    );
+
     setScreenshotInput((prev) => prev.filter((selectedFile) => selectedFile !== file));
     setScreenshotSelect((prev) => prev.filter((selectedFile) => selectedFile.screenshotName !== file.name));
     setInputScreenshot([]);
@@ -104,7 +108,7 @@ const ScreenshotInput = () => {
           screenshotInput.map((file, index) => (
             <StScreenshotWrapper>
               <StScreenshotImg key={index} src={URLThumbnails[index]} alt={`스크린샷 ${index + 1}`} />
-              <button onClick={() => handleDeleteFile(file)}>
+              <button onClick={() => handleDeleteFile(file, index)}>
                 <IcBtnDeleteScreenshot />
               </button>
             </StScreenshotWrapper>
