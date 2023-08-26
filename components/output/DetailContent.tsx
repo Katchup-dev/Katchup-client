@@ -1,4 +1,6 @@
 import styled from '@emotion/styled';
+import axios from 'axios';
+import { getFileDownload } from 'core/apis/output';
 
 import { IcBack, IcDeleteFile, IcSubLogo } from 'public/assets/icons';
 
@@ -11,6 +13,20 @@ export interface DetailContentProps {
 
 const DetailContent = (props: DetailContentProps) => {
   const { fileList, content } = props;
+  console.log(fileList);
+
+  const handleFileDownload = async (id: string, name: string) => {
+    try {
+      const { filePreSignedUrl } = await getFileDownload(id, name);
+
+      // 파일 다운로드를 위한 링크 생성
+      const downloadLink = document.createElement('a');
+      downloadLink.href = filePreSignedUrl;
+      downloadLink.click();
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <StDetailWrapper>
@@ -41,9 +57,9 @@ const DetailContent = (props: DetailContentProps) => {
             </div>
             <StFileWrapper>
               {fileList?.map((file) => (
-                <a href={file.url} download>
-                  <li key={file.id}>
-                    <IcDeleteFile /> {file.name} <p>{file.size}MB</p>
+                <a download key={file.id} onClick={() => handleFileDownload(file.id, file.changedName)}>
+                  <li>
+                    <IcDeleteFile /> {file.changedName} <p>{file.size}MB</p>
                   </li>
                 </a>
               ))}

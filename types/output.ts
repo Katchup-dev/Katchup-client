@@ -48,9 +48,9 @@ export interface KeywordInfo {
 }
 
 export interface FileInfo {
-  id: number;
-  name: string;
-  url: string;
+  id: string;
+  originalName: string;
+  changedName: string;
   size: string;
 }
 
