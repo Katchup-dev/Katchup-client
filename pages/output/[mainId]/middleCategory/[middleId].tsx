@@ -1,4 +1,3 @@
-import styled from '@emotion/styled';
 import DeleteCategoryModal from 'components/Modal/DeleteCategoryModal';
 import MainCategoryList from 'components/output/MainCategoryList';
 import NoWorkCard from 'components/output/NoWorkCard';
@@ -17,7 +16,9 @@ import {
   IcWorkCardFilter,
 } from 'public/assets/icons';
 import { useState } from 'react';
-import { MiddleCategoryInfo, WorkCardInfo, middleCtxType } from 'types/output';
+import { MiddleCategoryInfo, middleCtxType, WorkCardInfo } from 'types/output';
+
+import styled from '@emotion/styled';
 
 const WorkCardPage = ({ mainId, middleId }: { mainId: string; middleId: string }) => {
   const { mainCategoryList } = useGetMainCategoryList();
@@ -148,8 +149,10 @@ export const getServerSideProps = async (ctx: middleCtxType) => {
 
 const StOutputMainWrapper = styled.main`
   display: flex;
-  margin: 0rem 5rem 5rem 5rem;
+  padding: 0rem 5rem 5rem 5rem;
   gap: 3rem;
+
+  background-color: ${({ theme }) => theme.colors.katchup_bg_gray};
 `;
 
 const StMiddleBoard = styled.section`
@@ -160,8 +163,13 @@ const StMiddleBoard = styled.section`
 
   border: 0.1rem solid ${({ theme }) => theme.colors.katchup_line_gray};
   border-radius: 2.6rem;
+  background-color: ${({ theme }) => theme.colors.katchup_white};
 
   overflow-y: scroll;
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
 
   > a {
     text-decoration: none;

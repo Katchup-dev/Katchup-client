@@ -113,8 +113,10 @@ export const getServerSideProps = async (ctx: middleCtxType) => {
 
 const StOutputMainWrapper = styled.main`
   display: flex;
-  margin: 0rem 5rem 5rem 5rem;
+  padding: 0rem 5rem 5rem 5rem;
   gap: 3rem;
+
+  background-color: ${({ theme }) => theme.colors.katchup_bg_gray};
 `;
 
 const StMiddleBoard = styled.section`
@@ -125,8 +127,13 @@ const StMiddleBoard = styled.section`
 
   border: 0.1rem solid ${({ theme }) => theme.colors.katchup_line_gray};
   border-radius: 2.6rem;
+  background-color: ${({ theme }) => theme.colors.katchup_white};
 
   overflow-y: scroll;
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
 
   > a {
     text-decoration: none;
