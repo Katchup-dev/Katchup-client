@@ -3,14 +3,13 @@ import PatchCategoryModal from 'components/Modal/PatchCategoryModal';
 import AddMiddleCategory from 'components/output/AddMiddleCategory';
 import MainCategoryList from 'components/output/MainCategoryList';
 import MiddleCategory from 'components/output/MiddleCategory';
-
-import { useEffect, useState } from 'react';
 import { ShareModal } from 'components/share/ShareModal';
 import { useGetMainCategoryList } from 'lib/hooks/useGetMainCategoryList';
 import { useGetMiddleCategoryList } from 'lib/hooks/useGetMiddleCategory';
 import useModal from 'lib/hooks/useModal';
 import { useRouter } from 'next/router';
 import { IcMiddleCategoryMeatball, IcShare } from 'public/assets/icons';
+import { useEffect, useState } from 'react';
 import { mainCtxType, MiddleCategoryInfo } from 'types/output';
 
 import styled from '@emotion/styled';
