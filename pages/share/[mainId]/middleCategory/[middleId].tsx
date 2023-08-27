@@ -80,6 +80,7 @@ const WorkCardPage = ({ mainId, middleId }: { mainId: string; middleId: string }
                     <StGroupedArrayWrapper key={idx} idx={idx}>
                       {item?.map((card: WorkCardInfo) => (
                         <WorkCard
+                          existScreenshot={card.existScreenshot}
                           isDeleteWorkCard={isDeleteMode}
                           mainId={mainId}
                           key={card.cardId}
