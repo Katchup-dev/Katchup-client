@@ -2,17 +2,19 @@ import { IcGoogle } from 'public/assets/icons';
 import { useState } from 'react';
 
 import styled from '@emotion/styled';
-import { TokenResponse, useGoogleLogin } from '@react-oauth/google';
+import { useGoogleLogin } from '@react-oauth/google';
 
 const LandingKatchupStart = () => {
-  const [googleAccessToken, setGoogleAccessToken] = useState<TokenResponse>();
+  const [googleAccessToken, setGoogleAccessToken] = useState<string>();
 
   const handleGoogleLogin = useGoogleLogin({
     onSuccess: (tokenResponse) => {
       console.log(tokenResponse);
-      setGoogleAccessToken(tokenResponse);
+      setGoogleAccessToken(tokenResponse.access_token);
     },
   });
+
+  console.log(googleAccessToken);
 
   return (
     <LandingKatchupStartWrapper>
