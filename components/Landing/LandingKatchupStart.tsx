@@ -1,5 +1,6 @@
+import { signup } from 'core/apis/auth';
 import { IcGoogle } from 'public/assets/icons';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import styled from '@emotion/styled';
 import { useGoogleLogin } from '@react-oauth/google';
@@ -14,7 +15,16 @@ const LandingKatchupStart = () => {
     },
   });
 
-  console.log(googleAccessToken);
+  const handleSignup = async () => {
+    if (googleAccessToken) {
+      const signupResponse = await signup(googleAccessToken);
+      console.log('signupResponse', signupResponse);
+    }
+  };
+
+  useEffect(() => {
+    handleSignup();
+  }, [googleAccessToken]);
 
   return (
     <LandingKatchupStartWrapper>
