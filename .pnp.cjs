@@ -35,6 +35,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@emotion/react", "virtual:85b43b06759e8662675368474eb87cb1d2dc239b8ef15de6654bcd6665d2e9ab80553517769cffb7e841308796f53e6ce27873547f84549973f86a4ddaa0c1cb#npm:11.11.1"],\
             ["@emotion/styled", "virtual:85b43b06759e8662675368474eb87cb1d2dc239b8ef15de6654bcd6665d2e9ab80553517769cffb7e841308796f53e6ce27873547f84549973f86a4ddaa0c1cb#npm:11.11.0"],\
             ["@next/swc-darwin-arm64", "npm:13.4.19"],\
+            ["@react-oauth/google", "virtual:85b43b06759e8662675368474eb87cb1d2dc239b8ef15de6654bcd6665d2e9ab80553517769cffb7e841308796f53e6ce27873547f84549973f86a4ddaa0c1cb#npm:0.11.1"],\
             ["@svgr/webpack", "npm:8.1.0"],\
             ["@tanstack/react-query", "virtual:85b43b06759e8662675368474eb87cb1d2dc239b8ef15de6654bcd6665d2e9ab80553517769cffb7e841308796f53e6ce27873547f84549973f86a4ddaa0c1cb#npm:4.33.0"],\
             ["@tanstack/react-query-devtools", "virtual:85b43b06759e8662675368474eb87cb1d2dc239b8ef15de6654bcd6665d2e9ab80553517769cffb7e841308796f53e6ce27873547f84549973f86a4ddaa0c1cb#npm:4.33.0"],\
@@ -3180,6 +3181,32 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@nodelib/fs.walk", "npm:1.2.8"],\
             ["@nodelib/fs.scandir", "npm:2.1.5"],\
             ["fastq", "npm:1.15.0"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@react-oauth/google", [\
+        ["npm:0.11.1", {\
+          "packageLocation": "./.yarn/cache/@react-oauth-google-npm-0.11.1-2f58a2de3c-b27031d55a.zip/node_modules/@react-oauth/google/",\
+          "packageDependencies": [\
+            ["@react-oauth/google", "npm:0.11.1"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["virtual:85b43b06759e8662675368474eb87cb1d2dc239b8ef15de6654bcd6665d2e9ab80553517769cffb7e841308796f53e6ce27873547f84549973f86a4ddaa0c1cb#npm:0.11.1", {\
+          "packageLocation": "./.yarn/__virtual__/@react-oauth-google-virtual-78b12d2b6a/0/cache/@react-oauth-google-npm-0.11.1-2f58a2de3c-b27031d55a.zip/node_modules/@react-oauth/google/",\
+          "packageDependencies": [\
+            ["@react-oauth/google", "virtual:85b43b06759e8662675368474eb87cb1d2dc239b8ef15de6654bcd6665d2e9ab80553517769cffb7e841308796f53e6ce27873547f84549973f86a4ddaa0c1cb#npm:0.11.1"],\
+            ["@types/react", "npm:17.0.2"],\
+            ["@types/react-dom", "npm:17.0.2"],\
+            ["react", "npm:18.2.0"],\
+            ["react-dom", "virtual:85b43b06759e8662675368474eb87cb1d2dc239b8ef15de6654bcd6665d2e9ab80553517769cffb7e841308796f53e6ce27873547f84549973f86a4ddaa0c1cb#npm:18.2.0"]\
+          ],\
+          "packagePeers": [\
+            "@types/react-dom",\
+            "@types/react",\
+            "react-dom",\
+            "react"\
           ],\
           "linkType": "HARD"\
         }]\
@@ -6380,6 +6407,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@emotion/react", "virtual:85b43b06759e8662675368474eb87cb1d2dc239b8ef15de6654bcd6665d2e9ab80553517769cffb7e841308796f53e6ce27873547f84549973f86a4ddaa0c1cb#npm:11.11.1"],\
             ["@emotion/styled", "virtual:85b43b06759e8662675368474eb87cb1d2dc239b8ef15de6654bcd6665d2e9ab80553517769cffb7e841308796f53e6ce27873547f84549973f86a4ddaa0c1cb#npm:11.11.0"],\
             ["@next/swc-darwin-arm64", "npm:13.4.19"],\
+            ["@react-oauth/google", "virtual:85b43b06759e8662675368474eb87cb1d2dc239b8ef15de6654bcd6665d2e9ab80553517769cffb7e841308796f53e6ce27873547f84549973f86a4ddaa0c1cb#npm:0.11.1"],\
             ["@svgr/webpack", "npm:8.1.0"],\
             ["@tanstack/react-query", "virtual:85b43b06759e8662675368474eb87cb1d2dc239b8ef15de6654bcd6665d2e9ab80553517769cffb7e841308796f53e6ce27873547f84549973f86a4ddaa0c1cb#npm:4.33.0"],\
             ["@tanstack/react-query-devtools", "virtual:85b43b06759e8662675368474eb87cb1d2dc239b8ef15de6654bcd6665d2e9ab80553517769cffb7e841308796f53e6ce27873547f84549973f86a4ddaa0c1cb#npm:4.33.0"],\
