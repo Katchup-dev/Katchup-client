@@ -1,25 +1,25 @@
-import { useRouter } from 'next/router';
 import { IcGoogle } from 'public/assets/icons';
+import { useState } from 'react';
 
 import styled from '@emotion/styled';
-import { GoogleLogin } from '@react-oauth/google';
+import { TokenResponse, useGoogleLogin } from '@react-oauth/google';
 
 const LandingKatchupStart = () => {
-  const router = useRouter();
+  const [googleAccessToken, setGoogleAccessToken] = useState<TokenResponse>();
+
+  const handleGoogleLogin = useGoogleLogin({
+    onSuccess: (tokenResponse) => {
+      console.log(tokenResponse);
+      setGoogleAccessToken(tokenResponse);
+    },
+  });
+
   return (
     <LandingKatchupStartWrapper>
       <LandingKatchupStartTitle>차곡차곡 인수인계 준비,</LandingKatchupStartTitle>
       <LandingKatchupStartSubTitle>Katchup에서 시작하세요</LandingKatchupStartSubTitle>
-      <GoogleLogin
-        onSuccess={(credentialResponse) => {
-          console.log(credentialResponse);
-        }}
-        onError={() => {
-          console.log('Google Login Failed');
-        }}
-      />
-      ;
-      <LandingKatchupStartButton onClick={() => router.push('/input/main')}>
+
+      <LandingKatchupStartButton onClick={() => handleGoogleLogin()}>
         <IcGoogle />
       </LandingKatchupStartButton>
     </LandingKatchupStartWrapper>
