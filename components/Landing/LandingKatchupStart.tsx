@@ -10,15 +10,14 @@ const LandingKatchupStart = () => {
 
   const handleGoogleLogin = useGoogleLogin({
     onSuccess: (tokenResponse) => {
-      console.log(tokenResponse);
       setGoogleAccessToken(tokenResponse.access_token);
     },
   });
 
   const handleSignup = async () => {
     if (googleAccessToken) {
-      const signupResponse = await signup(googleAccessToken);
-      console.log('signupResponse', signupResponse);
+      const accessToken = await signup(googleAccessToken);
+      localStorage.setItem('accessToken', accessToken);
     }
   };
 
@@ -30,7 +29,6 @@ const LandingKatchupStart = () => {
     <LandingKatchupStartWrapper>
       <LandingKatchupStartTitle>차곡차곡 인수인계 준비,</LandingKatchupStartTitle>
       <LandingKatchupStartSubTitle>Katchup에서 시작하세요</LandingKatchupStartSubTitle>
-
       <LandingKatchupStartButton onClick={() => handleGoogleLogin()}>
         <IcGoogle />
       </LandingKatchupStartButton>

@@ -5,8 +5,15 @@ const client = axios.create({
   headers: {
     'Content-type': 'application/json',
     'Access-Control-Allow-Origin': process.env.NEXT_PUBLIC_APP_IP,
-    Authorization: `Bearer ${process.env.NEXT_PUBLIC_ACCESS_TOKEN}`,
   },
+});
+
+client.interceptors.request.use((config) => {
+  const token = localStorage.getItem('accessToken');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
 });
 
 export const katchupGetFetcher = (url: string) => client.get(url).then((res) => res.data);
