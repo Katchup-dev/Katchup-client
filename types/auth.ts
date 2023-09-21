@@ -1,4 +1,4 @@
-interface AuthInfo {
+export interface AuthInfo {
   nickname: string;
   accessToken: string;
   refreshToken: string;

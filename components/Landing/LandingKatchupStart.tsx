@@ -1,6 +1,7 @@
 import { signup } from 'core/apis/auth';
 import { IcGoogle } from 'public/assets/icons';
 import { useEffect, useState } from 'react';
+import { AuthInfo } from 'types/auth';
 
 import styled from '@emotion/styled';
 import { useGoogleLogin } from '@react-oauth/google';
@@ -16,8 +17,9 @@ const LandingKatchupStart = () => {
 
   const handleSignup = async () => {
     if (googleAccessToken) {
-      const accessToken = await signup(googleAccessToken);
+      const { accessToken, refreshToken }: AuthInfo = await signup(googleAccessToken);
       localStorage.setItem('accessToken', accessToken);
+      localStorage.setItem('refreshTocke', refreshToken);
     }
   };
 
