@@ -1,4 +1,5 @@
 import { signup } from 'core/apis/auth';
+import { useRouter } from 'next/router';
 import { IcGoogle } from 'public/assets/icons';
 import { useEffect, useState } from 'react';
 import { AuthInfo } from 'types/auth';
@@ -7,6 +8,7 @@ import styled from '@emotion/styled';
 import { useGoogleLogin } from '@react-oauth/google';
 
 const LandingKatchupStart = () => {
+  const router = useRouter();
   const [googleAccessToken, setGoogleAccessToken] = useState<string>();
 
   const handleGoogleLogin = useGoogleLogin({
@@ -20,6 +22,7 @@ const LandingKatchupStart = () => {
       const { accessToken, refreshToken }: AuthInfo = await signup(googleAccessToken);
       localStorage.setItem('accessToken', accessToken);
       localStorage.setItem('refreshTocke', refreshToken);
+      router.push('/input/main');
     }
   };
 
