@@ -1,16 +1,41 @@
-import styled from '@emotion/styled';
+import { signup } from 'core/apis/auth';
 import { useRouter } from 'next/router';
-import { IcKatchupLogoBig } from 'public/assets/icons';
+import { IcGoogle } from 'public/assets/icons';
+import { useEffect, useState } from 'react';
+import { AuthInfo } from 'types/auth';
+
+import styled from '@emotion/styled';
+import { useGoogleLogin } from '@react-oauth/google';
 
 const LandingKatchupStart = () => {
   const router = useRouter();
+  const [googleAccessToken, setGoogleAccessToken] = useState<string>();
+
+  const handleGoogleLogin = useGoogleLogin({
+    onSuccess: (tokenResponse) => {
+      setGoogleAccessToken(tokenResponse.access_token);
+    },
+  });
+
+  const handleSignup = async () => {
+    if (googleAccessToken) {
+      const { accessToken, refreshToken }: AuthInfo = await signup(googleAccessToken);
+      localStorage.setItem('accessToken', accessToken);
+      localStorage.setItem('refreshTocke', refreshToken);
+      router.push('/input/main');
+    }
+  };
+
+  useEffect(() => {
+    handleSignup();
+  }, [googleAccessToken]);
+
   return (
     <LandingKatchupStartWrapper>
       <LandingKatchupStartTitle>차곡차곡 인수인계 준비,</LandingKatchupStartTitle>
       <LandingKatchupStartSubTitle>Katchup에서 시작하세요</LandingKatchupStartSubTitle>
-      <LandingKatchupStartButton onClick={() => router.push('/input/main')}>
-        <IcKatchupLogoBig />
-        Katchup 시작하기
+      <LandingKatchupStartButton onClick={() => handleGoogleLogin()}>
+        <IcGoogle />
       </LandingKatchupStartButton>
     </LandingKatchupStartWrapper>
   );
@@ -50,27 +75,7 @@ const LandingKatchupStartSubTitle = styled(LandingKatchupStartTitle)`
 `;
 
 const LandingKatchupStartButton = styled.button`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 2rem;
-
-  width: 52.6rem;
-  padding: 2.117rem 0;
   margin-top: 4.9rem;
-
-  border: none;
-  border-radius: 1.4114rem;
-  background-color: ${({ theme }) => theme.colors.katchup_white};
-  box-shadow: 0px 2.822887897491455px 4.2343316078186035px 0px rgba(0, 0, 0, 0.17),
-    0px 0px 4.2343316078186035px 0px rgba(0, 0, 0, 0.08);
-
-  color: ${({ theme }) => theme.colors.katchup_main};
-  font-family: Pretendard;
-  font-size: 2.8rem;
-  font-style: normal;
-  font-weight: 600;
-  line-height: normal;
 
   cursor: pointer;
 `;

@@ -5,6 +5,7 @@ import { globalStyle, resetStyle } from 'styles/globalStyle';
 import theme from 'styles/theme';
 
 import { Global, ThemeProvider } from '@emotion/react';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
@@ -30,10 +31,15 @@ export default function App({ Component, pageProps }: AppProps) {
     <QueryClientProvider client={queryClient}>
       <RecoilRoot>
         <ThemeProvider theme={theme}>
-          <Global styles={resetStyle} />
-          <Global styles={globalStyle} />
-          <Header profileImgSrc="https://sitem.ssgcdn.com/17/01/59/item/1000053590117_i1_1100.jpg" />
-          <Component {...pageProps} />
+          <GoogleOAuthProvider
+            clientId={process.env.NEXT_PUBLIC_GOOGLE_AUTH_CLIENT_ID!}
+            onScriptLoadError={() => console.log('Google Auth Client Load 실패')}
+            onScriptLoadSuccess={() => console.log('Google Auth Client Load 성공')}>
+            <Global styles={resetStyle} />
+            <Global styles={globalStyle} />
+            <Header profileImgSrc="https://sitem.ssgcdn.com/17/01/59/item/1000053590117_i1_1100.jpg" />
+            <Component {...pageProps} />
+          </GoogleOAuthProvider>
         </ThemeProvider>
       </RecoilRoot>
       <ReactQueryDevtools initialIsOpen={false} />
