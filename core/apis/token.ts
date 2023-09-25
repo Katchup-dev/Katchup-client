@@ -18,6 +18,7 @@ const setAuthHeaders = (config: AxiosRequestConfig, accessToken: string, refresh
 const renewTokens = async (config: AxiosRequestConfig): Promise<void> => {
   try {
     const { data } = await client.get('/auth/token');
+    console.log(data);
 
     const newAccessToken = data.data.accessToken;
     const newRefreshToken = data.data.refreshToken;
