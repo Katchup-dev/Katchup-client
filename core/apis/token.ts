@@ -2,7 +2,6 @@ import { AxiosRequestConfig } from "axios";
 import { client } from "lib/axios";
 
 const getAccessToken = () => localStorage.getItem('accessToken') || '';
-
 const getRefreshToken = () => localStorage.getItem('refreshToken') || '';
 
 const setTokens = (accessToken: string, refreshToken: string) => {
@@ -16,14 +15,15 @@ const setAuthHeaders = (config: AxiosRequestConfig, accessToken: string, refresh
   return config;
 };
 
-const renewTokens = async (config: AxiosRequestConfig): Promise<AxiosRequestConfig | undefined> => {
+const renewTokens = async (config: AxiosRequestConfig): Promise<void> => {
   try {
     const { data } = await client.get('/auth/token');
+
     const newAccessToken = data.data.accessToken;
     const newRefreshToken = data.data.refreshToken;
-    setTokens(newAccessToken, newRefreshToken);
 
-    return setAuthHeaders(config, newAccessToken, newRefreshToken);
+    setTokens(newAccessToken, newRefreshToken);
+    setAuthHeaders(config, newAccessToken, newRefreshToken);
   } catch (err) {
     console.error('Error renewing token:', err);
     window.location.href = '/';

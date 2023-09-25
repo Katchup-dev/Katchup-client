@@ -32,11 +32,9 @@ client.interceptors.response.use(
     const { config, response } = error;
 
     // 리프레시 토큰도 만료된 경우 재로그인
-    if (response.status === 401) {
-      if (response.data.status === 'KC-204') {
-        window.location.href = '/';
-        return;
-      }
+    if (response?.status === 401 && response?.data?.status === 'KC-204') {
+      window.location.href = '/';
+      return;
     }
     renewTokens(config);
 
