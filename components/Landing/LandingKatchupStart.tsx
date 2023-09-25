@@ -1,12 +1,12 @@
-import { signup } from "core/apis/auth";
-import { setTokens } from "core/apis/token";
-import { useRouter } from "next/router";
-import { IcGoogle } from "public/assets/icons";
-import { useEffect, useState } from "react";
-import { AuthInfo } from "types/auth";
+import { signup } from 'core/apis/auth';
+import { setTokens } from 'core/apis/token';
+import { useRouter } from 'next/router';
+import { IcGoogle } from 'public/assets/icons';
+import { useEffect, useState } from 'react';
+import { AuthInfo } from 'types/auth';
 
-import styled from "@emotion/styled";
-import { useGoogleLogin } from "@react-oauth/google";
+import styled from '@emotion/styled';
+import { useGoogleLogin } from '@react-oauth/google';
 
 const LandingKatchupStart = () => {
   const router = useRouter();

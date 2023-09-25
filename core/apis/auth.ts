@@ -1,4 +1,4 @@
-import { client } from "lib/axios";
+import { client } from 'lib/axios';
 
 export const signup = async (accessToken: string) => {
   try {

@@ -1,5 +1,5 @@
-import { AxiosRequestConfig } from "axios";
-import { client } from "lib/axios";
+import { AxiosRequestConfig } from 'axios';
+import { client } from 'lib/axios';
 
 const getAccessToken = () => localStorage.getItem('accessToken') || '';
 const getRefreshToken = () => localStorage.getItem('refreshToken') || '';

@@ -1,10 +1,5 @@
-import axios from "axios";
-import {
-  getAccessToken,
-  getRefreshToken,
-  renewTokens,
-  setAuthHeaders
-} from "core/apis/token";
+import axios from 'axios';
+import { getAccessToken, getRefreshToken, renewTokens, setAuthHeaders } from 'core/apis/token';
 
 const client = axios.create({
   baseURL: process.env.NEXT_PUBLIC_APP_IP,
