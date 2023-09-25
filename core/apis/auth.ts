@@ -10,9 +10,10 @@ export const signup = async (accessToken: string) => {
   }
 };
 
-export const getRefreshToken = async (accessToken: string, refreshToken: string) => {
+export const getRefreshToken = async () => {
   try {
-    const { data } = await client.post('/auth/token', { accessToken, refreshToken });
+    const { data } = await client.post('/auth/token');
+    console.log(data.data);
     return data.data;
   } catch (error) {
     console.error(error);

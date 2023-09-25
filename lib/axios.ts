@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from "axios";
 
 const client = axios.create({
   baseURL: process.env.NEXT_PUBLIC_APP_IP,
@@ -9,9 +9,12 @@ const client = axios.create({
 });
 
 client.interceptors.request.use((config) => {
-  const token = localStorage.getItem('accessToken');
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+  const accessToken = localStorage.getItem('accessToken');
+  const refreshToken = localStorage.getItem('refreshToken');
+
+  if (accessToken) {
+    config.headers.Authorization = `Bearer ${accessToken}`;
+    config.headers.Refresh = refreshToken;
   }
   return config;
 });
