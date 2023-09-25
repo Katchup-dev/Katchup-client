@@ -9,13 +9,3 @@ export const signup = async (accessToken: string) => {
     console.error(error);
   }
 };
-
-export const getRefreshToken = async () => {
-  try {
-    const { data } = await client.get('/auth/token');
-    console.log(data.data);
-    return data.data;
-  } catch (error) {
-    console.error(error);
-  }
-};
