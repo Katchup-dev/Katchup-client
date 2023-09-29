@@ -1,4 +1,5 @@
 import { signup } from 'core/apis/auth';
+import { setTokens } from 'core/apis/token';
 import { useRouter } from 'next/router';
 import { IcGoogle } from 'public/assets/icons';
 import { useEffect, useState } from 'react';
@@ -20,8 +21,7 @@ const LandingKatchupStart = () => {
   const handleSignup = async () => {
     if (googleAccessToken) {
       const { accessToken, refreshToken }: AuthInfo = await signup(googleAccessToken);
-      localStorage.setItem('accessToken', accessToken);
-      localStorage.setItem('refreshTocke', refreshToken);
+      setTokens(accessToken, refreshToken);
       router.push('/input/main');
     }
   };
