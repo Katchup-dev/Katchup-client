@@ -4,3 +4,7 @@ export interface AuthInfo {
   refreshToken: string;
   isNewUser: boolean;
 }
+
+export interface UserProfileInfo {
+  nickname: string;
+}

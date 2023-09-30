@@ -1,5 +1,6 @@
 import { atom } from 'recoil';
 import { recoilPersist } from 'recoil-persist';
+import { UserProfileInfo } from 'types/auth';
 import {
   InputCategoryInfo,
   InputKeywordInfo,
@@ -86,4 +87,12 @@ export const fileNameChangeState = atom<boolean>({
 export const screenshotSelectState = atom<PostScreenshotListInfo[]>({
   key: 'screenshotSelect',
   default: [],
+});
+
+export const userProfileState = atom<UserProfileInfo>({
+  key: 'userProfile',
+  default: {
+    nickname: '',
+  },
+  effects_UNSTABLE: [persistAtom],
 });
