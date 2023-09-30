@@ -1,3 +1,4 @@
+import { removeTokens } from 'core/apis/token';
 import { userProfileState } from 'core/atom';
 import useModal from 'lib/hooks/useModal';
 import { IcBtnLogout, IcBtnProfile } from 'public/assets/icons';
@@ -15,6 +16,12 @@ const SettingModal = ({ isShowing, profileImgSrc }: SettingModalProps) => {
   const { nickname } = useRecoilValue(userProfileState);
 
   const logout = useModal();
+
+  const handleLogout = () => {
+    removeTokens();
+    logout.toggle();
+    window.location.href = '/';
+  };
 
   return isShowing ? (
     <>
@@ -44,7 +51,7 @@ const SettingModal = ({ isShowing, profileImgSrc }: SettingModalProps) => {
         leftButtonName="돌아가기"
         rightButtonName="로그아웃"
         handleLeftButton={logout.toggle}
-        handleRightButton={logout.toggle}
+        handleRightButton={handleLogout}
       />
     </>
   ) : null;
