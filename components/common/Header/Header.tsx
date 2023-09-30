@@ -1,12 +1,13 @@
+import useModal from 'lib/hooks/useModal';
 import { useRouter } from 'next/router';
 import { IcHelp, IcLogo } from 'public/assets/icons';
+import { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
-import SearchBox from './SearchBox';
-import { useEffect, useState } from 'react';
+import SearchBox from '../SearchBox';
 
 export interface HeaderProps {
   profileImgSrc: string;
@@ -15,6 +16,7 @@ export interface HeaderProps {
 const Header = (props: HeaderProps) => {
   const { profileImgSrc } = props;
   const [isShowNav, setIsShowNav] = useState(false);
+  const userSetting = useModal();
 
   const router = useRouter();
 
@@ -56,11 +58,13 @@ const Header = (props: HeaderProps) => {
 
         <div>
           <SearchBox />
-          <StHelpButton>
+          <StHelpButton type="button">
             <IcHelp />
           </StHelpButton>
 
-          <StProfileImg src={profileImgSrc} />
+          <StSettingButton type="button" onClick={userSetting.toggle}>
+            <StProfileImg src={profileImgSrc} />
+          </StSettingButton>
         </div>
       </StHeaderWrapper>
     </>
@@ -135,6 +139,8 @@ const StHelpButton = styled.button`
   background-color: transparent;
   border: none;
 `;
+
+const StSettingButton = styled.button``;
 
 const StProfileImg = styled.img`
   width: 4.5rem;

@@ -1,4 +1,4 @@
-import Header from 'components/common/Header';
+import Header from 'components/common/Header/Header';
 import { useEffect } from 'react';
 import { RecoilRoot } from 'recoil';
 import { globalStyle, resetStyle } from 'styles/globalStyle';
