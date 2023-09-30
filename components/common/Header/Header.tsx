@@ -174,6 +174,8 @@ const StProfileImg = styled.img`
 `;
 
 const StHeaderModalWrapper = styled.div`
+  z-index: 1;
+
   position: absolute;
   top: 11rem;
   right: 5rem;

@@ -1,8 +1,11 @@
 import { userProfileState } from 'core/atom';
+import useModal from 'lib/hooks/useModal';
 import { IcBtnLogout, IcBtnProfile } from 'public/assets/icons';
 import { useRecoilValue } from 'recoil';
 
 import styled from '@emotion/styled';
+
+import { ModalTwoButton } from '../Modal';
 
 interface SettingModalProps {
   isShowing: boolean;
@@ -11,27 +14,39 @@ interface SettingModalProps {
 const SettingModal = ({ isShowing, profileImgSrc }: SettingModalProps) => {
   const { nickname } = useRecoilValue(userProfileState);
 
+  const logout = useModal();
+
   return isShowing ? (
-    <StSettingModal>
-      <StUserProfile>
-        <StProfileImg src={profileImgSrc} />
-        <StUserInfo>
-          <strong>{nickname}</strong>
-          <p>email@gmail.com</p>
-        </StUserInfo>
-      </StUserProfile>
-      <StHr />
-      <StSettingButtons>
-        <StSettingButton type="button">
-          <IcBtnProfile />
-          프로필 설정
-        </StSettingButton>
-        <StSettingButton type="button">
-          <IcBtnLogout />
-          로그아웃
-        </StSettingButton>
-      </StSettingButtons>
-    </StSettingModal>
+    <>
+      <StSettingModal>
+        <StUserProfile>
+          <StProfileImg src={profileImgSrc} />
+          <StUserInfo>
+            <strong>{nickname}</strong>
+            <p>email@gmail.com</p>
+          </StUserInfo>
+        </StUserProfile>
+        <StHr />
+        <StSettingButtons>
+          <StSettingButton type="button">
+            <IcBtnProfile />
+            프로필 설정
+          </StSettingButton>
+          <StSettingButton type="button" onClick={logout.toggle}>
+            <IcBtnLogout />
+            로그아웃
+          </StSettingButton>
+        </StSettingButtons>
+      </StSettingModal>
+      <ModalTwoButton
+        isShowing={logout.isShowing}
+        contents={['Katchup에서 로그아웃할까요?']}
+        leftButtonName="돌아가기"
+        rightButtonName="로그아웃"
+        handleLeftButton={logout.toggle}
+        handleRightButton={logout.toggle}
+      />
+    </>
   ) : null;
 };
 
@@ -101,4 +116,6 @@ const StSettingButton = styled.button`
 
   color: ${({ theme }) => theme.colors.katchup_dark_gray};
   ${({ theme }) => theme.fonts.h2_smalltitle};
+
+  cursor: pointer;
 `;
