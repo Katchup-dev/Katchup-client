@@ -85,7 +85,7 @@ const Header = (props: HeaderProps) => {
         </div>
 
         <StHeaderModalWrapper ref={modalRef}>
-          <SettingModal isShowing={userSetting.isShowing} />
+          <SettingModal isShowing={userSetting.isShowing} profileImgSrc={profileImgSrc} />
         </StHeaderModalWrapper>
       </StHeaderWrapper>
     </>

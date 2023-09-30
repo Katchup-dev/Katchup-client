@@ -1,10 +1,38 @@
+import { userProfileState } from 'core/atom';
+import { IcBtnLogout, IcBtnProfile } from 'public/assets/icons';
+import { useRecoilValue } from 'recoil';
+
 import styled from '@emotion/styled';
 
 interface SettingModalProps {
   isShowing: boolean;
+  profileImgSrc: string;
 }
-const SettingModal = ({ isShowing }: SettingModalProps) => {
-  return isShowing ? <StSettingModal>SettingModal</StSettingModal> : null;
+const SettingModal = ({ isShowing, profileImgSrc }: SettingModalProps) => {
+  const { nickname } = useRecoilValue(userProfileState);
+
+  return isShowing ? (
+    <StSettingModal>
+      <StUserProfile>
+        <StProfileImg src={profileImgSrc} />
+        <StUserInfo>
+          <strong>{nickname}</strong>
+          <p>email@gmail.com</p>
+        </StUserInfo>
+      </StUserProfile>
+      <StHr />
+      <StSettingButtons>
+        <StSettingButton type="button">
+          <IcBtnProfile />
+          프로필 설정
+        </StSettingButton>
+        <StSettingButton type="button">
+          <IcBtnLogout />
+          로그아웃
+        </StSettingButton>
+      </StSettingButtons>
+    </StSettingModal>
+  ) : null;
 };
 
 export default SettingModal;
@@ -12,7 +40,65 @@ export default SettingModal;
 const StSettingModal = styled.div`
   width: 30.6rem;
   height: 22.3rem;
+  padding: 2.4rem;
+  box-sizing: border-box;
 
   border-radius: 0.8rem;
+  border: 0.1rem solid var(--katchup_line_gray, #e2e2e2);
   background-color: ${({ theme }) => theme.colors.katchup_white};
+  box-shadow: 0 0 2rem 0 rgba(0, 0, 0, 0.05);
+`;
+
+const StUserProfile = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1.6rem;
+`;
+
+const StHr = styled.hr`
+  height: 0.1rem;
+  margin: 1.9rem 0;
+  box-sizing: border-box;
+
+  border: 0;
+  background-color: ${({ theme }) => theme.colors.katchup_line_gray};
+`;
+
+const StProfileImg = styled.img`
+  width: 4.5rem;
+  height: 4.5rem;
+
+  object-fit: fit;
+
+  border: 1px solid ${({ theme }) => theme.colors.katchup_main};
+  border-radius: 50%;
+`;
+
+const StUserInfo = styled.div`
+  & > strong {
+    ${({ theme }) => theme.fonts.h2_title};
+  }
+  & > p {
+    color: ${({ theme }) => theme.colors.katchup_dark_gray};
+    ${({ theme }) => theme.fonts.p3_text};
+  }
+`;
+
+const StSettingButtons = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+
+  padding-top: 0.7rem;
+  box-sizing: border-box;
+`;
+
+const StSettingButton = styled.button`
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  gap: 2rem;
+
+  color: ${({ theme }) => theme.colors.katchup_dark_gray};
+  ${({ theme }) => theme.fonts.h2_smalltitle};
 `;

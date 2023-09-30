@@ -26,6 +26,8 @@ export { default as IcBtnAddIndex } from './ic_btn_addIndex.svg';
 export { default as IcMemo } from './ic_memo.svg';
 export { default as IcPencil } from './ic_pencil.svg';
 export { default as IcFolder } from './ic_folder.svg';
+export { default as IcBtnLogout } from './ic_btn_logout.svg';
+export { default as IcBtnProfile } from './ic_btn_profile.svg';
 export { default as IcGoogle } from './ic_google.svg';
 export { default as IcInsta } from './ic_insta.svg';
 export { default as IcDeleteWorkCard } from './ic_deleteWorkCard.svg';
