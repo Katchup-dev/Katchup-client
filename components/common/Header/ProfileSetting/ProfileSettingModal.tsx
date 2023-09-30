@@ -1,10 +1,9 @@
 import { StCardModal, StModalWrapper, StNextBtn } from 'components/input/InputCard/ModalCard';
-import { StInputIndex } from 'components/input/InputCard/ModalInput.tsx/InputCategory';
 import { IcBtnDeletePopup } from 'public/assets/icons';
-import { useState } from 'react';
 
 import styled from '@emotion/styled';
 
+import InputImage from './InputImage';
 import InputMemo from './InputMemo';
 import InputNickname from './InputNickname';
 
@@ -21,7 +20,7 @@ const ProfileSettingModal = ({ isShowing, curNickname, profileImgSrc, handleCanc
       <StProfileSettingModal>
         <IcBtnDeletePopup onClick={handleCancel} />
         <h2>프로필 설정</h2>
-        <StInputImage></StInputImage>
+        <InputImage profileImgSrc={profileImgSrc} />
         <InputNickname curNickname={curNickname} />
         <InputMemo />
         <StBottomButtons>
@@ -46,8 +45,6 @@ const StProfileSettingModal = styled(StCardModal)`
   height: 64.4rem;
 `;
 
-const StInputImage = styled.div``;
-
 const StBottomButtons = styled.div`
   display: flex;
   justify-content: space-between;
@@ -63,4 +60,6 @@ const StWithdrawalBtn = styled.button`
 
 const StSaveBtn = styled(StNextBtn)`
   margin: 0;
+
+  border: none;
 `;
