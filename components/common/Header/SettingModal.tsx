@@ -7,14 +7,17 @@ import { useRecoilValue } from 'recoil';
 import styled from '@emotion/styled';
 
 import { ModalTwoButton } from '../Modal';
+import ProfileSettingModal from './ProfileSettingModal';
 
 interface SettingModalProps {
   isShowing: boolean;
   profileImgSrc: string;
 }
+
 const SettingModal = ({ isShowing, profileImgSrc }: SettingModalProps) => {
   const { nickname } = useRecoilValue(userProfileState);
 
+  const profileSetting = useModal();
   const logout = useModal();
 
   const handleLogout = () => {
@@ -35,7 +38,7 @@ const SettingModal = ({ isShowing, profileImgSrc }: SettingModalProps) => {
         </StUserProfile>
         <StHr />
         <StSettingButtons>
-          <StSettingButton type="button">
+          <StSettingButton type="button" onClick={profileSetting.toggle}>
             <IcBtnProfile />
             프로필 설정
           </StSettingButton>
@@ -45,6 +48,12 @@ const SettingModal = ({ isShowing, profileImgSrc }: SettingModalProps) => {
           </StSettingButton>
         </StSettingButtons>
       </StSettingModal>
+      <ProfileSettingModal
+        isShowing={profileSetting.isShowing}
+        curNickname={nickname}
+        profileImgSrc={profileImgSrc}
+        handleCancel={profileSetting.toggle}
+      />
       <ModalTwoButton
         isShowing={logout.isShowing}
         contents={['Katchup에서 로그아웃할까요?']}

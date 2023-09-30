@@ -1,5 +1,5 @@
 import { etcState } from 'core/atom';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useRecoilState } from 'recoil';
 
 import styled from '@emotion/styled';
