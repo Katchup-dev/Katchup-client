@@ -7,7 +7,7 @@ import { useRecoilValue } from 'recoil';
 import styled from '@emotion/styled';
 
 import { ModalTwoButton } from '../Modal';
-import ProfileSettingModal from './ProfileSettingModal';
+import ProfileSettingModal from './ProfileSetting/ProfileSettingModal';
 
 interface SettingModalProps {
   isShowing: boolean;
