@@ -1,13 +1,13 @@
 import useModal from 'lib/hooks/useModal';
 import { useRouter } from 'next/router';
 import { IcHelp, IcLogo } from 'public/assets/icons';
-import { useEffect, useState } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useEffect, useRef, useState } from 'react';
 
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import SearchBox from '../SearchBox';
+import SettingModal from './SettingModal';
 
 export interface HeaderProps {
   profileImgSrc: string;
@@ -16,24 +16,41 @@ export interface HeaderProps {
 const Header = (props: HeaderProps) => {
   const { profileImgSrc } = props;
   const [isShowNav, setIsShowNav] = useState(false);
+
   const userSetting = useModal();
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const modalRef = useRef<HTMLDivElement>(null);
 
   const router = useRouter();
-
   const { asPath } = router;
 
   const handleNavigate = (e: React.MouseEvent) => {
     const target = e.target as HTMLLIElement;
 
     if (target.innerText === '작성하기') router.push('/input/main');
-
     if (target.innerText === '모아보기') router.push('/output/0');
+  };
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (buttonRef.current && buttonRef.current.contains(event.target as Node)) {
+      return;
+    }
+    if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+      userSetting.setShowing(false);
+    }
   };
 
   useEffect(() => {
     if (router.pathname.includes('share')) {
       setIsShowNav((prev) => !prev);
     }
+  }, []);
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
   }, []);
 
   return (
@@ -62,10 +79,14 @@ const Header = (props: HeaderProps) => {
             <IcHelp />
           </StHelpButton>
 
-          <StSettingButton type="button" onClick={userSetting.toggle}>
+          <StSettingButton type="button" onClick={userSetting.toggle} ref={buttonRef}>
             <StProfileImg src={profileImgSrc} />
           </StSettingButton>
         </div>
+
+        <StHeaderModalWrapper ref={modalRef}>
+          <SettingModal isShowing={userSetting.isShowing} />
+        </StHeaderModalWrapper>
       </StHeaderWrapper>
     </>
   );
@@ -150,6 +171,12 @@ const StProfileImg = styled.img`
 
   border: 1px solid ${({ theme }) => theme.colors.katchup_main};
   border-radius: 50%;
+`;
+
+const StHeaderModalWrapper = styled.div`
+  position: absolute;
+  top: 11rem;
+  right: 5rem;
 `;
 
 export default Header;
