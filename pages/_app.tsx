@@ -47,7 +47,9 @@ export default function App({ Component, pageProps }: AppProps) {
                   window.dataLayer = window.dataLayer || [];
                   function gtag(){dataLayer.push(arguments);}
                   gtag('js', new Date());
-                  gtag('config', 'G-5SXQH2Y6CX');`,
+                  gtag('config', 'G-5SXQH2Y6CX', {
+                    page_path: window.location.pathname,
+                  });`,
               }}
             />
             <Header profileImgSrc="https://sitem.ssgcdn.com/17/01/59/item/1000053590117_i1_1100.jpg" />
