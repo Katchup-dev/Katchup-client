@@ -10,6 +10,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 import type { AppProps } from 'next/app';
+import Script from 'next/script';
 const queryClient = new QueryClient();
 
 export default function App({ Component, pageProps }: AppProps) {
@@ -37,6 +38,20 @@ export default function App({ Component, pageProps }: AppProps) {
             onScriptLoadSuccess={() => console.log('Google Auth Client Load 성공')}>
             <Global styles={resetStyle} />
             <Global styles={globalStyle} />
+            <Script strategy="afterInteractive" src={`https://www.googletagmanager.com/gtag/js?id=G-5SXQH2Y6CX`} />
+            <Script
+              id="gtag-init"
+              strategy="afterInteractive"
+              dangerouslySetInnerHTML={{
+                __html: `  
+                  window.dataLayer = window.dataLayer || [];
+                  function gtag(){dataLayer.push(arguments);}
+                  gtag('js', new Date());
+                  gtag('config', 'G-5SXQH2Y6CX', {
+                    page_path: window.location.pathname,
+                  });`,
+              }}
+            />
             <Header profileImgSrc="https://sitem.ssgcdn.com/17/01/59/item/1000053590117_i1_1100.jpg" />
             <Component {...pageProps} />
           </GoogleOAuthProvider>
