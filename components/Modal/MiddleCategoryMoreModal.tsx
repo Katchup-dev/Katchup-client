@@ -17,7 +17,7 @@ export default function MiddleCategoryMoreModal(props: MiddleCategoryMoreModalPr
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   return isOpen ? (
-    <StMiddleCategoryMoreModalWrapper>
+    <StMiddleCategoryMoreModalWrapper onClick={(e) => e.stopPropagation()}>
       <StEditBtn onClick={() => setIsEditModalOpen(true)}>
         <IcEditMiddleCategory />
         <p>수정하기</p>
