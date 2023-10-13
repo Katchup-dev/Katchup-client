@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { getAccessToken, getRefreshToken, renewTokens, setAuthHeaders } from 'core/apis/token';
+import { ACCESS_TOKEN_EXPIRED, GOOGLE_TOKEN_EXPIRED, REFRESH_TOKEN_EXPIRED, USER_UNAUTHORIZED } from 'constants/error';
+import { getAccessToken, getRefreshToken, removeTokens, renewTokens, setAuthHeaders } from 'core/apis/token';
 
 const client = axios.create({
   baseURL: process.env.NEXT_PUBLIC_APP_IP,
@@ -25,15 +26,17 @@ client.interceptors.response.use(
   },
   async (error) => {
     const { config, response } = error;
+    const code = response?.data?.status;
 
-    // 리프레시 토큰도 만료된 경우 재로그인
-    if (response?.status === 401 && response?.data?.status === 'KC-204') {
+    if (code === ACCESS_TOKEN_EXPIRED) {
+      renewTokens(config);
+      return axios(config);
+    }
+    if (code === (USER_UNAUTHORIZED || GOOGLE_TOKEN_EXPIRED || REFRESH_TOKEN_EXPIRED)) {
+      removeTokens();
       window.location.href = '/';
       return;
     }
-    renewTokens(config);
-
-    return axios(config);
   },
 );
 
