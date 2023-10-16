@@ -32,10 +32,7 @@ export default function App({ Component, pageProps }: AppProps) {
     <QueryClientProvider client={queryClient}>
       <RecoilRoot>
         <ThemeProvider theme={theme}>
-          <GoogleOAuthProvider
-            clientId={process.env.NEXT_PUBLIC_GOOGLE_AUTH_CLIENT_ID!}
-            onScriptLoadError={() => console.log('Google Auth Client Load 실패')}
-            onScriptLoadSuccess={() => console.log('Google Auth Client Load 성공')}>
+          <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_AUTH_CLIENT_ID!}>
             <Global styles={resetStyle} />
             <Global styles={globalStyle} />
             <Script strategy="afterInteractive" src={`https://www.googletagmanager.com/gtag/js?id=G-5SXQH2Y6CX`} />

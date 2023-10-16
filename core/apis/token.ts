@@ -9,6 +9,11 @@ const setTokens = (accessToken: string, refreshToken: string) => {
   localStorage.setItem('refreshToken', refreshToken);
 };
 
+const removeTokens = () => {
+  localStorage.removeItem('accessToken');
+  localStorage.removeItem('refreshToken');
+};
+
 const setAuthHeaders = (config: AxiosRequestConfig, accessToken: string, refreshToken: string): AxiosRequestConfig => {
   config.headers!.Authorization = `Bearer ${accessToken}`;
   config.headers!.Refresh = refreshToken;
@@ -31,4 +36,4 @@ const renewTokens = async (config: AxiosRequestConfig): Promise<void> => {
   }
 };
 
-export { getAccessToken, getRefreshToken, setTokens, setAuthHeaders, renewTokens };
+export { getAccessToken, getRefreshToken, setTokens, removeTokens, setAuthHeaders, renewTokens };
