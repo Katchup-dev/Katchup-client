@@ -1,1 +1,1 @@
-export { default as ScreenshotInput } from './ScreenshotInput';
+export { default as ScreenshotInput } from './ScreenshotUpdate';

@@ -1,14 +1,26 @@
+import React, { useEffect } from 'react';
 import MainInput from 'components/input/InputBasic/MainInput';
 
 import styled from '@emotion/styled';
 import MainUpdate from 'components/update/UpdateBasic/MainUpdate';
+import { cardCtxType } from 'types/output';
+import { useRecoilState } from 'recoil';
+import { updateCardIdState } from 'core/atom';
 
-const UpdateMain = () => {
+const UpdateMain = ({ cardId }: { cardId: string }) => {
   return (
     <StUpdateMainWrapper>
-      <MainUpdate />
+      <MainUpdate cardId={Number(cardId)} />
     </StUpdateMainWrapper>
   );
+};
+
+export const getServerSideProps = async (ctx: cardCtxType) => {
+  const cardId = ctx.query.cardId;
+
+  return {
+    props: { cardId },
+  };
 };
 
 export default UpdateMain;

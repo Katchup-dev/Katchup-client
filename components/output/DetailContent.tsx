@@ -1,3 +1,4 @@
+import React from 'react';
 import styled from '@emotion/styled';
 import DeleteCategoryModal from 'components/Modal/DeleteCategoryModal';
 import { deleteWorkCards, getFileDownload } from 'core/apis/output';
@@ -6,10 +7,10 @@ import { useRouter } from 'next/router';
 import { IcBack, IcSubLogo } from 'public/assets/icons';
 import { useState } from 'react';
 
-import { FileInfo } from 'types/output';
+import { FileInfo, FileListInfo } from 'types/output';
 
 export interface DetailContentProps {
-  fileList: FileInfo[];
+  fileList: FileListInfo[];
   content: string;
   cardId: number;
 }
@@ -41,6 +42,10 @@ const DetailContent = (props: DetailContentProps) => {
     }
   };
 
+  const handleGoToUpdate = () => {
+    router.push(`/update/${cardId}`);
+  };
+
   return (
     <StDetailWrapper>
       <button onClick={() => router.back()}>
@@ -66,9 +71,9 @@ const DetailContent = (props: DetailContentProps) => {
             </div>
             <StFileWrapper>
               {fileList?.map((file) => (
-                <a download key={file.id} onClick={() => handleFileDownload(file.id, file.changedName)}>
+                <a download key={file.fileUUID} onClick={() => handleFileDownload(file.fileUUID, file.fileChangedName)}>
                   <li>
-                    {file.changedName} <p>{file.size}MB</p>
+                    {file.fileChangedName} <p>{file.size}MB</p>
                   </li>
                 </a>
               ))}
@@ -80,7 +85,9 @@ const DetailContent = (props: DetailContentProps) => {
         <button type="button" onClick={() => setIsDeleteModalOpen(true)}>
           삭제하기
         </button>
-        <button type="button">수정하기</button>
+        <button type="button" onClick={() => handleGoToUpdate()}>
+          수정하기
+        </button>
       </StButtonWrapper>
 
       {

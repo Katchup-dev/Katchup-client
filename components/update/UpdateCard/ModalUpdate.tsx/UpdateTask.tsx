@@ -1,18 +1,32 @@
 import { categorySelectState, taskSelectState } from 'core/atom';
 import React, { useEffect, useState } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 import styled from '@emotion/styled';
 
 import { DropdownTask } from '../../Dropdown';
-import { StInputIndex } from './InputCategory';
+import { StInputIndex } from './UpdateCategory';
 
-const InputTask = () => {
+interface UpdateTaskProps {
+  prevTaskId: number;
+  prevTaskName: string;
+}
+
+const UpdateTask = (props: UpdateTaskProps) => {
+  const { prevTaskId, prevTaskName } = props;
   const [task, setTask] = useState('');
   const [taskCount, setTaskCount] = useState(0);
   const [isTaskFocused, setIsTaskFocused] = useState(false);
   const selectedCategory = useRecoilValue(categorySelectState);
-  const selectedTask = useRecoilValue(taskSelectState);
+  const [selectedTask, setSelectedTask] = useRecoilState(taskSelectState);
+
+  useEffect(() => {
+    setSelectedTask({
+      taskId: prevTaskId,
+      name: prevTaskName,
+    });
+    setTask(prevTaskName);
+  }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTask(e.target.value);
@@ -46,6 +60,6 @@ const InputTask = () => {
   );
 };
 
-export default InputTask;
+export default UpdateTask;
 
 const StInputTask = styled(StInputIndex)``;

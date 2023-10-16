@@ -4,12 +4,21 @@ import { useRecoilState } from 'recoil';
 
 import styled from '@emotion/styled';
 
-import { StInputIndex } from './InputCategory';
+import { StInputIndex } from './UpdateCategory';
 
-const InputEtc = () => {
+interface UpdateEtcProps {
+  prevNote: string;
+}
+
+const UpdateEtc = (props: UpdateEtcProps) => {
+  const { prevNote } = props;
   const [etc, setEtc] = useRecoilState(etcState);
   const [etcCount, setEtcCount] = useState(0);
   const [isEtcFocused, setIsEtcdFocused] = useState(false);
+
+  useEffect(() => {
+    setEtc(prevNote);
+  }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setEtc(e.target.value);
@@ -33,7 +42,7 @@ const InputEtc = () => {
   );
 };
 
-export default InputEtc;
+export default UpdateEtc;
 
 const StInputEtc = styled(StInputIndex)`
   & > textarea {

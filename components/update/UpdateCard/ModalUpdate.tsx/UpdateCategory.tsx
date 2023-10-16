@@ -1,17 +1,32 @@
 import { categorySelectState } from 'core/atom';
 import React, { useEffect, useState } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import { DropdownCategory } from '../../Dropdown';
 
-const InputCategory = () => {
+interface UpdateCategoryProps {
+  prevCategoryId: number;
+  prevCategoryName: string;
+}
+
+const UpdateCategory = (props: UpdateCategoryProps) => {
+  const { prevCategoryId, prevCategoryName } = props;
   const [category, setCategory] = useState('');
   const [categoryCount, setCategoryCount] = useState(0);
   const [isCategoryFocused, setIsCategoryFocused] = useState(false);
-  const selectedCategory = useRecoilValue(categorySelectState);
+  const [selectedCategory, setSelectedCategory] = useRecoilState(categorySelectState);
+
+  useEffect(() => {
+    setSelectedCategory({
+      categoryId: prevCategoryId,
+      name: prevCategoryName,
+      isShared: true,
+    });
+    setCategory(prevCategoryName);
+  }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCategory(e.target.value);
@@ -44,7 +59,7 @@ const InputCategory = () => {
   );
 };
 
-export default InputCategory;
+export default UpdateCategory;
 
 export const StInputIndex = styled.label<{ isFocused: boolean }>`
   display: flex;

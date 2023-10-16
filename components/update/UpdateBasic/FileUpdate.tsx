@@ -4,13 +4,19 @@ import { deleteFile, getFilePresignedUrl, putFile } from 'core/apis/input';
 import { fileNameChangeState, fileSelectState } from 'core/atom';
 import useModal from 'lib/hooks/useModal';
 import { IcBtnDeleteFile, IcFileCheckbox, IcFileCheckboxAfter, IcKatchupLogo } from 'public/assets/icons';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { PostFileListInfo } from 'types/input';
 
 import styled from '@emotion/styled';
+import { FileListInfo } from 'types/output';
 
-const FileInput = () => {
+interface FileUpdateProps {
+  fileList: FileListInfo[];
+}
+
+const FileInput = (props: FileUpdateProps) => {
+  const { fileList } = props;
   const [fileInput, setFileInput] = useState<File[]>([]);
   const [fileSelectList, setFileSelectList] = useRecoilState<PostFileListInfo[]>(fileSelectState);
   const [isChecked, setIsChecked] = useRecoilState(fileNameChangeState);
@@ -18,6 +24,26 @@ const FileInput = () => {
   const sizeLimit = 10 * 1024 * 1024;
 
   const fileSizeModal = useModal();
+
+  useEffect(() => {
+    if (fileList && fileList.length) {
+      const newFileInput = fileList.map((prevFile) => {
+        const file = {
+          lastModified: Date.now(),
+          name: prevFile.fileOriginalName,
+          webkitRelativePath: '',
+          size: prevFile.size,
+          type: '', // 파일 타입에 맞게 수정
+        };
+        return file;
+      });
+
+      setFileInput(newFileInput);
+
+      // 파일 선택 리스트에도 추가
+      setFileSelectList((prevFileSelectList) => [...prevFileSelectList, ...fileList]);
+    }
+  }, [fileList]);
 
   // 파일 업로드 시 presigned url 받아오고 put 요청으로 s3에 올리는 코드
   const handlePostFile = async (fileUrl: string, file: File) => {

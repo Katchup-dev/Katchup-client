@@ -3,14 +3,24 @@ import { MODAL_DELETE_ALL } from 'constants/modal';
 import { workInputState } from 'core/atom';
 import useModal from 'lib/hooks/useModal';
 import { IcKatchupLogo } from 'public/assets/icons';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 
 import styled from '@emotion/styled';
 
-const WorkInput = () => {
+interface WorkUpdate {
+  content: string;
+}
+
+const WorkUpdate = (props: WorkUpdate) => {
+  const { content } = props;
   const deleteAllModal = useModal();
   const [workInput, setWorkInput] = useRecoilState(workInputState);
+
+  useEffect(() => {
+    setWorkInput(content);
+  }, []);
+
   const [letterCount, setLetterCount] = useState(0);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -60,7 +70,7 @@ const WorkInput = () => {
   );
 };
 
-export default WorkInput;
+export default WorkUpdate;
 
 const StDeleteAllBtn = styled.button`
   position: absolute;

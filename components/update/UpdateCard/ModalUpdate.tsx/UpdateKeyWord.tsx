@@ -1,14 +1,15 @@
 import { ColorKey, KEYWORDS_COLOR } from 'constants/keywords';
 import { keywordSelectState, taskSelectState } from 'core/atom';
 import React, { useEffect, useState } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { InputKeywordInfo } from 'types/input';
 
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import { DropdownKeyword } from '../../Dropdown';
-import { StInputIndex } from './InputCategory';
+import { StInputIndex } from './UpdateCategory';
+import { KeywordInfo } from 'types/output';
 
 interface KeywordProps {
   name: string;
@@ -16,7 +17,12 @@ interface KeywordProps {
   color: string;
 }
 
-const InputKeyWord = () => {
+interface UpdateKeyWordProps {
+  prevKeyword: InputKeywordInfo[];
+}
+
+const UpdateKeyWord = (props: UpdateKeyWordProps) => {
+  const { prevKeyword } = props;
   const [keyword, setKeyword] = useState('');
   const [isKeywordFocused, setIsKeywordFocused] = useState(false);
   const [keywordColor, setKeywordColor] = useState<KeywordProps>({
@@ -24,8 +30,12 @@ const InputKeyWord = () => {
     background: '',
     color: '',
   });
+  const [selectedKeywords, setSelectedKeywords] = useRecoilState<InputKeywordInfo[]>(keywordSelectState);
 
-  const selectedKeywords = useRecoilValue<InputKeywordInfo[]>(keywordSelectState);
+  useEffect(() => {
+    setSelectedKeywords([...prevKeyword]);
+  }, []);
+
   const selectedKeywordsArray = selectedKeywords as InputKeywordInfo[];
   const selectedTask = useRecoilValue(taskSelectState);
 
@@ -96,7 +106,7 @@ const InputKeyWord = () => {
   );
 };
 
-export default InputKeyWord;
+export default UpdateKeyWord;
 
 const StInputKeyWordWrapper = styled(StInputIndex)``;
 

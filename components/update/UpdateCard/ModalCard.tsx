@@ -7,6 +7,7 @@ import {
   screenshotSelectState,
   subTaskSelectState,
   taskSelectState,
+  updateCardIdState,
   workInputState,
 } from 'core/atom';
 import { usePostCard } from 'lib/hooks/input/usePostCard';
@@ -16,15 +17,20 @@ import { useRecoilValue } from 'recoil';
 import { PostCardInfo, PostFileListInfo } from 'types/input';
 
 import styled from '@emotion/styled';
-import { InputCategory, InputEtc, InputKeyWord, InputSubTask, InputTask } from './ModalInput.tsx';
+import { UpdateCategory, UpdateEtc, UpdateKeyWord, UpdateSubTask, UpdateTask } from './ModalUpdate.tsx/index';
+import { cardCtxType } from 'types/output';
+import { useGetDetailPage } from 'lib/hooks/useGetDetailPage';
+import { usePatchCard } from 'lib/hooks/update/usePatchCard';
 
 interface ModalProps {
   isShowing: boolean;
   handleHide: React.MouseEventHandler;
 }
 
-const ModalCard = (props: ModalProps) => {
+const ModalCard = (props: ModalProps, { cardId }: { cardId: string }) => {
   const { isShowing, handleHide } = props;
+
+  const { detailPageInfo } = useGetDetailPage(Number(cardId));
 
   const currentWorkInput = useRecoilValue(workInputState);
   const selectedCategory = useRecoilValue(categorySelectState);
@@ -36,7 +42,9 @@ const ModalCard = (props: ModalProps) => {
   const currentEtc = useRecoilValue(etcState);
   const isFileNameChangeChecked = useRecoilValue(fileNameChangeState);
 
-  const { createCard } = usePostCard();
+  console.log(selectedKeywordList, selectedFileList, selectedScreenshotList);
+
+  const { patchCard } = usePatchCard();
 
   const modifiedFileList: PostFileListInfo[] = selectedFileList.map((fileInfo) => {
     const modifiedFileName = `${selectedCategory.name}_${selectedTask.name}_${selectedSubTask.name}_${fileInfo.fileOriginalName}`;
@@ -60,10 +68,11 @@ const ModalCard = (props: ModalProps) => {
       content: currentWorkInput,
     };
 
-    const result = await createCard(cardData);
+    const result = await patchCard(cardData);
+    console.log(result);
 
     if (result.status === 'SSS') {
-      localStorage.setItem('toastMessage', '업무 카드가 추가되었어요.');
+      localStorage.setItem('toastMessage', '업무 카드가 수정되었어요.');
       window.location.reload();
     }
   };
@@ -76,11 +85,14 @@ const ModalCard = (props: ModalProps) => {
             <StCardModal>
               <IcBtnDeletePopup onClick={handleHide} />
               <h2>업무 카드 작성</h2>
-              <InputCategory />
-              <InputTask />
-              <InputSubTask />
-              <InputKeyWord />
-              <InputEtc />
+              <UpdateCategory
+                prevCategoryId={detailPageInfo?.categoryId}
+                prevCategoryName={detailPageInfo?.categoryName}
+              />
+              <UpdateTask prevTaskId={detailPageInfo?.taskId} prevTaskName={detailPageInfo?.taskName} />
+              <UpdateSubTask prevSubTaskId={detailPageInfo?.subTaskId} prevSubTaskName={detailPageInfo?.subTaskName} />
+              <UpdateKeyWord prevKeyword={detailPageInfo?.keywordList} />
+              <UpdateEtc prevNote={detailPageInfo?.note} />
               <StNextBtn
                 type="button"
                 disabled={selectedCategory.categoryId === 0 || selectedTask.taskId === 0}
@@ -93,6 +105,14 @@ const ModalCard = (props: ModalProps) => {
       )}
     </>
   );
+};
+
+export const getServerSideProps = async (ctx: cardCtxType) => {
+  const cardId = ctx.query.cardId;
+
+  return {
+    props: { cardId },
+  };
 };
 
 export default ModalCard;

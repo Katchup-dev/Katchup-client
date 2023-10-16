@@ -98,6 +98,18 @@ export const postCard = async (cardInfo: PostCardInfo) => {
   }
 };
 
+// ----- 업무 카드 수정 -----
+
+export const patchCard = async (cardInfo: PostCardInfo) => {
+  try {
+    const { data } = await client.patch(`/cards`, cardInfo);
+    console.log(data);
+    return data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 // ---- 스크린샷 presigned url 생성 ----
 export const getPresignedUrl = async (screenshotName: string) => {
   try {

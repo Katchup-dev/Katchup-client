@@ -87,3 +87,8 @@ export const screenshotSelectState = atom<PostScreenshotListInfo[]>({
   key: 'screenshotSelect',
   default: [],
 });
+
+export const updateCardIdState = atom<number>({
+  key: 'updateCardId',
+  default: 0,
+});

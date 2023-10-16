@@ -1,17 +1,31 @@
 import { subTaskSelectState } from 'core/atom';
 import React, { useEffect, useState } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 import styled from '@emotion/styled';
 
 import { DropdownSubTask } from '../../Dropdown';
-import { StInputIndex } from './InputCategory';
+import { StInputIndex } from './UpdateCategory';
 
-const InputSubTask = () => {
+interface UpdateSubTaskProps {
+  prevSubTaskId: number;
+  prevSubTaskName: string;
+}
+
+const UpdateSubTask = (props: UpdateSubTaskProps) => {
+  const { prevSubTaskId, prevSubTaskName } = props;
   const [subTask, setSubTask] = useState('');
   const [subTaskCount, setSubTaskCount] = useState(0);
   const [isSubTaskFocused, setIsSubTaskFocused] = useState(false);
-  const selectedSubTask = useRecoilValue(subTaskSelectState);
+  const [selectedSubTask, setSelectedSubTask] = useRecoilState(subTaskSelectState);
+
+  useEffect(() => {
+    setSelectedSubTask({
+      subTaskId: prevSubTaskId,
+      name: prevSubTaskName,
+    });
+    setSubTask(prevSubTaskName);
+  }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSubTask(e.target.value);
@@ -44,6 +58,6 @@ const InputSubTask = () => {
   );
 };
 
-export default InputSubTask;
+export default UpdateSubTask;
 
 const StInputSubTask = styled(StInputIndex)``;

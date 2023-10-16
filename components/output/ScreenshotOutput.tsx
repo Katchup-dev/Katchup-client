@@ -8,6 +8,7 @@ export interface ScreenshotOutputProps {
 
 const ScreenshotOutput = (props: ScreenshotOutputProps) => {
   const { screenshotList } = props;
+  console.log(screenshotList);
   return (
     <StScreenshotWrapper>
       <div>
@@ -17,7 +18,7 @@ const ScreenshotOutput = (props: ScreenshotOutputProps) => {
 
       <StScreenshot>
         {screenshotList?.map((screenshot: ScreenshotInfo) => (
-          <img src={screenshot.url} key={screenshot.id} />
+          <img src={screenshot.screenshotUrl} key={screenshot.screenshotUUID} />
         ))}
       </StScreenshot>
     </StScreenshotWrapper>

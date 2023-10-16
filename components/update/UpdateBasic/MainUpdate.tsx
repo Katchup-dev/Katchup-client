@@ -1,37 +1,33 @@
 import { ModalTwoButton } from 'components/common/Modal';
 import Toast from 'components/common/Toast';
 import { MODAL_DELETE_SCREENSHOT, MODAL_LEAVE_PAGE } from 'constants/modal';
-import { workInputState } from 'core/atom';
+import { updateCardIdState, workInputState } from 'core/atom';
 import useRouteChangeBlocking from 'lib/hooks/input/useRouteChangeBlocking';
 import useModal from 'lib/hooks/useModal';
 import { IcBtnScreenshot, IcBtnScreenshotHide } from 'public/assets/icons';
 import { useEffect, useState } from 'react';
-import { useRecoilValue } from 'recoil';
 
 import styled from '@emotion/styled';
 
-import { ScreenshotInput } from '../UpdateScreeenshot';
 import FileInput from './FileUpdate';
-import WorkInput from './WorkUpdate';
 import { CardModal } from '../UpdateCard';
+import WorkUpdate from './WorkUpdate';
+import { useGetDetailPage } from 'lib/hooks/useGetDetailPage';
+import ScreenshotUpdate from '../UpdateScreeenshot/ScreenshotUpdate';
 
-const MainUpdate = () => {
-  const workInput = useRecoilValue(workInputState);
+interface MainUpdateProps {
+  cardId: number;
+}
+
+const MainUpdate = (props: MainUpdateProps) => {
+  const { cardId } = props;
+
+  const { detailPageInfo } = useGetDetailPage(Number(cardId));
   const [isScreenshotShowing, setIsScreenshotShowing] = useState(false);
 
   const cardModal = useModal();
   const leavePageModal = useModal();
   const screenshotCancelModal = useModal();
-
-  const { offRouteChangeBlocking } = useRouteChangeBlocking(leavePageModal.toggle, workInput);
-
-  const handleScreenshotShowing = (e: React.MouseEvent<HTMLButtonElement>) => {
-    setIsScreenshotShowing((prev) => !prev);
-    screenshotCancelModal.toggle();
-  };
-
-  const [toastMessage, setToastMessage] = useState('');
-  const [toastKey, setToastKey] = useState<number>();
 
   useEffect(() => {
     const storedMessage = localStorage.getItem('toastMessage');
@@ -42,13 +38,23 @@ const MainUpdate = () => {
     }
   }, []);
 
+  const { offRouteChangeBlocking } = useRouteChangeBlocking(leavePageModal.toggle, detailPageInfo?.note);
+
+  const handleScreenshotShowing = (e: React.MouseEvent<HTMLButtonElement>) => {
+    setIsScreenshotShowing((prev) => !prev);
+    screenshotCancelModal.toggle();
+  };
+
+  const [toastMessage, setToastMessage] = useState('');
+  const [toastKey, setToastKey] = useState<number>();
+
   return (
     <>
       <StMainInputWrapper>
         <StMainInput>
-          <WorkInput />
-          <FileInput />
-          <StNextBtn disabled={!workInput.length}>
+          <WorkUpdate content={detailPageInfo?.content} />
+          <FileInput fileList={detailPageInfo?.fileList} />
+          <StNextBtn disabled={!detailPageInfo?.content.length}>
             <button type="button" onClick={cardModal.toggle}>
               다음 단계
             </button>
@@ -60,7 +66,7 @@ const MainUpdate = () => {
         </StMainInput>
         {isScreenshotShowing ? (
           <>
-            <ScreenshotInput />
+            <ScreenshotUpdate screenshotList={detailPageInfo?.screenshotList} />
             <IcBtnScreenshotHide onClick={screenshotCancelModal.toggle} />
           </>
         ) : (
