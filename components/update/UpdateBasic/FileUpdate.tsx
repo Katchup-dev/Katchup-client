@@ -1,23 +1,20 @@
+import styled from '@emotion/styled';
 import { ModalOneButton } from 'components/common/Modal';
 import { MODAL_FILE_SIZE } from 'constants/modal';
 import { deleteFile, getFilePresignedUrl, putFile } from 'core/apis/input';
 import { fileNameChangeState, fileSelectState } from 'core/atom';
 import useModal from 'lib/hooks/useModal';
 import { IcBtnDeleteFile, IcFileCheckbox, IcFileCheckboxAfter, IcKatchupLogo } from 'public/assets/icons';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { useRecoilState } from 'recoil';
 import { PostFileListInfo } from 'types/input';
 
-import styled from '@emotion/styled';
-import { FileListInfo } from 'types/output';
-
 interface FileUpdateProps {
-  fileList: FileListInfo[];
+  fileList: PostFileListInfo[];
 }
 
-const FileInput = (props: FileUpdateProps) => {
+const FileUpdate = (props: FileUpdateProps) => {
   const { fileList } = props;
-  const [fileInput, setFileInput] = useState<File[]>([]);
   const [fileSelectList, setFileSelectList] = useRecoilState<PostFileListInfo[]>(fileSelectState);
   const [isChecked, setIsChecked] = useRecoilState(fileNameChangeState);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -26,33 +23,16 @@ const FileInput = (props: FileUpdateProps) => {
   const fileSizeModal = useModal();
 
   useEffect(() => {
-    if (fileList && fileList.length) {
-      const newFileInput = fileList.map((prevFile) => {
-        const file = {
-          lastModified: Date.now(),
-          name: prevFile.fileOriginalName,
-          webkitRelativePath: '',
-          size: prevFile.size,
-          type: '', // 파일 타입에 맞게 수정
-        };
-        return file;
-      });
-
-      setFileInput(newFileInput);
-
-      // 파일 선택 리스트에도 추가
-      setFileSelectList((prevFileSelectList) => [...prevFileSelectList, ...fileList]);
-    }
-  }, [fileList]);
+    setFileSelectList([...fileList]);
+  }, []);
 
   // 파일 업로드 시 presigned url 받아오고 put 요청으로 s3에 올리는 코드
-  const handlePostFile = async (fileUrl: string, file: File) => {
-    const response = await getFilePresignedUrl(fileUrl);
+  const handlePostFile = async (file: File) => {
+    const response = await getFilePresignedUrl(file.name);
 
     if (response) {
       await putFile(response.filePreSignedUrl, file);
 
-      setFileInput((prev) => [...prev, file]);
       setFileSelectList((prev) => [
         ...prev,
         {
@@ -67,7 +47,7 @@ const FileInput = (props: FileUpdateProps) => {
 
   const handleFileUpload = async (file: File) => {
     if (file.size <= sizeLimit) {
-      handlePostFile(file.name, file);
+      handlePostFile(file);
     } else {
       fileSizeModal.toggle();
     }
@@ -96,14 +76,10 @@ const FileInput = (props: FileUpdateProps) => {
     fileInputRef.current?.click();
   };
 
-  const handleDeleteFile = async (file: File, idx: number) => {
-    const response = await deleteFile(
-      fileSelectList[idx].fileOriginalName,
-      fileSelectList[idx].fileUploadDate,
-      fileSelectList[idx].fileUUID,
-    );
-    setFileInput((prev) => prev.filter((selectedFile) => selectedFile !== file));
-    setFileSelectList((prev) => prev.filter((selectedFile) => selectedFile.fileOriginalName !== file.name));
+  const handleDeleteFile = async (idx: number) => {
+    const selectedFile = fileSelectList[idx];
+    await deleteFile(selectedFile.fileOriginalName, selectedFile.fileUploadDate, selectedFile.fileUUID);
+    setFileSelectList((prev) => prev.filter((file, index) => index !== idx));
   };
 
   const handleCheckboxChange = () => {
@@ -133,13 +109,13 @@ const FileInput = (props: FileUpdateProps) => {
           </label>
         </StFileSelect>
         <StFileInput onDrop={handleFileDrop} onDragOver={handleDragOver}>
-          {fileInput.length ? (
-            fileInput.map((file, index) => (
+          {fileSelectList.length ? (
+            fileSelectList.map((file, index) => (
               <p key={index}>
-                <button type="button" onClick={() => handleDeleteFile(file, index)}>
+                <button type="button" onClick={() => handleDeleteFile(index)}>
                   <IcBtnDeleteFile />
                 </button>
-                {file.name}
+                {file.fileOriginalName}
                 <span>{`${(file.size / (1024 * 1024)).toFixed(2)}MB`}</span>
               </p>
             ))
@@ -161,7 +137,7 @@ const FileInput = (props: FileUpdateProps) => {
   );
 };
 
-export default FileInput;
+export default FileUpdate;
 
 const StFileWrapper = styled.div`
   padding: 0rem 7.4rem;

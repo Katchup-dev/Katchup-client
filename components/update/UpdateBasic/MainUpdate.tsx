@@ -14,6 +14,7 @@ import { CardModal } from '../UpdateCard';
 import WorkUpdate from './WorkUpdate';
 import { useGetDetailPage } from 'lib/hooks/useGetDetailPage';
 import ScreenshotUpdate from '../UpdateScreeenshot/ScreenshotUpdate';
+import FileUpdate from './FileUpdate';
 
 interface MainUpdateProps {
   cardId: number;
@@ -53,7 +54,7 @@ const MainUpdate = (props: MainUpdateProps) => {
       <StMainInputWrapper>
         <StMainInput>
           <WorkUpdate content={detailPageInfo?.content} />
-          <FileInput fileList={detailPageInfo?.fileList} />
+          <FileUpdate fileList={detailPageInfo?.fileList} />
           <StNextBtn disabled={!detailPageInfo?.content.length}>
             <button type="button" onClick={cardModal.toggle}>
               다음 단계
