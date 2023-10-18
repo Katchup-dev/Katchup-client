@@ -4,8 +4,6 @@ import MainInput from 'components/input/InputBasic/MainInput';
 import styled from '@emotion/styled';
 import MainUpdate from 'components/update/UpdateBasic/MainUpdate';
 import { cardCtxType } from 'types/output';
-import { useRecoilState } from 'recoil';
-import { updateCardIdState } from 'core/atom';
 
 const UpdateMain = ({ cardId }: { cardId: string }) => {
   return (

@@ -9,7 +9,6 @@ import { useEffect, useState } from 'react';
 
 import styled from '@emotion/styled';
 
-import FileInput from './FileUpdate';
 import { CardModal } from '../UpdateCard';
 import WorkUpdate from './WorkUpdate';
 import { useGetDetailPage } from 'lib/hooks/useGetDetailPage';
@@ -23,7 +22,7 @@ interface MainUpdateProps {
 const MainUpdate = (props: MainUpdateProps) => {
   const { cardId } = props;
 
-  const { detailPageInfo } = useGetDetailPage(Number(cardId));
+  const { detailPageInfo } = useGetDetailPage(cardId);
   const [isScreenshotShowing, setIsScreenshotShowing] = useState(false);
 
   const cardModal = useModal();
@@ -51,50 +50,52 @@ const MainUpdate = (props: MainUpdateProps) => {
 
   return (
     <>
-      <StMainInputWrapper>
-        <StMainInput>
-          <WorkUpdate content={detailPageInfo?.content} />
-          <FileUpdate fileList={detailPageInfo?.fileList} />
-          <StNextBtn disabled={!detailPageInfo?.content.length}>
-            <button type="button" onClick={cardModal.toggle}>
-              다음 단계
-            </button>
-          </StNextBtn>
-          <CardModal isShowing={cardModal.isShowing} handleHide={cardModal.toggle} />
-          <StToastWrapper>
-            <Toast key={toastKey} message={toastMessage} isCheck />
-          </StToastWrapper>
-        </StMainInput>
-        {isScreenshotShowing ? (
-          <>
-            <ScreenshotUpdate screenshotList={detailPageInfo?.screenshotList} />
-            <IcBtnScreenshotHide onClick={screenshotCancelModal.toggle} />
-          </>
-        ) : (
-          <IcBtnScreenshot
-            onClick={() => {
-              setIsScreenshotShowing((prev) => !prev);
-            }}
+      {detailPageInfo && (
+        <StMainInputWrapper>
+          <StMainInput>
+            <WorkUpdate content={detailPageInfo?.content} />
+            <FileUpdate fileList={detailPageInfo?.fileList} />
+            <StNextBtn disabled={!detailPageInfo?.content.length}>
+              <button type="button" onClick={cardModal.toggle}>
+                다음 단계
+              </button>
+            </StNextBtn>
+            <CardModal isShowing={cardModal.isShowing} handleHide={cardModal.toggle} />
+            <StToastWrapper>
+              <Toast key={toastKey} message={toastMessage} isCheck />
+            </StToastWrapper>
+          </StMainInput>
+          {isScreenshotShowing ? (
+            <>
+              <ScreenshotUpdate screenshotList={detailPageInfo?.screenshotList} />
+              <IcBtnScreenshotHide onClick={screenshotCancelModal.toggle} />
+            </>
+          ) : (
+            <IcBtnScreenshot
+              onClick={() => {
+                setIsScreenshotShowing((prev) => !prev);
+              }}
+            />
+          )}
+          <ModalTwoButton
+            isShowing={leavePageModal.isShowing}
+            contents={MODAL_LEAVE_PAGE}
+            leftButtonName={'돌아가기'}
+            rightButtonName={'벗어나기'}
+            handleLeftButton={leavePageModal.toggle}
+            handleRightButton={() => offRouteChangeBlocking()}
           />
-        )}
-        <ModalTwoButton
-          isShowing={leavePageModal.isShowing}
-          contents={MODAL_LEAVE_PAGE}
-          leftButtonName={'돌아가기'}
-          rightButtonName={'벗어나기'}
-          handleLeftButton={leavePageModal.toggle}
-          handleRightButton={() => offRouteChangeBlocking()}
-        />
-        <ModalTwoButton
-          isShowing={screenshotCancelModal.isShowing}
-          contents={MODAL_DELETE_SCREENSHOT}
-          leftButtonName={'취소하기'}
-          rightButtonName={'그만두기'}
-          handleLeftButton={screenshotCancelModal.toggle}
-          handleRightButton={handleScreenshotShowing}
-          isSubContent={true}
-        />
-      </StMainInputWrapper>
+          <ModalTwoButton
+            isShowing={screenshotCancelModal.isShowing}
+            contents={MODAL_DELETE_SCREENSHOT}
+            leftButtonName={'취소하기'}
+            rightButtonName={'그만두기'}
+            handleLeftButton={screenshotCancelModal.toggle}
+            handleRightButton={handleScreenshotShowing}
+            isSubContent={true}
+          />
+        </StMainInputWrapper>
+      )}
     </>
   );
 };

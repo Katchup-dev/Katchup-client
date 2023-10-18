@@ -6,7 +6,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useRecoilState } from 'recoil';
 
 import styled from '@emotion/styled';
-import { ScreenshotInfo } from 'types/output';
 import { PostScreenshotListInfo } from 'types/input';
 
 interface ScreenshotUpdateProps {
@@ -15,22 +14,23 @@ interface ScreenshotUpdateProps {
 
 const ScreenshotUpdate = (props: ScreenshotUpdateProps) => {
   const { screenshotList } = props;
-  const [screenshotUpdate, setScreenshotUpdate] = useState<File[]>([]);
-  const [updateScreenshot, setUpdateScreenshot] = useState<[]>([]);
-  const [URLThumbnails, setURLThumbnails] = useState<string[]>([]);
+  const [inputScreenshot, setInputScreenshot] = useState<string>('');
   const screenshotInputRef = useRef<HTMLInputElement>(null);
   const [screenshotSelect, setScreenshotSelect] = useRecoilState(screenshotSelectState);
 
   const [toastMessage, setToastMessage] = useState('');
   const [toastKey, setToastKey] = useState<number>();
 
-  useEffect;
+  useEffect(() => {
+    setScreenshotSelect([...screenshotList]);
+  }, []);
 
   // 스크린 샷 업로드 시 presigned url 받아오고 put 요청으로 s3에 올리는 코드
-  const handlePostScreenShot = async (screenshot: string, file: File) => {
-    const response = await getPresignedUrl(screenshot);
+  const handlePostScreenShot = async (file: File) => {
+    const response = await getPresignedUrl(file.name);
     if (response) {
       await putScreenshot(response.screenshotPreSignedUrl, file);
+      const url = await createImageURL(file);
       setScreenshotSelect((prev) => [
         ...prev,
         {
@@ -38,22 +38,22 @@ const ScreenshotUpdate = (props: ScreenshotUpdateProps) => {
           screenshotName: response.screenshotName,
           screenshotUploadDate: response.screenshotUploadDate,
           stickerList: [],
+          screenshotUrl: url,
         },
       ]);
     }
   };
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (files && files.length > 0) {
-      const newFiles = Array.from(files);
-      handlePostScreenShot(newFiles[0].name, newFiles[0]);
-      setScreenshotUpdate((prev) => [...prev, ...newFiles]);
+    const file = e.target.files?.[0];
+    if (file) {
+      handlePostScreenShot(file);
+      setInputScreenshot('');
     }
   };
 
   const handleFileBtnClick = () => {
-    if (setScreenshotUpdate.length >= 5) {
+    if (screenshotSelect.length >= 5) {
       setToastMessage('스크린샷은 5개까지만 추가 가능해요!');
       setToastKey(Date.now());
       return;
@@ -61,16 +61,14 @@ const ScreenshotUpdate = (props: ScreenshotUpdateProps) => {
     screenshotInputRef.current?.click();
   };
 
-  const handleDeleteFile = async (file: File, idx: number) => {
+  const handleDeleteFile = async (idx: number) => {
     await deleteScreenshot(
       screenshotSelect[idx].screenshotName,
       screenshotSelect[idx].screenshotUUID,
       screenshotSelect[idx].screenshotUploadDate,
     );
-
-    setScreenshotUpdate((prev) => prev.filter((selectedFile) => selectedFile !== file));
-    setScreenshotSelect((prev) => prev.filter((selectedFile) => selectedFile.screenshotName !== file.name));
-    setUpdateScreenshot([]);
+    setScreenshotSelect((prev) => prev.filter((_, index) => index !== idx));
+    setInputScreenshot('');
   };
 
   const createImageURL = (file: File): Promise<string> => {
@@ -86,15 +84,6 @@ const ScreenshotUpdate = (props: ScreenshotUpdateProps) => {
     });
   };
 
-  useEffect(() => {
-    const fetchURLThumbnails = async () => {
-      const urls = await Promise.all(screenshotUpdate.map((file) => createImageURL(file)));
-      setURLThumbnails(urls);
-    };
-
-    fetchURLThumbnails();
-  }, [screenshotUpdate]);
-
   return (
     <StScreenshotInput>
       <StFileSelect>
@@ -107,17 +96,17 @@ const ScreenshotUpdate = (props: ScreenshotUpdateProps) => {
             type="file"
             onChange={handleFileSelect}
             accept=".jpg,.png,.jpeg,.gif,.tiff,.tif"
-            value={updateScreenshot}
+            value={inputScreenshot}
           />
           <button onClick={handleFileBtnClick}>이미지 선택</button>
         </StFileBtnWrapper>
       </StFileSelect>
       <StFileInput>
-        {screenshotUpdate.length ? (
-          screenshotUpdate.map((file, index) => (
-            <StScreenshotWrapper>
-              <StScreenshotImg key={index} src={URLThumbnails[index]} alt={`스크린샷 ${index + 1}`} />
-              <button onClick={() => handleDeleteFile(file, index)}>
+        {screenshotSelect.length ? (
+          screenshotSelect.map((screenshot, index) => (
+            <StScreenshotWrapper key={index}>
+              <StScreenshotImg key={index} src={screenshot.screenshotUrl} alt={`스크린샷 ${index + 1}`} />
+              <button onClick={() => handleDeleteFile(index)}>
                 <IcBtnDeleteScreenshot />
               </button>
             </StScreenshotWrapper>
