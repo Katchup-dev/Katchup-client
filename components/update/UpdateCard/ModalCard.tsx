@@ -4,6 +4,7 @@ import {
   fileNameChangeState,
   fileSelectState,
   keywordListState,
+  keywordSelectState,
   screenshotSelectState,
   subTaskSelectState,
   taskSelectState,
@@ -36,7 +37,7 @@ const ModalCard = (props: ModalProps, { cardId }: { cardId: string }) => {
   const selectedCategory = useRecoilValue(categorySelectState);
   const selectedTask = useRecoilValue(taskSelectState);
   const selectedSubTask = useRecoilValue(subTaskSelectState);
-  const selectedKeywordList = useRecoilValue(keywordListState);
+  const selectedKeywordList = useRecoilValue(keywordSelectState);
   const selectedFileList = useRecoilValue(fileSelectState);
   const selectedScreenshotList = useRecoilValue(screenshotSelectState);
   const currentEtc = useRecoilValue(etcState);

@@ -33,7 +33,7 @@ const UpdateKeyWord = (props: UpdateKeyWordProps) => {
   const [selectedKeywords, setSelectedKeywords] = useRecoilState<InputKeywordInfo[]>(keywordSelectState);
 
   useEffect(() => {
-    setSelectedKeywords([...prevKeyword]);
+    setSelectedKeywords(() => [...prevKeyword]);
   }, []);
 
   const selectedKeywordsArray = selectedKeywords as InputKeywordInfo[];

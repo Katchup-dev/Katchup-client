@@ -36,6 +36,10 @@ const MainUpdate = (props: MainUpdateProps) => {
       setToastKey(Date.now());
       localStorage.removeItem('toastMessage');
     }
+
+    if (detailPageInfo.screenshotList) {
+      setIsScreenshotShowing(true);
+    }
   }, []);
 
   const { offRouteChangeBlocking } = useRouteChangeBlocking(leavePageModal.toggle, detailPageInfo?.note);
