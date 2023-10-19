@@ -1,4 +1,4 @@
-import { patchCard, postCard } from 'core/apis/input';
+import { patchCard } from 'core/apis/input';
 
 import { useMutation } from '@tanstack/react-query';
 

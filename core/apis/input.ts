@@ -100,9 +100,9 @@ export const postCard = async (cardInfo: PostCardInfo) => {
 
 // ----- 업무 카드 수정 -----
 
-export const patchCard = async (cardInfo: PostCardInfo) => {
+export const patchCard = async ({ cardInfo, cardId }: { cardInfo: PostCardInfo; cardId: number }) => {
   try {
-    const { data } = await client.patch(`/cards`, cardInfo);
+    const { data } = await client.patch(`/cards/${cardId}`, cardInfo);
     console.log(data);
     return data;
   } catch (error) {

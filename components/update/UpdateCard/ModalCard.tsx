@@ -62,14 +62,14 @@ const ModalCard = (props: ModalProps, { cardId }: { cardId: string }) => {
       categoryId: selectedCategory.categoryId,
       taskId: selectedTask.taskId,
       subTaskId: selectedSubTask.subTaskId,
-      keywordIdList: selectedKeywordList,
+      keywordIdList: selectedKeywordList.map((keyword) => keyword.keywordId),
       screenshotList: selectedScreenshotList,
       fileList: postFileList,
       note: currentEtc,
       content: currentWorkInput,
     };
 
-    const result = await patchCard(cardData);
+    const result = await patchCard({ cardInfo: cardData, cardId: Number(cardId) });
     console.log(result);
 
     if (result.status === 'SSS') {
