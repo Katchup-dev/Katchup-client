@@ -9,12 +9,8 @@ import styled from '@emotion/styled';
 import SearchBox from '../SearchBox';
 import SettingModal from './SettingModal';
 
-export interface HeaderProps {
-  profileImgSrc: string;
-}
-
-const Header = (props: HeaderProps) => {
-  const { profileImgSrc } = props;
+const Header = () => {
+  const profileImgSrc = 'ddd';
   const [isShowNav, setIsShowNav] = useState(false);
 
   const userSetting = useModal();
@@ -85,7 +81,7 @@ const Header = (props: HeaderProps) => {
         </div>
 
         <StHeaderModalWrapper ref={modalRef}>
-          <SettingModal isShowing={userSetting.isShowing} profileImgSrc={profileImgSrc} />
+          <SettingModal isShowing={userSetting.isShowing} />
         </StHeaderModalWrapper>
       </StHeaderWrapper>
     </>

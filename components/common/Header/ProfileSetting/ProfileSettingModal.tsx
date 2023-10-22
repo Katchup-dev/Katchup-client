@@ -1,5 +1,4 @@
 import { StCardModal, StModalWrapper, StNextBtn } from 'components/input/InputCard/ModalCard';
-import { useRouter } from 'next/router';
 import { IcBtnDeletePopup } from 'public/assets/icons';
 
 import styled from '@emotion/styled';
@@ -16,7 +15,6 @@ interface ProfileSettingModalProps {
 }
 
 const ProfileSettingModal = ({ isShowing, curNickname, profileImgSrc, handleCancel }: ProfileSettingModalProps) => {
-  const router = useRouter();
   return isShowing ? (
     <StProfileSettingModalWrapper>
       <StProfileSettingModal>

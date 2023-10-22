@@ -34,7 +34,7 @@ export default function App({ Component, pageProps }: AppProps) {
           <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_AUTH_CLIENT_ID!}>
             <Global styles={resetStyle} />
             <Global styles={globalStyle} />
-            <Header profileImgSrc="https://sitem.ssgcdn.com/17/01/59/item/1000053590117_i1_1100.jpg" />
+            <Header />
             <Component {...pageProps} />
           </GoogleOAuthProvider>
         </ThemeProvider>

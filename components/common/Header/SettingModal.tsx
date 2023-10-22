@@ -1,9 +1,8 @@
 import { postLogout } from 'core/apis/auth';
 import { removeTokens } from 'core/apis/token';
-import { userProfileState } from 'core/atom';
 import useModal from 'lib/hooks/useModal';
+import { useGetProfile } from 'lib/hooks/user/useGetProfile';
 import { IcBtnLogout, IcBtnProfile } from 'public/assets/icons';
-import { useRecoilValue } from 'recoil';
 
 import styled from '@emotion/styled';
 
@@ -12,11 +11,10 @@ import ProfileSettingModal from './ProfileSetting/ProfileSettingModal';
 
 interface SettingModalProps {
   isShowing: boolean;
-  profileImgSrc: string;
 }
 
-const SettingModal = ({ isShowing, profileImgSrc }: SettingModalProps) => {
-  const { nickname } = useRecoilValue(userProfileState);
+const SettingModal = ({ isShowing }: SettingModalProps) => {
+  const { email, imageUrl, nickname } = useGetProfile();
 
   const profileSetting = useModal();
   const logout = useModal();
@@ -32,10 +30,10 @@ const SettingModal = ({ isShowing, profileImgSrc }: SettingModalProps) => {
     <>
       <StSettingModal>
         <StUserProfile>
-          <StProfileImg src={profileImgSrc} />
+          <StProfileImg src={imageUrl} />
           <StUserInfo>
             <strong>{nickname}</strong>
-            <p>email@gmail.com</p>
+            <p>{email}</p>
           </StUserInfo>
         </StUserProfile>
         <StHr />
@@ -52,8 +50,8 @@ const SettingModal = ({ isShowing, profileImgSrc }: SettingModalProps) => {
       </StSettingModal>
       <ProfileSettingModal
         isShowing={profileSetting.isShowing}
-        curNickname={nickname}
-        profileImgSrc={profileImgSrc}
+        curNickname={nickname ? nickname : ''}
+        profileImgSrc={imageUrl ? imageUrl : ''}
         handleCancel={profileSetting.toggle}
       />
       <ModalTwoButton

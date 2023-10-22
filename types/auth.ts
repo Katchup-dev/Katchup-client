@@ -6,5 +6,7 @@ export interface AuthInfo {
 }
 
 export interface UserProfileInfo {
+  imageUrl: string;
   nickname: string;
+  email: string;
 }
