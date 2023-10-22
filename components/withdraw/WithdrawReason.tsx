@@ -1,5 +1,7 @@
+import { ModalTwoButton } from 'components/common/Modal';
 import { StNextBtn } from 'components/input/InputBasic/MainInput';
 import { WITHDRAW_REASON } from 'constants/withdraw';
+import useModal from 'lib/hooks/useModal';
 import React, { useState } from 'react';
 
 import styled from '@emotion/styled';
@@ -9,6 +11,7 @@ import Checkbox from './CheckBox';
 const WithdrawReason = () => {
   const [reason, setReason] = useState<string[]>([]);
   const [customReason, setCustomReason] = useState('');
+  const widhdrawConfirm = useModal();
 
   const handleSubmit = () => {
     if (reason.includes('직접 입력')) {
@@ -17,6 +20,7 @@ const WithdrawReason = () => {
         return [...filtered, customReason];
       });
     }
+    console.log(reason);
   };
 
   return (
@@ -36,11 +40,19 @@ const WithdrawReason = () => {
           </>
         ))}
         <StSubmitBtn disabled={!reason.length}>
-          <button type="button" onClick={handleSubmit}>
+          <button type="button" onClick={widhdrawConfirm.toggle}>
             탈퇴하기
           </button>
         </StSubmitBtn>
       </StFormWrapper>
+      <ModalTwoButton
+        isShowing={widhdrawConfirm.isShowing}
+        contents={['Katchup 서비스를 탈퇴하시겠습니까?']}
+        leftButtonName="취소하기"
+        rightButtonName="탈퇴하기"
+        handleLeftButton={widhdrawConfirm.toggle}
+        handleRightButton={handleSubmit}
+      />
     </>
   );
 };
