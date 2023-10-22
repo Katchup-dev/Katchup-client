@@ -1,4 +1,5 @@
 import { StCardModal, StModalWrapper, StNextBtn } from 'components/input/InputCard/ModalCard';
+import { useRouter } from 'next/router';
 import { IcBtnDeletePopup } from 'public/assets/icons';
 
 import styled from '@emotion/styled';
@@ -15,6 +16,7 @@ interface ProfileSettingModalProps {
 }
 
 const ProfileSettingModal = ({ isShowing, curNickname, profileImgSrc, handleCancel }: ProfileSettingModalProps) => {
+  const router = useRouter();
   return isShowing ? (
     <StProfileSettingModalWrapper>
       <StProfileSettingModal>
@@ -24,7 +26,11 @@ const ProfileSettingModal = ({ isShowing, curNickname, profileImgSrc, handleCanc
         <InputNickname curNickname={curNickname} />
         <InputMemo />
         <StBottomButtons>
-          <StWithdrawalBtn type="button" onClick={() => {}}>
+          <StWithdrawalBtn
+            type="button"
+            onClick={() => {
+              window.location.href = '/withdraw';
+            }}>
             계정 탈퇴하기
           </StWithdrawalBtn>
           <StSaveBtn type="button" disabled={true} onClick={() => {}}>

@@ -122,7 +122,7 @@ const StMainInput = styled.section`
   box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.05);
 `;
 
-const StNextBtn = styled.div<{ disabled: boolean }>`
+export const StNextBtn = styled.div<{ disabled: boolean }>`
   display: flex;
   justify-content: flex-end;
 
