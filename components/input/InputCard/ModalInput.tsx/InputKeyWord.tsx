@@ -26,7 +26,6 @@ const InputKeyWord = () => {
   });
 
   const selectedKeywords = useRecoilValue<InputKeywordInfo[]>(keywordSelectState);
-  const selectedKeywordsArray = selectedKeywords as InputKeywordInfo[];
   const selectedTask = useRecoilValue(taskSelectState);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -62,7 +61,7 @@ const InputKeyWord = () => {
       키워드
       <StInputKeyword isFocused={isKeywordFocused}>
         <StSelectedKeywords>
-          {selectedKeywordsArray.map((selectedKeyword, index) => (
+          {selectedKeywords.map((selectedKeyword, index) => (
             <StDropdownKeyworkText
               key={index}
               keywordColor={{

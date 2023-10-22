@@ -11,7 +11,6 @@ import { PostFileListInfo } from 'types/input';
 import styled from '@emotion/styled';
 
 const FileInput = () => {
-  const [fileInput, setFileInput] = useState<File[]>([]);
   const [fileSelectList, setFileSelectList] = useRecoilState<PostFileListInfo[]>(fileSelectState);
   const [isChecked, setIsChecked] = useRecoilState(fileNameChangeState);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -20,13 +19,12 @@ const FileInput = () => {
   const fileSizeModal = useModal();
 
   // 파일 업로드 시 presigned url 받아오고 put 요청으로 s3에 올리는 코드
-  const handlePostFile = async (fileUrl: string, file: File) => {
-    const response = await getFilePresignedUrl(fileUrl);
+  const handlePostFile = async (file: File) => {
+    const response = await getFilePresignedUrl(file.name);
 
     if (response) {
       await putFile(response.filePreSignedUrl, file);
 
-      setFileInput((prev) => [...prev, file]);
       setFileSelectList((prev) => [
         ...prev,
         {
@@ -41,7 +39,7 @@ const FileInput = () => {
 
   const handleFileUpload = async (file: File) => {
     if (file.size <= sizeLimit) {
-      handlePostFile(file.name, file);
+      handlePostFile(file);
     } else {
       fileSizeModal.toggle();
     }
@@ -70,14 +68,10 @@ const FileInput = () => {
     fileInputRef.current?.click();
   };
 
-  const handleDeleteFile = async (file: File, idx: number) => {
-    const response = await deleteFile(
-      fileSelectList[idx].fileOriginalName,
-      fileSelectList[idx].fileUploadDate,
-      fileSelectList[idx].fileUUID,
-    );
-    setFileInput((prev) => prev.filter((selectedFile) => selectedFile !== file));
-    setFileSelectList((prev) => prev.filter((selectedFile) => selectedFile.fileOriginalName !== file.name));
+  const handleDeleteFile = async (idx: number) => {
+    const selectedFile = fileSelectList[idx];
+    await deleteFile(selectedFile.fileOriginalName, selectedFile.fileUploadDate, selectedFile.fileUUID);
+    setFileSelectList((prev) => prev.filter((file, index) => index !== idx));
   };
 
   const handleCheckboxChange = () => {
@@ -107,13 +101,13 @@ const FileInput = () => {
           </label>
         </StFileSelect>
         <StFileInput onDrop={handleFileDrop} onDragOver={handleDragOver}>
-          {fileInput.length ? (
-            fileInput.map((file, index) => (
+          {fileSelectList.length ? (
+            fileSelectList.map((file, index) => (
               <p key={index}>
-                <button type="button" onClick={() => handleDeleteFile(file, index)}>
+                <button type="button" onClick={() => handleDeleteFile(index)}>
                   <IcBtnDeleteFile />
                 </button>
-                {file.name}
+                {file.fileOriginalName}
                 <span>{`${(file.size / (1024 * 1024)).toFixed(2)}MB`}</span>
               </p>
             ))

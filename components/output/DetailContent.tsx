@@ -1,15 +1,14 @@
-import styled from '@emotion/styled';
 import DeleteCategoryModal from 'components/Modal/DeleteCategoryModal';
 import { deleteWorkCards, getFileDownload } from 'core/apis/output';
 import { useRouter } from 'next/router';
-
 import { IcBack, IcSubLogo } from 'public/assets/icons';
 import { useState } from 'react';
+import { PostFileListInfo } from 'types/input';
 
-import { FileInfo } from 'types/output';
+import styled from '@emotion/styled';
 
 export interface DetailContentProps {
-  fileList: FileInfo[];
+  fileList: PostFileListInfo[];
   content: string;
   cardId: number;
 }
@@ -41,6 +40,8 @@ const DetailContent = (props: DetailContentProps) => {
     }
   };
 
+  console.log('fileList', fileList);
+
   return (
     <StDetailWrapper>
       <button onClick={() => router.back()}>
@@ -66,9 +67,12 @@ const DetailContent = (props: DetailContentProps) => {
             </div>
             <StFileWrapper>
               {fileList?.map((file) => (
-                <a download key={file.id} onClick={() => handleFileDownload(file.id, file.changedName)}>
+                <a
+                  download
+                  key={file.fileUUID}
+                  onClick={() => handleFileDownload(file.fileUUID, file.fileChangedName ?? file.fileOriginalName)}>
                   <li>
-                    {file.changedName} <p>{file.size}MB</p>
+                    {file.fileChangedName ?? file.fileOriginalName} <p>{file.size}MB</p>
                   </li>
                 </a>
               ))}

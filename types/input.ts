@@ -59,6 +59,7 @@ export interface PostScreenshotListInfo {
   screenshotName: string;
   screenshotUploadDate: string;
   stickerList: PostStickerListInfo[];
+  screenshotUrl?: string;
 }
 
 export interface PostStickerListInfo {
