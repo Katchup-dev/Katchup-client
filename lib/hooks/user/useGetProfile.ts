@@ -6,7 +6,7 @@ import { useQuery } from '@tanstack/react-query';
 
 export const useGetProfile = () => {
   const { data, isLoading, error } = useQuery<KatchupResponse<UserProfileInfo>>(['profile'], getProfile);
-  console.log(data);
+
   return {
     email: data?.data.email,
     imageUrl: data?.data.imageUrl,

@@ -1,4 +1,5 @@
 import useModal from 'lib/hooks/useModal';
+import { useGetProfile } from 'lib/hooks/user/useGetProfile';
 import { useRouter } from 'next/router';
 import { IcHelp, IcLogo } from 'public/assets/icons';
 import { useEffect, useRef, useState } from 'react';
@@ -10,7 +11,7 @@ import SearchBox from '../SearchBox';
 import SettingModal from './SettingModal';
 
 const Header = () => {
-  const profileImgSrc = 'ddd';
+  const { imageUrl } = useGetProfile();
   const [isShowNav, setIsShowNav] = useState(false);
 
   const userSetting = useModal();
@@ -76,7 +77,7 @@ const Header = () => {
           </StHelpButton>
 
           <StSettingButton type="button" onClick={userSetting.toggle} ref={buttonRef}>
-            <StProfileImg src={profileImgSrc} />
+            <StProfileImg src={imageUrl} />
           </StSettingButton>
         </div>
 
