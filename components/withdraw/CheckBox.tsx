@@ -22,7 +22,7 @@ const Checkbox = ({ reason, setReason }: CheckboxProps) => {
 
 export default Checkbox;
 
-const StCheckboxWrapper = styled.label`
+export const StCheckboxWrapper = styled.label`
   display: flex;
   gap: 2.4rem;
 
