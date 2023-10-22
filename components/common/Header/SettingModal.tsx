@@ -1,3 +1,4 @@
+import { postLogout } from 'core/apis/auth';
 import { removeTokens } from 'core/apis/token';
 import { userProfileState } from 'core/atom';
 import useModal from 'lib/hooks/useModal';
@@ -20,7 +21,8 @@ const SettingModal = ({ isShowing, profileImgSrc }: SettingModalProps) => {
   const profileSetting = useModal();
   const logout = useModal();
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await postLogout();
     removeTokens();
     logout.toggle();
     window.location.href = '/';

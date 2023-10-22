@@ -9,3 +9,12 @@ export const signup = async (accessToken: string) => {
     console.error(error);
   }
 };
+
+export const postLogout = async () => {
+  try {
+    const { data } = await client.post('/auth/logout');
+    return data;
+  } catch (error) {
+    console.error(error);
+  }
+};
