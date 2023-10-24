@@ -22,7 +22,6 @@ const Header = () => {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
 
-  const [isShowNav, setIsShowNav] = useState(false);
   const [profile, setProfile] = useState<UserProfileInfo | null>();
 
   const getUserProfile = async () => {
@@ -50,10 +49,17 @@ const Header = () => {
   }, [token]);
 
   useEffect(() => {
-    if (pathname.includes('share')) setIsShowNav((prev) => !prev);
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+  if (pathname.includes('withdraw/complete')) {
+    return (
+      <StHeaderWrapper path={asPath}>
+        <IcLogo style={{ cursor: 'pointer' }} onClick={() => router.push('/')} />
+      </StHeaderWrapper>
+    );
+  }
 
   return (
     <StHeaderWrapper path={asPath}>
@@ -95,6 +101,7 @@ const StHeaderWrapper = styled.header<{ path: string }>`
 
   width: 100%;
   height: 14.5rem;
+  padding-left: 5.6rem;
 
   background-color: ${({ theme }) => theme.colors.katchup_bg_gray};
 
@@ -102,7 +109,6 @@ const StHeaderWrapper = styled.header<{ path: string }>`
     display: flex;
 
     > svg {
-      margin-left: 5.6rem;
       margin-right: 5.7rem;
     }
   }

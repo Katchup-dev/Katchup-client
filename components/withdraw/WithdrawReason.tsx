@@ -34,8 +34,8 @@ const WithdrawReason = () => {
       });
     } else {
       console.log(reasons);
-      window.location.href = '/withdraw/complete';
     }
+    window.location.href = '/withdraw/complete';
   }, [customReason, customIndex, reasons]);
 
   console.log(reasons);
