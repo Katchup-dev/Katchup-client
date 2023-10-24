@@ -13,7 +13,7 @@ import { useGoogleLogin } from '@react-oauth/google';
 const LandingKatchupStart = () => {
   const router = useRouter();
   const [googleAccessToken, setGoogleAccessToken] = useState<string>();
-  const [token, setToken] = useRecoilState(tokenState);
+  const [, setToken] = useRecoilState(tokenState);
 
   const handleGoogleLogin = useGoogleLogin({
     onSuccess: (tokenResponse) => {

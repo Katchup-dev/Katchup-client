@@ -1,8 +1,10 @@
 import { postLogout } from 'core/apis/auth';
 import { removeTokens } from 'core/apis/token';
+import { tokenState } from 'core/atom';
 import useModal from 'lib/hooks/useModal';
-import { useGetProfile } from 'lib/hooks/user/useGetProfile';
 import { IcBtnLogout, IcBtnProfile } from 'public/assets/icons';
+import { useRecoilState } from 'recoil';
+import { UserProfileInfo } from 'types/auth';
 
 import styled from '@emotion/styled';
 
@@ -11,20 +13,19 @@ import ProfileSettingModal from './ProfileSetting/ProfileSettingModal';
 
 interface SettingModalProps {
   isShowing: boolean;
+  profile: UserProfileInfo | null;
 }
 
-const SettingModal = ({ isShowing }: SettingModalProps) => {
-  const email = '';
-  const imageUrl = '';
-  const nickname = '';
-  // const { email, imageUrl, nickname } = useGetProfile();
-
+const SettingModal = ({ isShowing, profile }: SettingModalProps) => {
   const profileSetting = useModal();
   const logout = useModal();
+  const [, setToken] = useRecoilState(tokenState);
 
   const handleLogout = async () => {
     await postLogout();
     removeTokens();
+    setToken('');
+
     logout.toggle();
     window.location.href = '/';
   };
@@ -33,10 +34,10 @@ const SettingModal = ({ isShowing }: SettingModalProps) => {
     <>
       <StSettingModal>
         <StUserProfile>
-          <StProfileImg src={imageUrl} />
+          <StProfileImg src={profile ? profile.imageUrl : ''} />
           <StUserInfo>
-            <strong>{nickname}</strong>
-            <p>{email}</p>
+            <strong>{profile?.nickname}</strong>
+            <p>{profile?.email}</p>
           </StUserInfo>
         </StUserProfile>
         <StHr />
@@ -53,8 +54,8 @@ const SettingModal = ({ isShowing }: SettingModalProps) => {
       </StSettingModal>
       <ProfileSettingModal
         isShowing={profileSetting.isShowing}
-        curNickname={nickname ? nickname : ''}
-        profileImgSrc={imageUrl ? imageUrl : ''}
+        curNickname={profile ? profile.nickname : ''}
+        profileImgSrc={profile ? profile.imageUrl : ''}
         handleCancel={profileSetting.toggle}
       />
       <ModalTwoButton

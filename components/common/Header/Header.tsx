@@ -1,11 +1,11 @@
 import { getProfile } from 'core/apis/auth';
 import { tokenState } from 'core/atom';
 import useModal from 'lib/hooks/useModal';
-import { useGetProfile } from 'lib/hooks/user/useGetProfile';
 import { useRouter } from 'next/router';
 import { IcHelp, IcLogo } from 'public/assets/icons';
 import { useEffect, useRef, useState } from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
+import { UserProfileInfo } from 'types/auth';
 
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
@@ -14,10 +14,9 @@ import SearchBox from '../SearchBox';
 import SettingModal from './SettingModal';
 
 const Header = () => {
-  // const { imageUrl } = useGetProfile();
-  const imageUrl = '';
   const [isShowNav, setIsShowNav] = useState(false);
-  const [token, setToken] = useRecoilState(tokenState);
+  const token = useRecoilValue(tokenState);
+  const [profile, setProfile] = useState<UserProfileInfo | null>();
 
   const userSetting = useModal();
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -44,8 +43,8 @@ const Header = () => {
 
   const getUserProfile = async () => {
     if (token) {
-      const data = await getProfile();
-      console.log(data);
+      const profileData = await getProfile();
+      setProfile(profileData);
     }
   };
 
@@ -63,7 +62,6 @@ const Header = () => {
   }, []);
 
   useEffect(() => {
-    console.log(token);
     getUserProfile();
   }, [token]);
 
@@ -94,12 +92,12 @@ const Header = () => {
           </StHelpButton>
 
           <StSettingButton type="button" onClick={userSetting.toggle} ref={buttonRef}>
-            <StProfileImg src={imageUrl} />
+            <StProfileImg src={profile?.imageUrl} />
           </StSettingButton>
         </div>
 
         <StHeaderModalWrapper ref={modalRef}>
-          <SettingModal isShowing={userSetting.isShowing} />
+          <SettingModal isShowing={userSetting.isShowing} profile={profile ? profile : null} />
         </StHeaderModalWrapper>
       </StHeaderWrapper>
     </>
