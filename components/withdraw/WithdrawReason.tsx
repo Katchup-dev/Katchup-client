@@ -2,8 +2,11 @@ import { ModalTwoButton } from 'components/common/Modal';
 import { StNextBtn } from 'components/input/InputBasic/MainInput';
 import { WITHDRAW_REASON } from 'constants/withdraw';
 import { postWithdraws } from 'core/apis/auth';
+import { removeTokens } from 'core/apis/token';
+import { tokenState } from 'core/atom';
 import useModal from 'lib/hooks/useModal';
 import { useCallback, useState } from 'react';
+import { useRecoilState } from 'recoil';
 
 import styled from '@emotion/styled';
 
@@ -13,6 +16,7 @@ const WithdrawReason = () => {
   const [reason, setReason] = useState<string[]>([]);
   const [customReason, setCustomReason] = useState('');
   const [customIndex, setCustomIndex] = useState<number | null>(null);
+  const [, setToken] = useRecoilState(tokenState);
 
   const widhdrawConfirm = useModal();
 
@@ -26,17 +30,21 @@ const WithdrawReason = () => {
     }
   }, [customIndex, customReason, reason]);
 
-  const handleSubmit = useCallback(async () => {
-    if (customIndex) {
-      setReason((prev) => {
-        const updatedReasons = [...prev];
-        updatedReasons[customIndex] = customReason;
-        return updatedReasons;
-      });
+  const handleWithdraw = useCallback(() => {
+    if (customIndex !== null) {
+      const updatedReason = [...reason];
+      updatedReason[customIndex] = customReason;
+      setReason(updatedReason);
     }
+    widhdrawConfirm.toggle();
+  }, [customIndex, customReason, reason]);
+
+  const handleSubmit = useCallback(async () => {
     await postWithdraws({ reason });
+    removeTokens();
+    setToken('');
     window.location.href = '/withdraw/complete';
-  }, [customReason, customIndex, reason]);
+  }, [reason]);
 
   return (
     <>
@@ -56,7 +64,7 @@ const WithdrawReason = () => {
           placeholder="탈퇴 사유를 자세히 알려주실 수 있나요? Katchup 서비스 개선을 위해 귀담아 듣겠습니다."
         />
         <StSubmitBtn disabled={!reason.length}>
-          <button type="button" onClick={widhdrawConfirm.toggle}>
+          <button type="button" onClick={handleWithdraw}>
             탈퇴하기
           </button>
         </StSubmitBtn>
