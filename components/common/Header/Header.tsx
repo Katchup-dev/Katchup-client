@@ -1,23 +1,23 @@
-import { DEFAULT_PROFILE_IMAGE } from 'constants/katchupDefault';
 import { getProfile } from 'core/apis/auth';
 import { tokenState } from 'core/atom';
 import useModal from 'lib/hooks/useModal';
 import { useRouter } from 'next/router';
-import { IcHelp, IcLogo } from 'public/assets/icons';
+import { IcLogo } from 'public/assets/icons';
 import { useEffect, useRef, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { UserProfileInfo } from 'types/auth';
 
-import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
-import SearchBox from '../SearchBox';
-import SettingModal from './SettingModal';
+import { LogoHeader } from './LogoHeader';
+import { Nav } from './Nav';
+import { Setting } from './Setting';
+import { Utility } from './Utility';
 
 const Header = () => {
   const token = useRecoilValue(tokenState);
   const router = useRouter();
-  const { pathname, asPath } = router;
+  const { pathname, asPath, push } = router;
   const userSetting = useModal();
   const buttonRef = useRef<HTMLButtonElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
@@ -53,134 +53,48 @@ const Header = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  if (pathname.includes('withdraw/complete')) {
-    return (
-      <StHeaderWrapper path={asPath}>
-        <IcLogo style={{ cursor: 'pointer' }} onClick={() => router.push('/')} />
-      </StHeaderWrapper>
-    );
+  if (pathname === '/') {
+    return null;
   }
-
+  if (pathname === '/withdraw/complete') {
+    return <LogoHeader onClickLogo={() => push('/')} />;
+  }
   return (
-    <StHeaderWrapper path={asPath}>
-      <div>
-        <IcLogo style={{ cursor: 'pointer' }} onClick={() => router.push('/')} />
-        {pathname.includes('share') && (
-          <StMenuNav>
-            <ul>
-              <StMenuItem isSelected={router.pathname.includes('input')} onClick={(e) => handleNavigate(e)}>
-                작성하기
-              </StMenuItem>
-              <StMenuItem isSelected={router.pathname.includes('output')} onClick={(e) => handleNavigate(e)}>
-                모아보기
-              </StMenuItem>
-            </ul>
-          </StMenuNav>
-        )}
-      </div>
-      <div>
-        <SearchBox />
-        <StHelpButton type="button">
-          <IcHelp />
-        </StHelpButton>
-        <StSettingButton type="button" onClick={userSetting.toggle} ref={buttonRef}>
-          <StProfileImg src={profile?.imageUrl || DEFAULT_PROFILE_IMAGE} />
-        </StSettingButton>
-      </div>
-      <StHeaderModalWrapper ref={modalRef}>
-        <SettingModal isShowing={userSetting.isShowing} profile={profile ? profile : null} />
-      </StHeaderModalWrapper>
+    <StHeaderWrapper>
+      <StLeftSection>
+        <IcLogo style={{ cursor: 'pointer' }} onClick={() => push('/')} />
+        <Nav pathname={pathname} onNavigate={handleNavigate} />
+      </StLeftSection>
+      <StRightSection>
+        <Utility profile={profile || null} onToggleModal={userSetting.toggle} />
+        <Setting modalRef={modalRef} isShowing={userSetting.isShowing} profile={profile ? profile : null} />
+      </StRightSection>
     </StHeaderWrapper>
   );
 };
 
-const StHeaderWrapper = styled.header<{ path: string }>`
+const StHeaderWrapper = styled.header`
   display: flex;
   align-items: center;
   justify-content: space-between;
 
   width: 100%;
   height: 14.5rem;
-  padding-left: 5.6rem;
+  padding: 5rem;
 
   background-color: ${({ theme }) => theme.colors.katchup_bg_gray};
-
-  > div:nth-child(1) {
-    display: flex;
-
-    > svg {
-      margin-right: 5.7rem;
-    }
-  }
-
-  > div:nth-child(2) {
-    display: flex;
-    gap: 2rem;
-
-    margin-right: 5rem;
-  }
-
-  ${({ path }) =>
-    path === '/' &&
-    css`
-      display: none;
-    `}
 `;
 
-const StMenuNav = styled.nav`
-  > ul {
-    display: flex;
-    gap: 4.7rem;
-
-    margin-bottom: 0.5rem;
-  }
+const StLeftSection = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 5.7rem;
 `;
 
-const StMenuItem = styled.li<{ isSelected: boolean }>`
-  align-self: center;
-
-  width: 7rem;
-
-  ${({ theme }) => theme.fonts.h1_title};
-  padding-bottom: 0.8rem;
-
-  cursor: pointer;
-
-  ${({ isSelected }) =>
-    isSelected
-      ? css`
-          color: #ff4646;
-          border-bottom: 0.2rem solid #ff4646;
-        `
-      : css`
-          color: #c2c2c2;
-        `}
-`;
-
-const StHelpButton = styled.button`
-  object-fit: fit;
-  background-color: transparent;
-  border: none;
-`;
-
-const StSettingButton = styled.button``;
-
-const StProfileImg = styled.img`
-  width: 4.5rem;
-  height: 4.5rem;
-
-  object-fit: fit;
-
-  border: 1px solid ${({ theme }) => theme.colors.katchup_main};
-  border-radius: 50%;
-`;
-
-const StHeaderModalWrapper = styled.div`
-  z-index: 1;
-
-  position: absolute;
-  top: 11rem;
-  right: 5rem;
+const StRightSection = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 2rem;
 `;
 
 export default Header;
