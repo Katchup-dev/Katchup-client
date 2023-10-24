@@ -2,7 +2,7 @@ import { DEFAULT_PROFILE_IMAGE } from 'constants/katchupDefault';
 import { postLogout } from 'core/apis/auth';
 import { removeTokens } from 'core/apis/token';
 import { tokenState } from 'core/atom';
-import useModal from 'lib/hooks/useModal';
+import useModal from 'lib/hooks/common/useModal';
 import { IcBtnLogout, IcBtnProfile } from 'public/assets/icons';
 import { useRecoilState } from 'recoil';
 import { UserProfileInfo } from 'types/auth';

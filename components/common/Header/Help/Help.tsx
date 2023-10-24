@@ -1,15 +1,16 @@
-import useModal from 'lib/hooks/useModal';
+import useModal from 'lib/hooks/common/useModal';
 
 import styled from '@emotion/styled';
 
 interface SettingProps {
   isShowing: boolean;
+  modalRef: React.RefObject<HTMLDivElement>;
 }
 
-const Help = ({ isShowing }: SettingProps) => {
+const Help = ({ isShowing, modalRef }: SettingProps) => {
   const help = useModal();
 
-  return <StHelpWrapper>{isShowing && <StHelpModal>ddd</StHelpModal>}</StHelpWrapper>;
+  return <StHelpWrapper>{isShowing && <StHelpModal ref={modalRef}>ddd</StHelpModal>}</StHelpWrapper>;
 };
 export default Help;
 

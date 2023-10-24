@@ -6,19 +6,20 @@ import { UserProfileInfo } from 'types/auth';
 import styled from '@emotion/styled';
 
 interface UtilityProps {
-  buttonRef: React.RefObject<HTMLButtonElement>;
   profile: UserProfileInfo | null;
+  helpButtonRef: React.RefObject<HTMLButtonElement>;
+  settingButtonRef: React.RefObject<HTMLButtonElement>;
   handleHelp: () => void;
   handleSetting: () => void;
 }
 
-const Utility = ({ buttonRef, profile, handleHelp, handleSetting }: UtilityProps) => (
+const Utility = ({ profile, helpButtonRef, settingButtonRef, handleHelp, handleSetting }: UtilityProps) => (
   <>
     <SearchBox />
-    <StHelpButton type="button" onClick={handleHelp}>
+    <StHelpButton type="button" onClick={handleHelp} ref={helpButtonRef}>
       <IcHelp />
     </StHelpButton>
-    <StSettingButton type="button" onClick={handleSetting} ref={buttonRef}>
+    <StSettingButton type="button" onClick={handleSetting} ref={settingButtonRef}>
       <StProfileImg src={profile?.imageUrl || DEFAULT_PROFILE_IMAGE} />
     </StSettingButton>
   </>

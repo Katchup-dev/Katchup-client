@@ -1,6 +1,7 @@
 import { getProfile } from 'core/apis/auth';
 import { tokenState } from 'core/atom';
-import useModal from 'lib/hooks/useModal';
+import useClickOutside from 'lib/hooks/common/useClickOutside';
+import useModal from 'lib/hooks/common/useModal';
 import { useRouter } from 'next/router';
 import { IcLogo } from 'public/assets/icons';
 import { useEffect, useRef, useState } from 'react';
@@ -19,12 +20,36 @@ const Header = () => {
   const token = useRecoilValue(tokenState);
   const router = useRouter();
   const { pathname, push } = router;
-  const userSetting = useModal();
-  const help = useModal();
-  const buttonRef = useRef<HTMLButtonElement>(null);
-  const modalRef = useRef<HTMLDivElement>(null);
 
   const [profile, setProfile] = useState<UserProfileInfo | null>();
+
+  const help = useModal();
+  const helpModalRef = useRef<HTMLDivElement>(null);
+  const helpButtonRef = useRef<HTMLButtonElement>(null);
+
+  const userSetting = useModal();
+  const settingModalRef = useRef<HTMLDivElement>(null);
+  const settingButtonRef = useRef<HTMLButtonElement>(null);
+
+  useClickOutside(
+    helpModalRef,
+    () => {
+      if (help.isShowing) {
+        help.toggle();
+      }
+    },
+    [helpButtonRef],
+  );
+
+  useClickOutside(
+    settingModalRef,
+    () => {
+      if (userSetting.isShowing) {
+        userSetting.toggle();
+      }
+    },
+    [settingButtonRef],
+  );
 
   const getUserProfile = async () => {
     if (token) {
@@ -39,22 +64,9 @@ const Header = () => {
     if (target.innerText === '모아보기') router.push('/output/0');
   };
 
-  const handleClickOutside = (event: MouseEvent) => {
-    console.log(event.target);
-    if (buttonRef.current && buttonRef.current.contains(event.target as Node)) return;
-    if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
-      userSetting.setShowing(false);
-    }
-  };
-
   useEffect(() => {
     getUserProfile();
   }, [token]);
-
-  useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
 
   if (pathname === '/') {
     return null;
@@ -72,12 +84,13 @@ const Header = () => {
       <StRightSection>
         <Utility
           profile={profile || null}
-          buttonRef={buttonRef}
+          helpButtonRef={helpButtonRef}
+          settingButtonRef={settingButtonRef}
           handleHelp={help.toggle}
           handleSetting={userSetting.toggle}
         />
-        <Help isShowing={help.isShowing} />
-        <Setting modalRef={modalRef} isShowing={userSetting.isShowing} profile={profile ? profile : null} />
+        <Help modalRef={helpModalRef} isShowing={help.isShowing} />
+        <Setting modalRef={settingModalRef} isShowing={userSetting.isShowing} profile={profile ? profile : null} />
       </StRightSection>
     </StHeaderWrapper>
   );

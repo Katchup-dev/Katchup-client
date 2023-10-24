@@ -4,7 +4,7 @@ import { WITHDRAW_REASON } from 'constants/withdraw';
 import { postWithdraws } from 'core/apis/auth';
 import { removeTokens } from 'core/apis/token';
 import { tokenState } from 'core/atom';
-import useModal from 'lib/hooks/useModal';
+import useModal from 'lib/hooks/common/useModal';
 import { useCallback, useState } from 'react';
 import { useRecoilState } from 'recoil';
 
