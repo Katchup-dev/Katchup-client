@@ -1,4 +1,5 @@
 import { client } from 'lib/axios';
+import { WithdrawsReasonInfo } from 'types/auth';
 
 export const signup = async (accessToken: string) => {
   try {
@@ -23,6 +24,15 @@ export const getProfile = async () => {
   try {
     const { data } = await client.get(`/members/profile`);
     return data.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const postWithdraws = async (reason: WithdrawsReasonInfo) => {
+  try {
+    const { data } = await client.delete('/withdraws', { data: reason });
+    return data;
   } catch (error) {
     console.error(error);
   }

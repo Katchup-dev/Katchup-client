@@ -10,3 +10,7 @@ export interface UserProfileInfo {
   nickname: string;
   email: string;
 }
+
+export interface WithdrawsReasonInfo {
+  reason: string[];
+}

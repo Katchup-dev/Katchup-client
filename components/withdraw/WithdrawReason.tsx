@@ -1,6 +1,7 @@
 import { ModalTwoButton } from 'components/common/Modal';
 import { StNextBtn } from 'components/input/InputBasic/MainInput';
 import { WITHDRAW_REASON } from 'constants/withdraw';
+import { postWithdraws } from 'core/apis/auth';
 import useModal from 'lib/hooks/useModal';
 import { useCallback, useState } from 'react';
 
@@ -9,7 +10,7 @@ import styled from '@emotion/styled';
 import Checkbox, { StCheckboxWrapper } from './CheckBox';
 
 const WithdrawReason = () => {
-  const [reasons, setReasons] = useState<string[]>([]);
+  const [reason, setReason] = useState<string[]>([]);
   const [customReason, setCustomReason] = useState('');
   const [customIndex, setCustomIndex] = useState<number | null>(null);
 
@@ -17,34 +18,31 @@ const WithdrawReason = () => {
 
   const handleCustomCheckbox = useCallback(() => {
     if (customIndex) {
-      setReasons((prev) => prev.filter((_, index) => index !== customIndex));
+      setReason((prev) => prev.filter((_, index) => index !== customIndex));
       setCustomIndex(null);
     } else {
-      setReasons((prev) => [...prev, customReason]);
-      setCustomIndex(reasons.length);
+      setReason((prev) => [...prev, customReason]);
+      setCustomIndex(reason.length);
     }
-  }, [customIndex, customReason, reasons]);
+  }, [customIndex, customReason, reason]);
 
-  const handleSubmit = useCallback(() => {
+  const handleSubmit = useCallback(async () => {
     if (customIndex) {
-      setReasons((prev) => {
+      setReason((prev) => {
         const updatedReasons = [...prev];
         updatedReasons[customIndex] = customReason;
         return updatedReasons;
       });
-    } else {
-      console.log(reasons);
     }
+    await postWithdraws({ reason });
     window.location.href = '/withdraw/complete';
-  }, [customReason, customIndex, reasons]);
-
-  console.log(reasons);
+  }, [customReason, customIndex, reason]);
 
   return (
     <>
       <StFormWrapper>
         {WITHDRAW_REASON.map((withdrawReason) => (
-          <Checkbox key={withdrawReason} reason={withdrawReason} setReason={setReasons} />
+          <Checkbox key={withdrawReason} reason={withdrawReason} setReason={setReason} />
         ))}
         <StCustomReasonLabel htmlFor="직접 입력">
           <input type="checkbox" id="직접 입력" name="직접 입력" onChange={handleCustomCheckbox} />
@@ -57,7 +55,7 @@ const WithdrawReason = () => {
           }}
           placeholder="탈퇴 사유를 자세히 알려주실 수 있나요? Katchup 서비스 개선을 위해 귀담아 듣겠습니다."
         />
-        <StSubmitBtn disabled={!reasons.length}>
+        <StSubmitBtn disabled={!reason.length}>
           <button type="button" onClick={widhdrawConfirm.toggle}>
             탈퇴하기
           </button>
