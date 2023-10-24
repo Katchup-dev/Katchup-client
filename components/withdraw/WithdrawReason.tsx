@@ -10,7 +10,7 @@ import { useRecoilState } from 'recoil';
 
 import styled from '@emotion/styled';
 
-import Checkbox, { StCheckboxWrapper } from './CheckBox';
+import Checkbox from './CheckBox';
 
 const WithdrawReason = () => {
   const [reason, setReason] = useState<string[]>([]);
@@ -52,10 +52,7 @@ const WithdrawReason = () => {
         {WITHDRAW_REASON.map((withdrawReason) => (
           <Checkbox key={withdrawReason} reason={withdrawReason} setReason={setReason} />
         ))}
-        <StCustomReasonLabel htmlFor="직접 입력">
-          <input type="checkbox" id="직접 입력" name="직접 입력" onChange={handleCustomCheckbox} />
-          직접 입력
-        </StCustomReasonLabel>
+        <Checkbox key={'직접 입력'} reason={'직접 입력'} handleCustom={handleCustomCheckbox} />
         <StCustomReasonTextarea
           value={customReason}
           onChange={(e) => {
@@ -87,8 +84,6 @@ const StFormWrapper = styled.div`
   display: flex;
   flex-direction: column;
 `;
-
-const StCustomReasonLabel = styled(StCheckboxWrapper)``;
 
 const StCustomReasonTextarea = styled.textarea`
   width: 70.8rem;

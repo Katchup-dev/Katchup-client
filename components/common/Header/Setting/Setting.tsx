@@ -33,46 +33,48 @@ const Setting = ({ modalRef, isShowing, profile }: SettingProps) => {
   };
 
   return (
-    <StSettingWrapper>
-      {isShowing && (
-        <>
-          <StSettingModal ref={modalRef}>
-            <StUserProfile>
-              <StProfileImg src={profile?.imageUrl || DEFAULT_PROFILE_IMAGE} />
-              <StUserInfo>
-                <strong>{profile?.nickname}</strong>
-                <p>{profile?.email}</p>
-              </StUserInfo>
-            </StUserProfile>
-            <StHr />
-            <StSettingButtons>
-              <StSettingButton type="button" onClick={profileSetting.toggle}>
-                <IcBtnProfile />
-                프로필 설정
-              </StSettingButton>
-              <StSettingButton type="button" onClick={logout.toggle}>
-                <IcBtnLogout />
-                로그아웃
-              </StSettingButton>
-            </StSettingButtons>
-          </StSettingModal>
-          <ProfileSettingModal
-            isShowing={profileSetting.isShowing}
-            curNickname={profile?.nickname || ''}
-            profileImgSrc={profile?.imageUrl || ''}
-            handleCancel={profileSetting.toggle}
-          />
-          <ModalTwoButton
-            isShowing={logout.isShowing}
-            contents={['Katchup에서 로그아웃할까요?']}
-            leftButtonName="돌아가기"
-            rightButtonName="로그아웃"
-            handleLeftButton={logout.toggle}
-            handleRightButton={handleLogout}
-          />
-        </>
-      )}
-    </StSettingWrapper>
+    <>
+      <StSettingWrapper>
+        {isShowing && (
+          <>
+            <StSettingModal ref={modalRef}>
+              <StUserProfile>
+                <StProfileImg src={profile?.imageUrl || DEFAULT_PROFILE_IMAGE} />
+                <StUserInfo>
+                  <strong>{profile?.nickname}</strong>
+                  <p>{profile?.email}</p>
+                </StUserInfo>
+              </StUserProfile>
+              <StHr />
+              <StSettingButtons>
+                <StSettingButton type="button" onClick={profileSetting.toggle}>
+                  <IcBtnProfile />
+                  프로필 설정
+                </StSettingButton>
+                <StSettingButton type="button" onClick={logout.toggle}>
+                  <IcBtnLogout />
+                  로그아웃
+                </StSettingButton>
+              </StSettingButtons>
+            </StSettingModal>
+          </>
+        )}
+      </StSettingWrapper>
+      <ProfileSettingModal
+        isShowing={profileSetting.isShowing}
+        curNickname={profile?.nickname || ''}
+        profileImgSrc={profile?.imageUrl || ''}
+        handleCancel={profileSetting.toggle}
+      />
+      <ModalTwoButton
+        isShowing={logout.isShowing}
+        contents={['Katchup에서 로그아웃할까요?']}
+        leftButtonName="돌아가기"
+        rightButtonName="로그아웃"
+        handleLeftButton={logout.toggle}
+        handleRightButton={handleLogout}
+      />
+    </>
   );
 };
 export default Setting;

@@ -31,25 +31,21 @@ const Header = () => {
   const settingModalRef = useRef<HTMLDivElement>(null);
   const settingButtonRef = useRef<HTMLButtonElement>(null);
 
-  useClickOutside(
-    helpModalRef,
-    () => {
-      if (help.isShowing) {
-        help.toggle();
-      }
-    },
-    [helpButtonRef],
-  );
+  const handleHelp = () => {
+    if (help.isShowing) {
+      help.toggle();
+    }
+  };
 
-  useClickOutside(
-    settingModalRef,
-    () => {
-      if (userSetting.isShowing) {
-        userSetting.toggle();
-      }
-    },
-    [settingButtonRef],
-  );
+  const handleSetting = (event: MouseEvent) => {
+    if (userSetting.isShowing) {
+      userSetting.toggle();
+    }
+  };
+
+  useClickOutside(helpModalRef, handleHelp, [helpButtonRef]);
+
+  useClickOutside(settingModalRef, handleSetting, [settingButtonRef]);
 
   const getUserProfile = async () => {
     if (token) {

@@ -1,4 +1,8 @@
-import { StCardModal, StModalWrapper, StNextBtn } from 'components/input/InputCard/ModalCard';
+import {
+  StCardModal,
+  StModalWrapper,
+  StNextBtn
+} from 'components/input/InputCard/ModalCard';
 import { IcBtnDeletePopup } from 'public/assets/icons';
 
 import styled from '@emotion/styled';
