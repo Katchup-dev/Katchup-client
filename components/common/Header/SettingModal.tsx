@@ -1,3 +1,4 @@
+import { DEFAULT_PROFILE_IMAGE } from 'constants/katchupDefault';
 import { postLogout } from 'core/apis/auth';
 import { removeTokens } from 'core/apis/token';
 import { tokenState } from 'core/atom';
@@ -34,7 +35,7 @@ const SettingModal = ({ isShowing, profile }: SettingModalProps) => {
     <>
       <StSettingModal>
         <StUserProfile>
-          <StProfileImg src={profile?.imageUrl || ''} />
+          <StProfileImg src={profile?.imageUrl || DEFAULT_PROFILE_IMAGE} />
           <StUserInfo>
             <strong>{profile?.nickname}</strong>
             <p>{profile?.email}</p>

@@ -1,3 +1,4 @@
+import { DEFAULT_PROFILE_IMAGE } from 'constants/katchupDefault';
 import { getProfile } from 'core/apis/auth';
 import { tokenState } from 'core/atom';
 import useModal from 'lib/hooks/useModal';
@@ -77,7 +78,7 @@ const Header = () => {
           <IcHelp />
         </StHelpButton>
         <StSettingButton type="button" onClick={userSetting.toggle} ref={buttonRef}>
-          <StProfileImg src={profile?.imageUrl} />
+          <StProfileImg src={profile?.imageUrl || DEFAULT_PROFILE_IMAGE} />
         </StSettingButton>
       </div>
       <StHeaderModalWrapper ref={modalRef}>
