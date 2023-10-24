@@ -22,7 +22,7 @@ export const postLogout = async () => {
 export const getProfile = async () => {
   try {
     const { data } = await client.get(`/members/profile`);
-    return data;
+    return data.data;
   } catch (error) {
     console.error(error);
   }

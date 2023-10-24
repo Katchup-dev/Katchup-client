@@ -1,8 +1,11 @@
+import { getProfile } from 'core/apis/auth';
+import { tokenState } from 'core/atom';
 import useModal from 'lib/hooks/useModal';
 import { useGetProfile } from 'lib/hooks/user/useGetProfile';
 import { useRouter } from 'next/router';
 import { IcHelp, IcLogo } from 'public/assets/icons';
 import { useEffect, useRef, useState } from 'react';
+import { useRecoilState } from 'recoil';
 
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
@@ -14,6 +17,7 @@ const Header = () => {
   // const { imageUrl } = useGetProfile();
   const imageUrl = '';
   const [isShowNav, setIsShowNav] = useState(false);
+  const [token, setToken] = useRecoilState(tokenState);
 
   const userSetting = useModal();
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -38,6 +42,13 @@ const Header = () => {
     }
   };
 
+  const getUserProfile = async () => {
+    if (token) {
+      const data = await getProfile();
+      console.log(data);
+    }
+  };
+
   useEffect(() => {
     if (router.pathname.includes('share')) {
       setIsShowNav((prev) => !prev);
@@ -50,6 +61,11 @@ const Header = () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
+
+  useEffect(() => {
+    console.log(token);
+    getUserProfile();
+  }, [token]);
 
   return (
     <>
