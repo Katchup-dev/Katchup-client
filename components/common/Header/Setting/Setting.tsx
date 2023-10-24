@@ -33,10 +33,10 @@ const Setting = ({ modalRef, isShowing, profile }: SettingProps) => {
   };
 
   return (
-    <StSettingWrapper ref={modalRef}>
+    <StSettingWrapper>
       {isShowing && (
         <>
-          <StSettingModal>
+          <StSettingModal ref={modalRef}>
             <StUserProfile>
               <StProfileImg src={profile?.imageUrl || DEFAULT_PROFILE_IMAGE} />
               <StUserInfo>

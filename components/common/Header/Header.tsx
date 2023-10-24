@@ -9,6 +9,7 @@ import { UserProfileInfo } from 'types/auth';
 
 import styled from '@emotion/styled';
 
+import { Help } from './Help';
 import { LogoHeader } from './LogoHeader';
 import { Nav } from './Nav';
 import { Setting } from './Setting';
@@ -17,8 +18,9 @@ import { Utility } from './Utility';
 const Header = () => {
   const token = useRecoilValue(tokenState);
   const router = useRouter();
-  const { pathname, asPath, push } = router;
+  const { pathname, push } = router;
   const userSetting = useModal();
+  const help = useModal();
   const buttonRef = useRef<HTMLButtonElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
 
@@ -38,6 +40,7 @@ const Header = () => {
   };
 
   const handleClickOutside = (event: MouseEvent) => {
+    console.log(event.target);
     if (buttonRef.current && buttonRef.current.contains(event.target as Node)) return;
     if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
       userSetting.setShowing(false);
@@ -59,6 +62,7 @@ const Header = () => {
   if (pathname === '/withdraw/complete') {
     return <LogoHeader onClickLogo={() => push('/')} />;
   }
+
   return (
     <StHeaderWrapper>
       <StLeftSection>
@@ -66,7 +70,13 @@ const Header = () => {
         <Nav pathname={pathname} onNavigate={handleNavigate} />
       </StLeftSection>
       <StRightSection>
-        <Utility profile={profile || null} onToggleModal={userSetting.toggle} />
+        <Utility
+          profile={profile || null}
+          buttonRef={buttonRef}
+          handleHelp={help.toggle}
+          handleSetting={userSetting.toggle}
+        />
+        <Help isShowing={help.isShowing} />
         <Setting modalRef={modalRef} isShowing={userSetting.isShowing} profile={profile ? profile : null} />
       </StRightSection>
     </StHeaderWrapper>
