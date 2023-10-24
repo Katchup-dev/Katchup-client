@@ -4,6 +4,7 @@ import { removeTokens } from 'core/apis/token';
 import { tokenState } from 'core/atom';
 import useModal from 'lib/hooks/common/useModal';
 import { IcBtnLogout, IcBtnProfile } from 'public/assets/icons';
+import { Dispatch, SetStateAction, useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 import { UserProfileInfo } from 'types/auth';
 
@@ -16,9 +17,10 @@ interface SettingProps {
   modalRef: React.RefObject<HTMLDivElement>;
   isShowing: boolean;
   profile: UserProfileInfo | null;
+  setIsInnerModalOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-const Setting = ({ modalRef, isShowing, profile }: SettingProps) => {
+const Setting = ({ modalRef, isShowing, profile, setIsInnerModalOpen }: SettingProps) => {
   const profileSetting = useModal();
   const logout = useModal();
   const [, setToken] = useRecoilState(tokenState);
@@ -27,10 +29,13 @@ const Setting = ({ modalRef, isShowing, profile }: SettingProps) => {
     await postLogout();
     removeTokens();
     setToken('');
-
     logout.toggle();
     window.location.href = '/';
   };
+
+  useEffect(() => {
+    setIsInnerModalOpen(profileSetting.isShowing || logout.isShowing);
+  }, [profileSetting, logout]);
 
   return (
     <>

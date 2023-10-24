@@ -22,6 +22,7 @@ const Header = () => {
   const { pathname, push } = router;
 
   const [profile, setProfile] = useState<UserProfileInfo | null>();
+  const [isInnerModalOpen, setIsInnerModalOpen] = useState(false);
 
   const help = useModal();
   const helpModalRef = useRef<HTMLDivElement>(null);
@@ -36,15 +37,13 @@ const Header = () => {
       help.toggle();
     }
   };
-
-  const handleSetting = (event: MouseEvent) => {
-    if (userSetting.isShowing) {
+  const handleSetting = () => {
+    if (!isInnerModalOpen && userSetting.isShowing) {
       userSetting.toggle();
     }
   };
 
   useClickOutside(helpModalRef, handleHelp, [helpButtonRef]);
-
   useClickOutside(settingModalRef, handleSetting, [settingButtonRef]);
 
   const getUserProfile = async () => {
@@ -86,7 +85,12 @@ const Header = () => {
           handleSetting={userSetting.toggle}
         />
         <Help modalRef={helpModalRef} isShowing={help.isShowing} />
-        <Setting modalRef={settingModalRef} isShowing={userSetting.isShowing} profile={profile ? profile : null} />
+        <Setting
+          modalRef={settingModalRef}
+          isShowing={userSetting.isShowing}
+          profile={profile ? profile : null}
+          setIsInnerModalOpen={setIsInnerModalOpen}
+        />
       </StRightSection>
     </StHeaderWrapper>
   );

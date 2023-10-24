@@ -6,7 +6,6 @@ const useClickOutside = (
   ignoredRefs: React.RefObject<HTMLElement>[] = [],
 ) => {
   const handleClickOutside = (event: MouseEvent) => {
-    console.log(ref, ignoredRefs);
     if (
       ref.current &&
       !ref.current.contains(event.target as Node) &&
