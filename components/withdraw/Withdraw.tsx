@@ -34,7 +34,7 @@ export const StWithdrawWrapper = styled.section`
 
 export const StWithdraw = styled.div`
   width: 90rem;
-  height: 92.3rem;
+  min-height: 92.3rem;
   margin-bottom: 6rem;
   padding: 7rem 7.4rem 4rem 7.4rem;
 
