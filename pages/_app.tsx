@@ -10,6 +10,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 import type { AppProps } from 'next/app';
+import Script from 'next/script';
 const queryClient = new QueryClient();
 
 export default function App({ Component, pageProps }: AppProps) {
@@ -34,6 +35,20 @@ export default function App({ Component, pageProps }: AppProps) {
           <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_AUTH_CLIENT_ID!}>
             <Global styles={resetStyle} />
             <Global styles={globalStyle} />
+            <Script strategy="afterInteractive" src={`https://www.googletagmanager.com/gtag/js?id=G-5SXQH2Y6CX`} />
+            <Script
+              id="gtag-init"
+              strategy="afterInteractive"
+              dangerouslySetInnerHTML={{
+                __html: `  
+                  window.dataLayer = window.dataLayer || [];
+                  function gtag(){dataLayer.push(arguments);}
+                  gtag('js', new Date());
+                  gtag('config', 'G-5SXQH2Y6CX', {
+                    page_path: window.location.pathname,
+                  });`,
+              }}
+            />
             <Header />
             <Component {...pageProps} />
           </GoogleOAuthProvider>
