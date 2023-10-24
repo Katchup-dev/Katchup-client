@@ -21,7 +21,7 @@ const Withdraw = () => {
 
 export default Withdraw;
 
-const StWithdrawWrapper = styled.section`
+export const StWithdrawWrapper = styled.section`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -32,7 +32,7 @@ const StWithdrawWrapper = styled.section`
   background-color: ${({ theme }) => theme.colors.katchup_bg_gray};
 `;
 
-const StWithdraw = styled.div`
+export const StWithdraw = styled.div`
   width: 90rem;
   height: 92.3rem;
   margin-bottom: 6rem;

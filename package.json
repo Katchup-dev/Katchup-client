@@ -1,12 +1,4 @@
 {
-  "name": "katchup-next-project",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start"
-  },
   "dependencies": {
     "@next/swc-darwin-arm64": "^13.4.19",
     "@react-oauth/google": "latest",
@@ -25,7 +17,6 @@
     "recoil": "^0.7.7",
     "typescript": "5.0.4"
   },
-  "packageManager": "yarn@3.5.0",
   "devDependencies": {
     "@emotion/babel-plugin": "^11.10.6",
     "@emotion/babel-preset-css-prop": "^11.10.0",
@@ -51,8 +42,17 @@
     "prettier": "^2.8.8",
     "recoil-persist": "^4.2.0"
   },
+  "name": "katchup-next-project",
+  "packageManager": "yarn@3.5.0",
+  "private": true,
   "resolutions": {
     "@types/react": "17.0.2",
     "@types/react-dom": "17.0.2"
-  }
+  },
+  "scripts": {
+    "build": "next build",
+    "dev": "next dev",
+    "start": "next start"
+  },
+  "version": "0.1.0"
 }

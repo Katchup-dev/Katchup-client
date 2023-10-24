@@ -14,7 +14,10 @@ interface SettingModalProps {
 }
 
 const SettingModal = ({ isShowing }: SettingModalProps) => {
-  const { email, imageUrl, nickname } = useGetProfile();
+  const email = '';
+  const imageUrl = '';
+  const nickname = '';
+  // const { email, imageUrl, nickname } = useGetProfile();
 
   const profileSetting = useModal();
   const logout = useModal();

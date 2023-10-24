@@ -2,7 +2,7 @@ import { ModalTwoButton } from 'components/common/Modal';
 import { StNextBtn } from 'components/input/InputBasic/MainInput';
 import { WITHDRAW_REASON } from 'constants/withdraw';
 import useModal from 'lib/hooks/useModal';
-import React, { useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import styled from '@emotion/styled';
 
@@ -34,6 +34,7 @@ const WithdrawReason = () => {
       });
     } else {
       console.log(reasons);
+      window.location.href = '/withdraw/complete';
     }
   }, [customReason, customIndex, reasons]);
 

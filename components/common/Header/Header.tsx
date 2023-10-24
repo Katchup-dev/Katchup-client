@@ -11,7 +11,8 @@ import SearchBox from '../SearchBox';
 import SettingModal from './SettingModal';
 
 const Header = () => {
-  const { imageUrl } = useGetProfile();
+  // const { imageUrl } = useGetProfile();
+  const imageUrl = '';
   const [isShowNav, setIsShowNav] = useState(false);
 
   const userSetting = useModal();
