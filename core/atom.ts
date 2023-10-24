@@ -7,7 +7,7 @@ import {
   InputSubTaskInfo,
   InputTaskInfo,
   PostFileListInfo,
-  PostScreenshotListInfo,
+  PostScreenshotListInfo
 } from 'types/input';
 import { SelectMainCategoryInfo, SelectMiddleCategoryInfo } from 'types/output';
 
@@ -87,12 +87,4 @@ export const fileNameChangeState = atom<boolean>({
 export const screenshotSelectState = atom<PostScreenshotListInfo[]>({
   key: 'screenshotSelect',
   default: [],
-});
-
-export const userProfileState = atom<UserProfileInfo>({
-  key: 'userProfile',
-  default: {
-    nickname: '',
-  },
-  effects_UNSTABLE: [persistAtom],
 });

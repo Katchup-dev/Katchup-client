@@ -1,6 +1,5 @@
 import { signup } from 'core/apis/auth';
 import { setTokens } from 'core/apis/token';
-import { userProfileState } from 'core/atom';
 import { useRouter } from 'next/router';
 import { IcGoogle } from 'public/assets/icons';
 import { useEffect, useState } from 'react';
@@ -13,7 +12,6 @@ import { useGoogleLogin } from '@react-oauth/google';
 const LandingKatchupStart = () => {
   const router = useRouter();
   const [googleAccessToken, setGoogleAccessToken] = useState<string>();
-  const [, setUserProfile] = useRecoilState(userProfileState);
 
   const handleGoogleLogin = useGoogleLogin({
     onSuccess: (tokenResponse) => {
@@ -23,9 +21,8 @@ const LandingKatchupStart = () => {
 
   const handleSignup = async () => {
     if (googleAccessToken) {
-      const { nickname, accessToken, refreshToken }: AuthInfo = await signup(googleAccessToken);
+      const { accessToken, refreshToken }: AuthInfo = await signup(googleAccessToken);
       setTokens(accessToken, refreshToken);
-      setUserProfile({ nickname });
       router.push('/input/main');
     }
   };
