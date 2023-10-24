@@ -34,7 +34,7 @@ const SettingModal = ({ isShowing, profile }: SettingModalProps) => {
     <>
       <StSettingModal>
         <StUserProfile>
-          <StProfileImg src={profile ? profile.imageUrl : ''} />
+          <StProfileImg src={profile?.imageUrl || ''} />
           <StUserInfo>
             <strong>{profile?.nickname}</strong>
             <p>{profile?.email}</p>
@@ -54,8 +54,8 @@ const SettingModal = ({ isShowing, profile }: SettingModalProps) => {
       </StSettingModal>
       <ProfileSettingModal
         isShowing={profileSetting.isShowing}
-        curNickname={profile ? profile.nickname : ''}
-        profileImgSrc={profile ? profile.imageUrl : ''}
+        curNickname={profile?.nickname || ''}
+        profileImgSrc={profile?.imageUrl || ''}
         handleCancel={profileSetting.toggle}
       />
       <ModalTwoButton

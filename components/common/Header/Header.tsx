@@ -14,32 +14,15 @@ import SearchBox from '../SearchBox';
 import SettingModal from './SettingModal';
 
 const Header = () => {
-  const [isShowNav, setIsShowNav] = useState(false);
   const token = useRecoilValue(tokenState);
-  const [profile, setProfile] = useState<UserProfileInfo | null>();
-
+  const router = useRouter();
+  const { pathname, asPath } = router;
   const userSetting = useModal();
   const buttonRef = useRef<HTMLButtonElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
 
-  const router = useRouter();
-  const { asPath } = router;
-
-  const handleNavigate = (e: React.MouseEvent) => {
-    const target = e.target as HTMLLIElement;
-
-    if (target.innerText === '작성하기') router.push('/input/main');
-    if (target.innerText === '모아보기') router.push('/output/0');
-  };
-
-  const handleClickOutside = (event: MouseEvent) => {
-    if (buttonRef.current && buttonRef.current.contains(event.target as Node)) {
-      return;
-    }
-    if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
-      userSetting.setShowing(false);
-    }
-  };
+  const [isShowNav, setIsShowNav] = useState(false);
+  const [profile, setProfile] = useState<UserProfileInfo | null>();
 
   const getUserProfile = async () => {
     if (token) {
@@ -48,59 +31,59 @@ const Header = () => {
     }
   };
 
-  useEffect(() => {
-    if (router.pathname.includes('share')) {
-      setIsShowNav((prev) => !prev);
-    }
-  }, []);
+  const handleNavigate = (e: React.MouseEvent) => {
+    const target = e.target as HTMLLIElement;
+    if (target.innerText === '작성하기') router.push('/input/main');
+    if (target.innerText === '모아보기') router.push('/output/0');
+  };
 
-  useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
+  const handleClickOutside = (event: MouseEvent) => {
+    if (buttonRef.current && buttonRef.current.contains(event.target as Node)) return;
+    if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+      userSetting.setShowing(false);
+    }
+  };
 
   useEffect(() => {
     getUserProfile();
   }, [token]);
 
+  useEffect(() => {
+    if (pathname.includes('share')) setIsShowNav((prev) => !prev);
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   return (
-    <>
-      <StHeaderWrapper path={asPath}>
-        <div>
-          <IcLogo style={{ cursor: 'pointer' }} onClick={() => router.push('/')} />
-
-          {!router.pathname.includes('share') && (
-            <StMenuNav>
-              <ul>
-                <StMenuItem isSelected={router.pathname.includes('input')} onClick={(e) => handleNavigate(e)}>
-                  작성하기
-                </StMenuItem>
-                <StMenuItem isSelected={router.pathname.includes('output')} onClick={(e) => handleNavigate(e)}>
-                  모아보기
-                </StMenuItem>
-              </ul>
-            </StMenuNav>
-          )}
-        </div>
-
-        <div>
-          <SearchBox />
-          <StHelpButton type="button">
-            <IcHelp />
-          </StHelpButton>
-
-          <StSettingButton type="button" onClick={userSetting.toggle} ref={buttonRef}>
-            <StProfileImg src={profile?.imageUrl} />
-          </StSettingButton>
-        </div>
-
-        <StHeaderModalWrapper ref={modalRef}>
-          <SettingModal isShowing={userSetting.isShowing} profile={profile ? profile : null} />
-        </StHeaderModalWrapper>
-      </StHeaderWrapper>
-    </>
+    <StHeaderWrapper path={asPath}>
+      <div>
+        <IcLogo style={{ cursor: 'pointer' }} onClick={() => router.push('/')} />
+        {pathname.includes('share') && (
+          <StMenuNav>
+            <ul>
+              <StMenuItem isSelected={router.pathname.includes('input')} onClick={(e) => handleNavigate(e)}>
+                작성하기
+              </StMenuItem>
+              <StMenuItem isSelected={router.pathname.includes('output')} onClick={(e) => handleNavigate(e)}>
+                모아보기
+              </StMenuItem>
+            </ul>
+          </StMenuNav>
+        )}
+      </div>
+      <div>
+        <SearchBox />
+        <StHelpButton type="button">
+          <IcHelp />
+        </StHelpButton>
+        <StSettingButton type="button" onClick={userSetting.toggle} ref={buttonRef}>
+          <StProfileImg src={profile?.imageUrl} />
+        </StSettingButton>
+      </div>
+      <StHeaderModalWrapper ref={modalRef}>
+        <SettingModal isShowing={userSetting.isShowing} profile={profile ? profile : null} />
+      </StHeaderModalWrapper>
+    </StHeaderWrapper>
   );
 };
 
