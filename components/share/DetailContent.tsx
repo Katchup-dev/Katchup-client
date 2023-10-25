@@ -50,9 +50,9 @@ const DetailContent = (props: DetailContentProps) => {
             </div>
             <StFileWrapper>
               {fileList?.map((file) => (
-                <a download key={file.id} onClick={() => handleFileDownload(file.id, file.changedName)}>
-                  <li key={file.id}>
-                    <IcDeleteFile /> {file.changedName} <p>{file.size}MB</p>
+                <a download key={file.fileUUID} onClick={() => handleFileDownload(file.fileUUID, file.fileChangedName)}>
+                  <li>
+                    {file.fileChangedName} <p>{file.size}MB</p>
                   </li>
                 </a>
               ))}
