@@ -48,14 +48,17 @@ export interface KeywordInfo {
 }
 
 export interface FileInfo {
-  id: string;
-  originalName: string;
-  changedName: string;
-  size: string;
+  fileUUID: string;
+  fileOriginalName: string;
+  fileChangedName: string;
+  fileUploadDate: string;
+  size: 189277;
 }
 
 export interface ScreenshotInfo {
-  id: number;
-  stickerOrder: number;
-  url: string;
+  screenshotUUID: string;
+  screenshotName: string;
+  screenshotUrl: string;
+  screenshotUploadDate: string;
+  stickerList: [];
 }
