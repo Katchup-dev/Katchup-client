@@ -1,4 +1,4 @@
-import Header from 'components/common/Header';
+import Header from 'components/common/Header/Header';
 import { useEffect } from 'react';
 import { RecoilRoot } from 'recoil';
 import { globalStyle, resetStyle } from 'styles/globalStyle';
@@ -49,7 +49,7 @@ export default function App({ Component, pageProps }: AppProps) {
                   });`,
               }}
             />
-            <Header profileImgSrc="https://sitem.ssgcdn.com/17/01/59/item/1000053590117_i1_1100.jpg" />
+            <Header />
             <Component {...pageProps} />
           </GoogleOAuthProvider>
         </ThemeProvider>

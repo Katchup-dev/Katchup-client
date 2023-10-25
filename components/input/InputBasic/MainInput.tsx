@@ -2,8 +2,8 @@ import { ModalTwoButton } from 'components/common/Modal';
 import Toast from 'components/common/Toast';
 import { MODAL_DELETE_SCREENSHOT, MODAL_LEAVE_PAGE } from 'constants/modal';
 import { workInputState } from 'core/atom';
+import useModal from 'lib/hooks/common/useModal';
 import useRouteChangeBlocking from 'lib/hooks/input/useRouteChangeBlocking';
-import useModal from 'lib/hooks/useModal';
 import { IcBtnScreenshot, IcBtnScreenshotHide } from 'public/assets/icons';
 import { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
@@ -122,7 +122,7 @@ const StMainInput = styled.section`
   box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.05);
 `;
 
-const StNextBtn = styled.div<{ disabled: boolean }>`
+export const StNextBtn = styled.div<{ disabled: boolean }>`
   display: flex;
   justify-content: flex-end;
 

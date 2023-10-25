@@ -8,9 +8,14 @@ import {
   PostFileListInfo,
   PostScreenshotListInfo,
 } from 'types/input';
-import { SelectMainCategoryInfo, SelectMiddleCategoryInfo } from 'types/output';
 
 const { persistAtom } = recoilPersist();
+
+export const tokenState = atom<string>({
+  key: `token`,
+  default: '',
+  effects_UNSTABLE: [persistAtom],
+});
 
 export const currentMainCategoryIdxAtom = atom<number>({
   key: `currentMainCategory`,

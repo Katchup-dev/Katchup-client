@@ -1,7 +1,7 @@
 import { ModalTwoButton } from 'components/common/Modal';
 import { MODAL_DELETE_ALL } from 'constants/modal';
 import { workInputState } from 'core/atom';
-import useModal from 'lib/hooks/useModal';
+import useModal from 'lib/hooks/common/useModal';
 import { IcKatchupLogo } from 'public/assets/icons';
 import { useState } from 'react';
 import { useRecoilState } from 'recoil';

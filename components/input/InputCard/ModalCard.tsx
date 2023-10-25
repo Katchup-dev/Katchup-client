@@ -99,7 +99,7 @@ const ModalCard = (props: ModalProps) => {
 
 export default ModalCard;
 
-const StModalWrapper = styled.div`
+export const StModalWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -115,14 +115,14 @@ const StModalWrapper = styled.div`
   background-color: rgba(47, 52, 56, 0.4);
 `;
 
-const StCardModal = styled.section`
+export const StCardModal = styled.section`
   display: flex;
   flex-direction: column;
   position: relative;
 
   width: 63.8rem;
   height: fit-content;
-  padding: 4rem 6rem 4rem 6rem;
+  padding: 4rem 6rem;
 
   border-radius: 2.6rem;
   background-color: ${({ theme }) => theme.colors.katchup_white};
@@ -143,7 +143,7 @@ const StCardModal = styled.section`
   }
 `;
 
-const StNextBtn = styled.button<{ disabled: boolean }>`
+export const StNextBtn = styled.button<{ disabled: boolean }>`
   width: 13.6rem;
   height: 4rem;
   margin-top: 1.8rem;

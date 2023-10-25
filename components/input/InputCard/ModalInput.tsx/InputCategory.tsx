@@ -46,7 +46,7 @@ const InputCategory = () => {
 
 export default InputCategory;
 
-export const StInputIndex = styled.label<{ isFocused: boolean }>`
+export const StInputIndex = styled.label<{ isFocused?: boolean }>`
   display: flex;
   flex-direction: column;
   position: relative;

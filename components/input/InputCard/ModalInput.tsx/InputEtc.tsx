@@ -1,5 +1,5 @@
 import { etcState } from 'core/atom';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useRecoilState } from 'recoil';
 
 import styled from '@emotion/styled';
@@ -38,7 +38,7 @@ export default InputEtc;
 const StInputEtc = styled(StInputIndex)`
   & > textarea {
     height: 19.1rem;
-    padding: 1.4rem 1.4rem 4rem 1.4rem;
+    padding: 1.4rem;
 
     border: 0.1rem solid ${({ theme }) => theme.colors.katchup_line_gray};
     border-radius: 0.8rem;
