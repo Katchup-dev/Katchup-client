@@ -105,7 +105,7 @@ const ScreenshotUpdate = (props: ScreenshotUpdateProps) => {
         {screenshotSelect.length ? (
           screenshotSelect.map((screenshot, index) => (
             <StScreenshotWrapper key={index}>
-              <StScreenshotImg key={index} src={screenshot.screenshotUrl} alt={`스크린샷 ${index + 1}`} />
+              <StScreenshotImg key={index} src={screenshot?.screenshotUrl} alt={`스크린샷 ${index + 1}`} />
               <button onClick={() => handleDeleteFile(index)}>
                 <IcBtnDeleteScreenshot />
               </button>

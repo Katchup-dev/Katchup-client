@@ -3,25 +3,24 @@ import {
   etcState,
   fileNameChangeState,
   fileSelectState,
-  keywordListState,
   keywordSelectState,
   screenshotSelectState,
   subTaskSelectState,
   taskSelectState,
-  updateCardIdState,
   workInputState,
 } from 'core/atom';
-import { usePostCard } from 'lib/hooks/input/usePostCard';
 import { IcBtnDeletePopup } from 'public/assets/icons';
 import React, { useState } from 'react';
 import { useRecoilValue } from 'recoil';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { PostCardInfo, PostFileListInfo } from 'types/input';
 
 import styled from '@emotion/styled';
 import { UpdateCategory, UpdateEtc, UpdateKeyWord, UpdateSubTask, UpdateTask } from './ModalUpdate.tsx/index';
 import { cardCtxType } from 'types/output';
 import { useGetDetailPage } from 'lib/hooks/useGetDetailPage';
-import { usePatchCard } from 'lib/hooks/update/usePatchCard';
+import { patchCard } from 'core/apis/input';
+import { useRouter } from 'next/router';
 
 interface ModalProps {
   isShowing: boolean;
@@ -30,6 +29,8 @@ interface ModalProps {
 
 const ModalCard = (props: ModalProps, { cardId }: { cardId: string }) => {
   const { isShowing, handleHide } = props;
+
+  const router = useRouter();
 
   const { detailPageInfo } = useGetDetailPage(Number(cardId));
 
@@ -42,18 +43,6 @@ const ModalCard = (props: ModalProps, { cardId }: { cardId: string }) => {
   const selectedScreenshotList = useRecoilValue(screenshotSelectState);
   const currentEtc = useRecoilValue(etcState);
   const isFileNameChangeChecked = useRecoilValue(fileNameChangeState);
-
-  console.log(selectedKeywordList, selectedFileList, selectedScreenshotList);
-
-  const { patchCard } = usePatchCard();
-
-  const modifiedFileList: PostFileListInfo[] = selectedFileList.map((fileInfo) => {
-    const modifiedFileName = `${selectedCategory.name}_${selectedTask.name}_${selectedSubTask.name}_${fileInfo.fileOriginalName}`;
-    return {
-      ...fileInfo,
-      fileChangedName: modifiedFileName,
-    };
-  });
 
   const handleNext = async (e: React.MouseEvent<HTMLButtonElement>) => {
     const postFileList = isFileNameChangeChecked ? modifiedFileList : selectedFileList;
@@ -69,7 +58,9 @@ const ModalCard = (props: ModalProps, { cardId }: { cardId: string }) => {
       content: currentWorkInput,
     };
 
-    const result = await patchCard({ cardInfo: cardData, cardId: Number(cardId) });
+    console.log(selectedScreenshotList);
+
+    const result = await patchCard({ cardInfo: cardData, cardId: Number(router.query.cardId) });
     console.log(result);
 
     if (result.status === 'SSS') {
@@ -77,6 +68,14 @@ const ModalCard = (props: ModalProps, { cardId }: { cardId: string }) => {
       window.location.reload();
     }
   };
+
+  const modifiedFileList: PostFileListInfo[] = selectedFileList.map((fileInfo) => {
+    const modifiedFileName = `${selectedCategory.name}_${selectedTask.name}_${selectedSubTask.name}_${fileInfo.fileOriginalName}`;
+    return {
+      ...fileInfo,
+      fileChangedName: modifiedFileName,
+    };
+  });
 
   return (
     <>
@@ -108,13 +107,13 @@ const ModalCard = (props: ModalProps, { cardId }: { cardId: string }) => {
   );
 };
 
-export const getServerSideProps = async (ctx: cardCtxType) => {
-  const cardId = ctx.query.cardId;
+// export const getServerSideProps = async (ctx: cardCtxType) => {
+//   const cardId = ctx.query.cardId;
 
-  return {
-    props: { cardId },
-  };
-};
+//   return {
+//     props: { cardId },
+//   };
+// };
 
 export default ModalCard;
 

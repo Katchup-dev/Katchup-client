@@ -37,7 +37,7 @@ const MainUpdate = (props: MainUpdateProps) => {
       localStorage.removeItem('toastMessage');
     }
 
-    if (detailPageInfo.screenshotList) {
+    if (detailPageInfo?.screenshotList) {
       setIsScreenshotShowing(true);
     }
   }, []);
