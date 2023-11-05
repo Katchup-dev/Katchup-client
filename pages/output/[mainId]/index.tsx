@@ -13,6 +13,7 @@ import { useEffect, useState } from 'react';
 import { mainCtxType, MiddleCategoryInfo } from 'types/output';
 
 import styled from '@emotion/styled';
+import { patchSharePermission } from 'core/apis/output';
 
 const OutputMain = ({ mainId }: { mainId: string }) => {
   const router = useRouter();
@@ -26,8 +27,10 @@ const OutputMain = ({ mainId }: { mainId: string }) => {
   const [toastMessage, setToastMessage] = useState('');
   const [toastKey, setToastKey] = useState<number>();
 
-  const toggleShare = () => {
+  const toggleShare = async () => {
     setIsShareOn(!isShareOn);
+    const result = await patchSharePermission(Number(mainId));
+    console.log(result);
   };
 
   const handleGoToWorkCard = (middleId: number) => {
