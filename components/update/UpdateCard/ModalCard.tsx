@@ -52,13 +52,11 @@ const ModalCard = (props: ModalProps, { cardId }: { cardId: string }) => {
       taskId: selectedTask.taskId,
       subTaskId: selectedSubTask.subTaskId,
       keywordIdList: selectedKeywordList.map((keyword) => keyword.keywordId),
-      screenshotList: selectedScreenshotList,
+      screenshotList: selectedScreenshotList.map(({ screenshotUrl, ...rest }) => rest),
       fileList: postFileList,
       note: currentEtc,
       content: currentWorkInput,
     };
-
-    console.log(selectedScreenshotList);
 
     const result = await patchCard({ cardInfo: cardData, cardId: Number(router.query.cardId) });
     console.log(result);

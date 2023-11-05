@@ -13,17 +13,12 @@ interface ScreenshotUpdateProps {
 }
 
 const ScreenshotUpdate = (props: ScreenshotUpdateProps) => {
-  const { screenshotList } = props;
   const [inputScreenshot, setInputScreenshot] = useState<string>('');
   const screenshotInputRef = useRef<HTMLInputElement>(null);
   const [screenshotSelect, setScreenshotSelect] = useRecoilState(screenshotSelectState);
 
   const [toastMessage, setToastMessage] = useState('');
   const [toastKey, setToastKey] = useState<number>();
-
-  useEffect(() => {
-    setScreenshotSelect([...screenshotList]);
-  }, []);
 
   // 스크린 샷 업로드 시 presigned url 받아오고 put 요청으로 s3에 올리는 코드
   const handlePostScreenShot = async (file: File) => {
