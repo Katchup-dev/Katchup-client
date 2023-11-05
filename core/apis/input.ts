@@ -102,10 +102,12 @@ export const postCard = async (cardInfo: PostCardInfo) => {
 
 export const patchCard = async ({ cardInfo, cardId }: { cardInfo: PostCardInfo; cardId: number }) => {
   try {
+    console.log('안녕', cardInfo, cardId);
     const { data } = await client.patch(`/cards/${cardId}`, cardInfo);
-    console.log(data);
+    console.log('들어가니?', data);
     return data;
   } catch (error) {
+    console.log('에러');
     console.error(error);
   }
 };
