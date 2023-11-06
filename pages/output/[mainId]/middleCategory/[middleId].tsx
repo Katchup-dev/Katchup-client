@@ -21,7 +21,7 @@ import { MiddleCategoryInfo, middleCtxType, WorkCardInfo } from 'types/output';
 import styled from '@emotion/styled';
 
 const WorkCardPage = ({ mainId, middleId }: { mainId: string; middleId: string }) => {
-  const { mainCategoryList } = useGetMainCategoryList();
+  const { mainCategoryList } = useGetMainCategoryList(false);
   const { middleCategoryList } = useGetMiddleCategoryList(
     mainCategoryList && mainCategoryList[Number(mainId)]?.categoryId,
   );

@@ -20,7 +20,7 @@ const AddCategoryModal = (props: AddCategoryModalProps & { mainId: string }) => 
   const [warningMsg, setWarningMsg] = useState('');
   const [isCategoryAvailable, setIsCategoryAvailable] = useState(false);
 
-  const { mainCategoryList } = useGetMainCategoryList();
+  const { mainCategoryList } = useGetMainCategoryList(false);
 
   const categoryId = mainCategoryList && mainCategoryList[Number(mainId)]?.categoryId;
   const { middleCategoryList } = useGetMiddleCategoryList(categoryId);
@@ -74,7 +74,7 @@ const AddCategoryModal = (props: AddCategoryModalProps & { mainId: string }) => 
           : middleCategoryList && !isMainCategory
           ? middleCategoryList.find((item: MiddleCategoryInfo) => item.name === currentInputValue)
           : undefined;
-        
+
       if (duplicateValue === undefined) {
         setIsCategoryAvailable(true);
         setWarningMsg('');
