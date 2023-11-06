@@ -27,7 +27,7 @@ const PatchCategoryModal = (props: PatchCategoryModalProps & { mainId: string })
     if (inputRef.current) setInitialValue(inputRef.current.value);
   }, []);
 
-  const { mainCategoryList } = useGetMainCategoryList();
+  const { mainCategoryList } = useGetMainCategoryList(false);
   const { middleCategoryList } = useGetMiddleCategoryList(
     mainCategoryList && mainCategoryList[Number(mainId)]?.categoryId,
   );

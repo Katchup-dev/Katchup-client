@@ -12,7 +12,7 @@ export interface MainCategoryListProps {
 
 const MainCategoryList = ({ mainId }: { mainId: string }) => {
   const router = useRouter();
-  const { mainCategoryList } = useGetMainCategoryList();
+  const { mainCategoryList } = useGetMainCategoryList(true);
 
   function initializeArray(arrSize: number) {
     const arr = new Array(arrSize).fill(false);
