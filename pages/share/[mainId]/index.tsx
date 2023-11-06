@@ -13,14 +13,11 @@ import styled from '@emotion/styled';
 const OutputMain = ({ mainId }: { mainId: string }) => {
   const router = useRouter();
   const { mainCategoryList } = useGetMainCategoryList(true);
+  console.log(mainCategoryList);
   const [middleCategoryId, setMiddleCategoryId] = useState<number>(0);
   const { middleCategoryList } = useGetMiddleCategoryList(middleCategoryId);
 
   const [isShareOn, setIsShareOn] = useState(false);
-
-  const toggleShare = () => {
-    setIsShareOn(!isShareOn);
-  };
 
   const handleGoToWorkCard = (middleId: number) => {
     router.push({ pathname: `/share/${mainId}/middleCategory/${middleId}` });
