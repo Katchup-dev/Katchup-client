@@ -92,3 +92,9 @@ export const updateCardIdState = atom<number>({
   key: 'updateCardId',
   default: 0,
 });
+
+export const memberId = atom<number>({
+  key: `memberId`,
+  default: 0,
+  effects_UNSTABLE: [persistAtom],
+});

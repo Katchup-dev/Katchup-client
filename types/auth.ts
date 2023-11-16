@@ -3,4 +3,5 @@ export interface AuthInfo {
   accessToken: string;
   refreshToken: string;
   isNewUser: boolean;
+  memberId: number;
 }
