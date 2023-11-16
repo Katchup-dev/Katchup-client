@@ -1,7 +1,7 @@
-import { categorySelectState } from 'core/atom';
+import { categorySelectState, memberId } from 'core/atom';
 import { useGetCategories } from 'lib/hooks/input/useGetIndex';
 import { IcBtnAddIndex } from 'public/assets/icons';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { InputCategoryInfo } from 'types/input';
 
 import styled from '@emotion/styled';
@@ -16,7 +16,8 @@ const DropdownCategory = ({ inputValue }: dropdownIndexProps) => {
   let isAdd = true;
   let addArr: InputCategoryInfo[] = [];
 
-  const { categories } = useGetCategories();
+  const userMemberId = useRecoilValue(memberId);
+  const { categories } = useGetCategories(userMemberId);
   const [, setCategorySelect] = useRecoilState(categorySelectState);
   const { createCategory } = usePostCategory();
 

@@ -18,7 +18,7 @@ const DropdownCategory = ({ inputValue }: dropdownIndexProps) => {
 
   const userMemberId = useRecoilValue(memberId);
   const { categories } = useGetCategories(userMemberId);
-  console.log(categories);
+
   const [, setCategorySelect] = useRecoilState(categorySelectState);
   const { createCategory } = usePostCategory();
 
