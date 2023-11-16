@@ -2,11 +2,13 @@ import styled from '@emotion/styled';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { NEW_CATEGORY_REGEX } from 'constants/output';
 import { patchMainCategory, patchMiddleCategory, postNewMiddleCategory } from 'core/apis/output';
+import { memberId } from 'core/atom';
 import { useGetMainCategoryList } from 'lib/hooks/useGetMainCategoryList';
 import { useGetMiddleCategoryList } from 'lib/hooks/useGetMiddleCategory';
 
 import { IcDeleteModal } from 'public/assets/icons';
 import { useEffect, useRef, useState } from 'react';
+import { useRecoilValue } from 'recoil';
 import { MiddleCategoryInfo, mainCategoryInfo } from 'types/output';
 
 export interface PatchCategoryModalProps {
@@ -27,7 +29,8 @@ const PatchCategoryModal = (props: PatchCategoryModalProps & { mainId: string })
     if (inputRef.current) setInitialValue(inputRef.current.value);
   }, []);
 
-  const { mainCategoryList } = useGetMainCategoryList();
+  const userMemberId = useRecoilValue(memberId);
+  const { mainCategoryList } = useGetMainCategoryList(userMemberId);
   const { middleCategoryList } = useGetMiddleCategoryList(
     mainCategoryList && mainCategoryList[Number(mainId)]?.categoryId,
   );

@@ -19,9 +19,12 @@ import { useState } from 'react';
 import { MiddleCategoryInfo, middleCtxType, WorkCardInfo } from 'types/output';
 
 import styled from '@emotion/styled';
+import { useRecoilValue } from 'recoil';
+import { memberId } from 'core/atom';
 
 const WorkCardPage = ({ mainId, middleId }: { mainId: string; middleId: string }) => {
-  const { mainCategoryList } = useGetMainCategoryList();
+  const userMemberId = useRecoilValue(memberId);
+  const { mainCategoryList } = useGetMainCategoryList(userMemberId);
   const { middleCategoryList } = useGetMiddleCategoryList(
     mainCategoryList && mainCategoryList[Number(mainId)]?.categoryId,
   );

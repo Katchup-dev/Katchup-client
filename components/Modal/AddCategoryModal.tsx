@@ -8,6 +8,8 @@ import { MiddleCategoryInfo, mainCategoryInfo, mainCtxType } from 'types/output'
 
 import styled from '@emotion/styled';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useRecoilValue } from 'recoil';
+import { memberId } from 'core/atom';
 
 export interface AddCategoryModalProps {
   isMainCategory: boolean;
@@ -20,7 +22,8 @@ const AddCategoryModal = (props: AddCategoryModalProps & { mainId: string }) => 
   const [warningMsg, setWarningMsg] = useState('');
   const [isCategoryAvailable, setIsCategoryAvailable] = useState(false);
 
-  const { mainCategoryList } = useGetMainCategoryList();
+  const userMemberId = useRecoilValue(memberId);
+  const { mainCategoryList } = useGetMainCategoryList(userMemberId);
 
   const categoryId = mainCategoryList && mainCategoryList[Number(mainId)]?.categoryId;
   const { middleCategoryList } = useGetMiddleCategoryList(categoryId);
@@ -74,7 +77,7 @@ const AddCategoryModal = (props: AddCategoryModalProps & { mainId: string }) => 
           : middleCategoryList && !isMainCategory
           ? middleCategoryList.find((item: MiddleCategoryInfo) => item.name === currentInputValue)
           : undefined;
-        
+
       if (duplicateValue === undefined) {
         setIsCategoryAvailable(true);
         setWarningMsg('');

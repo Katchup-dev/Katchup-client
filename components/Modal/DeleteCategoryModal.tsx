@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { deleteMainCategory, deleteMiddleCategory, deleteWorkCards } from 'core/apis/output';
-import { deleteWorkCard } from 'core/atom';
+import { deleteWorkCard, memberId } from 'core/atom';
 import { useGetMainCategoryList } from 'lib/hooks/useGetMainCategoryList';
 import { useRouter } from 'next/router';
 import { IcDeleteCategoryLogo } from 'public/assets/icons';
@@ -19,7 +19,8 @@ interface DeleteCategoryModalProps {
 
 export default function DeleteCategoryModal(props: DeleteCategoryModalProps & { mainId?: string }) {
   const { setIsMoreModalOpen, setIsDeleteMode, folderIdx, categoryType, isOpen, setIsOpen, mainId, workCardId } = props;
-  const { mainCategoryList } = useGetMainCategoryList();
+  const userMemberId = useRecoilValue(memberId);
+  const { mainCategoryList } = useGetMainCategoryList(userMemberId);
 
   const queryClient = useQueryClient();
   const router = useRouter();
