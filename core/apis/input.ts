@@ -4,9 +4,9 @@ import { PostCardInfo, PostKeywordInfo, PostSubTaskInfo, PostTaskInfo } from 'ty
 
 // ----- 대, 중, 소분류 조회 -----
 
-export const getCategories = async () => {
+export const getCategories = async (memberId: number) => {
   try {
-    const { data } = await client.get(`/categories`);
+    const { data } = await client.get(`/categories/${memberId}`);
     return data;
   } catch (error) {
     console.error(error);
