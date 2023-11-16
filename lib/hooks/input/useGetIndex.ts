@@ -3,8 +3,10 @@ import { InputCategoryInfo, InputSubTaskInfo, InputTaskInfo, KatchupResponse } f
 
 import { useQuery } from '@tanstack/react-query';
 
-export const useGetCategories = () => {
-  const { data, isLoading, error } = useQuery<KatchupResponse<InputCategoryInfo[]>>(['categories'], getCategories);
+export const useGetCategories = (memberId: number) => {
+  const { data, isLoading, error } = useQuery<KatchupResponse<InputCategoryInfo[]>>(['categories'], () =>
+    getCategories(memberId),
+  );
 
   return {
     categories: data?.data,
