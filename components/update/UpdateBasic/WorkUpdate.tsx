@@ -1,12 +1,12 @@
 import { ModalTwoButton } from 'components/common/Modal';
 import { MODAL_DELETE_ALL } from 'constants/modal';
 import { workInputState } from 'core/atom';
-import useModal from 'lib/hooks/useModal';
 import { IcKatchupLogo } from 'public/assets/icons';
 import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 
 import styled from '@emotion/styled';
+import useModal from 'lib/hooks/common/useModal';
 
 interface WorkUpdate {
   content: string;

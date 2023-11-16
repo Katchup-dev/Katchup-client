@@ -18,7 +18,6 @@ import { patchSharePermission } from 'core/apis/output';
 
 const OutputMain = ({ mainId }: { mainId: string }) => {
   const router = useRouter();
-  const router = useRouter();
   const userMemberId = useRecoilValue(memberId);
   const { mainCategoryList } = useGetMainCategoryList(userMemberId);
   const [middleCategoryId, setMiddleCategoryId] = useState<number>(0);
