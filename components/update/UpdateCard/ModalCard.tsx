@@ -59,7 +59,6 @@ const ModalCard = (props: ModalProps, { cardId }: { cardId: string }) => {
     };
 
     const result = await patchCard({ cardInfo: cardData, cardId: Number(router.query.cardId) });
-    console.log(result);
 
     if (result.status === 'SSS') {
       localStorage.setItem('toastMessage', '업무 카드가 수정되었어요.');
