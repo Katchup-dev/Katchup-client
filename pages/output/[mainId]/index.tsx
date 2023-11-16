@@ -4,19 +4,20 @@ import AddMiddleCategory from 'components/output/AddMiddleCategory';
 import MainCategoryList from 'components/output/MainCategoryList';
 import MiddleCategory from 'components/output/MiddleCategory';
 import { ShareModal } from 'components/share/ShareModal';
+import useModal from 'lib/hooks/common/useModal';
 import { useGetMainCategoryList } from 'lib/hooks/useGetMainCategoryList';
 import { useGetMiddleCategoryList } from 'lib/hooks/useGetMiddleCategory';
-import useModal from 'lib/hooks/useModal';
 import { useRouter } from 'next/router';
 import { IcMiddleCategoryMeatball, IcShare } from 'public/assets/icons';
 import { useEffect, useState } from 'react';
 import { mainCtxType, MiddleCategoryInfo } from 'types/output';
-
 import styled from '@emotion/styled';
 import { memberId } from 'core/atom';
 import { useRecoilValue } from 'recoil';
+import { patchSharePermission } from 'core/apis/output';
 
 const OutputMain = ({ mainId }: { mainId: string }) => {
+  const router = useRouter();
   const router = useRouter();
   const userMemberId = useRecoilValue(memberId);
   const { mainCategoryList } = useGetMainCategoryList(userMemberId);
@@ -25,12 +26,18 @@ const OutputMain = ({ mainId }: { mainId: string }) => {
   const [isEditMainCategoryOpen, setIsEditMainCategoryOpen] = useState(false);
 
   const { isShowing, toggle } = useModal();
-  const [isShareOn, setIsShareOn] = useState(true);
+  const [isShareOn, setIsShareOn] = useState(new Array(mainCategoryList?.length).fill(true));
   const [toastMessage, setToastMessage] = useState('');
   const [toastKey, setToastKey] = useState<number>();
 
-  const toggleShare = () => {
-    setIsShareOn(!isShareOn);
+  const toggleShare = async () => {
+    setIsShareOn((prevIsShareOn) => {
+      const updatedIsShareOn = [...prevIsShareOn];
+      updatedIsShareOn[Number(mainId)] = !prevIsShareOn[Number(mainId)];
+      return updatedIsShareOn;
+    });
+    const result = await patchSharePermission(mainCategoryList[Number(mainId)].categoryId);
+    console.log(mainCategoryList[Number(mainId)].categoryId, result);
   };
 
   const handleGoToWorkCard = (middleId: number) => {
@@ -67,7 +74,11 @@ const OutputMain = ({ mainId }: { mainId: string }) => {
             </StShrareBtn>
             <StShareModalWrapper>
               {isShowing && (
-                <ShareModal isShareOn={isShareOn} handleCopyClick={handleCopyClick} toggleShare={toggleShare} />
+                <ShareModal
+                  isShareOn={isShareOn[Number(mainId)]}
+                  handleCopyClick={handleCopyClick}
+                  toggleShare={toggleShare}
+                />
               )}
             </StShareModalWrapper>
           </header>

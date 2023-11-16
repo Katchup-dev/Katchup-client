@@ -106,3 +106,12 @@ export const getFileDownload = async (fileUUID: string, fileName: string) => {
     console.error(error);
   }
 };
+
+export const patchSharePermission = async (categoryId: number) => {
+  try {
+    const res = await client.patch(`/categories/${categoryId}/share`);
+    return res.data.data;
+  } catch (error) {
+    console.error(error);
+  }
+};

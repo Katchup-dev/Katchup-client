@@ -54,10 +54,11 @@ export interface KeywordInfo {
 }
 
 export interface FileInfo {
-  id: string;
-  originalName: string;
-  changedName: string;
-  size: string;
+  fileUUID: string;
+  fileOriginalName: string;
+  fileChangedName: string;
+  fileUploadDate: string;
+  size: 189277;
 }
 
 export interface FileListInfo {
@@ -69,10 +70,11 @@ export interface FileListInfo {
 }
 
 export interface ScreenshotInfo {
-  screenshotUUID: number;
-  stickerList: [];
-  screenshotUploadDate: string;
+   screenshotUUID: string;
+  screenshotName: string;
   screenshotUrl: string;
+  screenshotUploadDate: string;
+  stickerList: [];
 }
 
 export interface DetailInfo {

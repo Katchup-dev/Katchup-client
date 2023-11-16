@@ -2,8 +2,13 @@ import { ModalOneButton } from 'components/common/Modal';
 import { MODAL_FILE_SIZE } from 'constants/modal';
 import { deleteFile, getFilePresignedUrl, putFile } from 'core/apis/input';
 import { fileNameChangeState, fileSelectState } from 'core/atom';
-import useModal from 'lib/hooks/useModal';
-import { IcBtnDeleteFile, IcFileCheckbox, IcFileCheckboxAfter, IcKatchupLogo } from 'public/assets/icons';
+import useModal from 'lib/hooks/common/useModal';
+import {
+  IcBtnDeleteFile,
+  IcFileCheckbox,
+  IcFileCheckboxAfter,
+  IcKatchupLogo
+} from 'public/assets/icons';
 import { useRef, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { PostFileListInfo } from 'types/input';

@@ -1,6 +1,8 @@
 export { default as IcLogo } from './ic_logo.svg';
 export { default as IcMore } from './ic_more.svg';
 export { default as IcCheck } from './ic_check.svg';
+export { default as IcCheckBefore } from './ic_check_before.svg';
+export { default as IcCheckAfter } from './ic_check_after.svg';
 export { default as IcAddMiddle } from './ic_addMiddle.svg';
 export { default as IcAddMain } from './ic_addMain.svg';
 export { default as IcTrash } from './ic_trash.svg';
@@ -26,6 +28,8 @@ export { default as IcBtnAddIndex } from './ic_btn_addIndex.svg';
 export { default as IcMemo } from './ic_memo.svg';
 export { default as IcPencil } from './ic_pencil.svg';
 export { default as IcFolder } from './ic_folder.svg';
+export { default as IcBtnLogout } from './ic_btn_logout.svg';
+export { default as IcBtnProfile } from './ic_btn_profile.svg';
 export { default as IcGoogle } from './ic_google.svg';
 export { default as IcInsta } from './ic_insta.svg';
 export { default as IcDeleteWorkCard } from './ic_deleteWorkCard.svg';

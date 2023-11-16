@@ -1,8 +1,10 @@
 import { signup } from 'core/apis/auth';
 import { setTokens } from 'core/apis/token';
+import { tokenState } from 'core/atom';
 import { useRouter } from 'next/router';
 import { IcGoogle } from 'public/assets/icons';
 import { useEffect, useState } from 'react';
+import { useRecoilState } from 'recoil';
 import { AuthInfo } from 'types/auth';
 
 import styled from '@emotion/styled';
@@ -14,6 +16,7 @@ const LandingKatchupStart = () => {
   const router = useRouter();
   const [googleAccessToken, setGoogleAccessToken] = useState<string>();
   const setMemberId = useSetRecoilState(memberId);
+  const [, setToken] = useRecoilState(tokenState);
 
   const handleGoogleLogin = useGoogleLogin({
     onSuccess: (tokenResponse) => {
@@ -26,6 +29,7 @@ const LandingKatchupStart = () => {
       const { accessToken, refreshToken, memberId }: AuthInfo = await signup(googleAccessToken);
       setTokens(accessToken, refreshToken);
       setMemberId(memberId);
+      setToken(accessToken);
       router.push('/input/main');
     }
   };

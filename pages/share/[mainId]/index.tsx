@@ -1,9 +1,9 @@
 import MainCategoryList from 'components/share/MainCategoryList';
 import MiddleCategory from 'components/share/MiddleCategory';
 import NoMiddleCategory from 'components/share/NoMiddleCategory';
+import useModal from 'lib/hooks/common/useModal';
 import { useGetMainCategoryList } from 'lib/hooks/useGetMainCategoryList';
 import { useGetMiddleCategoryList } from 'lib/hooks/useGetMiddleCategory';
-import useModal from 'lib/hooks/useModal';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { mainCtxType, MiddleCategoryInfo } from 'types/output';
