@@ -13,9 +13,14 @@ interface ScreenshotUpdateProps {
 }
 
 const ScreenshotUpdate = (props: ScreenshotUpdateProps) => {
+  const { screenshotList } = props;
   const [inputScreenshot, setInputScreenshot] = useState<string>('');
   const screenshotInputRef = useRef<HTMLInputElement>(null);
   const [screenshotSelect, setScreenshotSelect] = useRecoilState(screenshotSelectState);
+
+  useEffect(() => {
+    setScreenshotSelect(screenshotList);
+  }, []);
 
   const [toastMessage, setToastMessage] = useState('');
   const [toastKey, setToastKey] = useState<number>();
