@@ -1,7 +1,7 @@
 import { client } from 'lib/axios';
 
-export const getMainCategoryList = async () => {
-  const { data } = await client.get(`/categories`);
+export const getMainCategoryList = async (memberId: number) => {
+  const { data } = await client.get(`/categories/${memberId}`);
   return data;
 };
 

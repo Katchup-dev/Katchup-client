@@ -9,10 +9,13 @@ import { useEffect, useState } from 'react';
 import { mainCtxType, MiddleCategoryInfo } from 'types/output';
 
 import styled from '@emotion/styled';
+import { useRecoilValue } from 'recoil';
+import { memberId } from 'core/atom';
 
 const OutputMain = ({ mainId }: { mainId: string }) => {
   const router = useRouter();
-  const { mainCategoryList } = useGetMainCategoryList(true);
+  const userMemberId = useRecoilValue(memberId);
+  const { mainCategoryList } = useGetMainCategoryList(userMemberId);
   const [middleCategoryId, setMiddleCategoryId] = useState<number>(0);
   const { middleCategoryList } = useGetMiddleCategoryList(middleCategoryId);
 

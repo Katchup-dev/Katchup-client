@@ -58,6 +58,7 @@ export interface PostScreenshotListInfo {
   screenshotUUID: string;
   screenshotName: string;
   screenshotUploadDate: string;
+  screenshotUrl?: string;
   stickerList: PostStickerListInfo[];
 }
 

@@ -1,32 +1,27 @@
-import styled from '@emotion/styled';
 import DeleteCategoryModal from 'components/Modal/DeleteCategoryModal';
 import { deleteWorkCards, getFileDownload } from 'core/apis/output';
 import { useRouter } from 'next/router';
-
 import { IcBack, IcSubLogo } from 'public/assets/icons';
 import { useState } from 'react';
+import { PostFileListInfo } from 'types/input';
 
-import { FileInfo } from 'types/output';
+import styled from '@emotion/styled';
+import { useRecoilState, useSetRecoilState } from 'recoil';
+import { idForUpdate } from 'core/atom';
 
 export interface DetailContentProps {
-  fileList: FileInfo[];
-  content: string;
+  fileList: PostFileListInfo[];
   cardId: number;
-}
-
-interface DeleteCategoryModalProps {
-  setIsMoreModalOpen?: (isMoreModalOpen: boolean) => void;
-  setIsDeleteMode?: (isDeleteMode: boolean) => void;
-  folderIdx?: number;
-  categoryType: string;
-  isOpen: boolean;
-  setIsOpen: (isOpen: boolean) => void;
+  middleId: string;
+  mainId: string;
+  content: string;
 }
 
 const DetailContent = (props: DetailContentProps) => {
-  const { fileList, content, cardId } = props;
+  const { fileList, content, cardId, middleId, mainId } = props;
   const router = useRouter();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [IdForUpdate, setIdForUpdate] = useRecoilState(idForUpdate);
 
   const handleFileDownload = async (id: string, name: string) => {
     try {
@@ -66,7 +61,10 @@ const DetailContent = (props: DetailContentProps) => {
             </div>
             <StFileWrapper>
               {fileList?.map((file) => (
-                <a download key={file.fileUUID} onClick={() => handleFileDownload(file.fileUUID, file.fileChangedName)}>
+                <a
+                  download
+                  key={file.fileUUID}
+                  onClick={() => handleFileDownload(file.fileUUID, file.fileChangedName as string)}>
                   <li>
                     {file.fileChangedName} <p>{file.size}MB</p>
                   </li>
@@ -80,7 +78,17 @@ const DetailContent = (props: DetailContentProps) => {
         <button type="button" onClick={() => setIsDeleteModalOpen(true)}>
           삭제하기
         </button>
-        <button type="button">수정하기</button>
+        <button
+          type="button"
+          onClick={() => {
+            setIdForUpdate({
+              mainId: mainId,
+              middleId: middleId,
+            });
+            router.push(`/update/${cardId}`);
+          }}>
+          수정하기
+        </button>
       </StButtonWrapper>
 
       {

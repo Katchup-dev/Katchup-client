@@ -8,6 +8,7 @@ import {
   PostFileListInfo,
   PostScreenshotListInfo,
 } from 'types/input';
+import { IdForUpdateType } from 'types/update';
 
 const { persistAtom } = recoilPersist();
 
@@ -91,4 +92,23 @@ export const fileNameChangeState = atom<boolean>({
 export const screenshotSelectState = atom<PostScreenshotListInfo[]>({
   key: 'screenshotSelect',
   default: [],
+});
+
+export const updateCardIdState = atom<number>({
+  key: 'updateCardId',
+  default: 0,
+});
+
+export const memberId = atom<number>({
+  key: `memberId`,
+  default: 0,
+  effects_UNSTABLE: [persistAtom],
+});
+
+export const idForUpdate = atom<IdForUpdateType>({
+  key: `IdForUpdate`,
+  default: {
+    mainId: '',
+    middleId: '',
+  },
 });

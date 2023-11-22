@@ -17,7 +17,7 @@ const ScreenshotOutput = (props: ScreenshotOutputProps) => {
       </div>
       <StScreenshot>
         {screenshotList?.map((screenshot: ScreenshotInfo) => (
-          <img src={screenshot.screenshotUrl} key={screenshot.screenshotUrl} />
+          <img src={screenshot.screenshotUrl} key={screenshot.screenshotUUID} />
         ))}
       </StScreenshot>
     </StScreenshotWrapper>

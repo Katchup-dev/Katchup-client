@@ -16,6 +16,12 @@ export interface middleCtxType {
   };
 }
 
+export interface cardCtxType {
+  query: {
+    cardId: string;
+  };
+}
+
 export interface SelectMainCategoryInfo {
   mainCategory: string;
   categoryId: number;
@@ -55,10 +61,39 @@ export interface FileInfo {
   size: 189277;
 }
 
+export interface FileListInfo {
+  fileUUID: string;
+  fileOriginalName: string;
+  fileChangedName: string;
+  fileUploadDate: string;
+  size: number;
+}
+
 export interface ScreenshotInfo {
-  screenshotUUID: string;
+   screenshotUUID: string;
   screenshotName: string;
   screenshotUrl: string;
   screenshotUploadDate: string;
   stickerList: [];
+}
+
+export interface DetailInfo {
+  cardId: number;
+  categoryId: number;
+  categoryName: string;
+  taskId: number;
+  taskName: string;
+  subTaskId: number;
+  subTaskName: string;
+  content: string;
+  note: string;
+  keywordList: [
+    {
+      keywordId: number;
+      name: string;
+      color: string;
+    },
+  ];
+  screenshotList: ScreenshotInfo[];
+  fileList: FileListInfo[];
 }
