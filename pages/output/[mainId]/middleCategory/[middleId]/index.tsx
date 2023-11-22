@@ -24,7 +24,7 @@ import { memberId } from 'core/atom';
 
 const WorkCardPage = ({ mainId, middleId }: { mainId: string; middleId: string }) => {
   const userMemberId = useRecoilValue(memberId);
-  const { mainCategoryList } = useGetMainCategoryList(userMemberId);
+  const { mainCategoryList } = useGetMainCategoryList(userMemberId, false);
   const { middleCategoryList } = useGetMiddleCategoryList(
     mainCategoryList && mainCategoryList[Number(mainId)]?.categoryId,
   );
@@ -63,8 +63,8 @@ const WorkCardPage = ({ mainId, middleId }: { mainId: string; middleId: string }
           <StSettingButtonWrapper>
             {isDeleteMode ? (
               <>
-                <button>
-                  <IcDeleteChosenWorkCards onClick={() => setIsDeleteModalOpen(true)} />
+                <button onClick={() => setIsDeleteModalOpen(true)}>
+                  <IcDeleteChosenWorkCards />
                 </button>
                 <button onClick={() => setIsDeleteMode(false)}>
                   <IcCancelDeleteMiddleCategory />

@@ -15,7 +15,7 @@ export interface MainCategoryListProps {
 const MainCategoryList = ({ mainId }: { mainId: string }) => {
   const router = useRouter();
   const userMemberId = useRecoilValue(memberId);
-  const { mainCategoryList } = useGetMainCategoryList(userMemberId);
+  const { mainCategoryList } = useGetMainCategoryList(userMemberId, true);
 
   function initializeArray(arrSize: number) {
     const arr = new Array(arrSize).fill(false);

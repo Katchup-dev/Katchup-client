@@ -18,7 +18,7 @@ export interface MainCategoryListProps {
 const MainCategoryList = ({ mainId }: { mainId: string }) => {
   const router = useRouter();
   const userMemberId = useRecoilValue(memberId);
-  const { mainCategoryList } = useGetMainCategoryList(userMemberId);
+  const { mainCategoryList } = useGetMainCategoryList(userMemberId, false);
   const [isAddModalShowing, setIsAddModalShowing] = useState(false);
   const [isDeleteModalShowing, setIsDeleteModalShowing] = useState(false);
 

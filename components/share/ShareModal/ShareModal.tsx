@@ -5,17 +5,18 @@ import styled from '@emotion/styled';
 
 interface ShareModalProps {
   isShareOn: boolean;
-  toggleShare: () => void;
+  toggleShare: (mainId: string) => void;
   handleCopyClick: () => void;
+  mainId: string;
 }
 
-const ShareModal = ({ isShareOn, toggleShare, handleCopyClick }: ShareModalProps) => {
+const ShareModal = ({ mainId, isShareOn, toggleShare, handleCopyClick }: ShareModalProps) => {
   return (
     <>
       <StShareModal>
         <StModalTitle>
           <p>공유 기능 활성화</p>
-          <button type="button" onClick={toggleShare}>
+          <button type="button" onClick={() => toggleShare(mainId)}>
             {isShareOn ? <IcToggleAfter /> : <IcToggleBefore />}
           </button>
         </StModalTitle>

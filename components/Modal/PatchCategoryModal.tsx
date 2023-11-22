@@ -30,7 +30,7 @@ const PatchCategoryModal = (props: PatchCategoryModalProps & { mainId: string })
   }, []);
 
   const userMemberId = useRecoilValue(memberId);
-  const { mainCategoryList } = useGetMainCategoryList(userMemberId);
+  const { mainCategoryList } = useGetMainCategoryList(userMemberId, false);
   const { middleCategoryList } = useGetMiddleCategoryList(
     mainCategoryList && mainCategoryList[Number(mainId)]?.categoryId,
   );

@@ -19,7 +19,7 @@ import { patchSharePermission } from 'core/apis/output';
 const OutputMain = ({ mainId }: { mainId: string }) => {
   const router = useRouter();
   const userMemberId = useRecoilValue(memberId);
-  const { mainCategoryList } = useGetMainCategoryList(userMemberId);
+  const { mainCategoryList } = useGetMainCategoryList(userMemberId, false);
   const [middleCategoryId, setMiddleCategoryId] = useState<number>(0);
   const { middleCategoryList } = useGetMiddleCategoryList(middleCategoryId);
   const [isEditMainCategoryOpen, setIsEditMainCategoryOpen] = useState(false);
@@ -29,7 +29,7 @@ const OutputMain = ({ mainId }: { mainId: string }) => {
   const [toastMessage, setToastMessage] = useState('');
   const [toastKey, setToastKey] = useState<number>();
 
-  const toggleShare = async () => {
+  const toggleShare = async (mainId: string) => {
     setIsShareOn((prevIsShareOn) => {
       const updatedIsShareOn = [...prevIsShareOn];
       updatedIsShareOn[Number(mainId)] = !prevIsShareOn[Number(mainId)];
@@ -73,9 +73,10 @@ const OutputMain = ({ mainId }: { mainId: string }) => {
             <StShareModalWrapper>
               {isShowing && (
                 <ShareModal
+                  mainId={mainId}
                   isShareOn={isShareOn[Number(mainId)]}
                   handleCopyClick={handleCopyClick}
-                  toggleShare={toggleShare}
+                  toggleShare={() => toggleShare(mainId)}
                 />
               )}
             </StShareModalWrapper>
