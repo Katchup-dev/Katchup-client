@@ -14,7 +14,6 @@ import { useRecoilState } from 'recoil';
 import { deleteWorkCard } from 'core/atom';
 
 export interface WorkCardProps {
-  mainId: string;
   cardId: number;
   keywordList: KeywordInfo[];
   cardName: string;
@@ -22,10 +21,13 @@ export interface WorkCardProps {
   existFile: boolean;
   isDeleteWorkCard: boolean;
   existScreenshot: boolean;
+  middleId: string;
+  mainId: string;
 }
 
-const WorkCard = (props: WorkCardProps, { mainId }: { mainId: string }) => {
-  const { cardId, keywordList, cardName, content, existFile, isDeleteWorkCard, existScreenshot } = props;
+const WorkCard = (props: WorkCardProps) => {
+  const { cardId, keywordList, cardName, content, existFile, mainId, middleId, isDeleteWorkCard, existScreenshot } =
+    props;
   const [isWorkCardChosen, setIsWorkCardChosen] = useState(false);
   const [deleteWorkCardIdxArr, setDeleteWorkCardIdxArr] = useRecoilState(deleteWorkCard);
 
@@ -38,7 +40,6 @@ const WorkCard = (props: WorkCardProps, { mainId }: { mainId: string }) => {
       ? setDeleteWorkCardIdxArr((prev) => [...prev, cardId])
       : setDeleteWorkCardIdxArr((prev) => prev.filter((item) => item !== cardId));
   }, [isWorkCardChosen]);
-
   return (
     <StWorkCardWrapper>
       <StCardNumber>
@@ -75,7 +76,7 @@ const WorkCard = (props: WorkCardProps, { mainId }: { mainId: string }) => {
 
       <Link
         href={{
-          pathname: `/output/${mainId}/middleCategory/detail/${cardId}`,
+          pathname: `/output/${mainId}/middleCategory/${middleId}/detail/${cardId}`,
           query: { content: content },
         }}>
         <StMoreDetailBtn>

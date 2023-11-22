@@ -3,6 +3,7 @@ export interface AuthInfo {
   accessToken: string;
   refreshToken: string;
   isNewUser: boolean;
+  memberId: number;
 }
 
 export interface UserProfileInfo {

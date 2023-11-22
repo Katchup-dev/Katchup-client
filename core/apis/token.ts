@@ -32,7 +32,7 @@ const renewTokens = async (config: AxiosRequestConfig): Promise<void> => {
     setAuthHeaders(config, newAccessToken, newRefreshToken);
   } catch (err) {
     console.error('Error renewing token:', err);
-    window.location.href = '/';
+    // window.location.href = '/';
   }
 };
 

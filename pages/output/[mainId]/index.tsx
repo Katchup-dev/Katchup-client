@@ -11,13 +11,15 @@ import { useRouter } from 'next/router';
 import { IcMiddleCategoryMeatball, IcShare } from 'public/assets/icons';
 import { useEffect, useState } from 'react';
 import { mainCtxType, MiddleCategoryInfo } from 'types/output';
-
 import styled from '@emotion/styled';
+import { memberId } from 'core/atom';
+import { useRecoilValue } from 'recoil';
 import { patchSharePermission } from 'core/apis/output';
 
 const OutputMain = ({ mainId }: { mainId: string }) => {
   const router = useRouter();
-  const { mainCategoryList } = useGetMainCategoryList(false);
+  const userMemberId = useRecoilValue(memberId);
+  const { mainCategoryList } = useGetMainCategoryList(userMemberId);
   const [middleCategoryId, setMiddleCategoryId] = useState<number>(0);
   const { middleCategoryList } = useGetMiddleCategoryList(middleCategoryId);
   const [isEditMainCategoryOpen, setIsEditMainCategoryOpen] = useState(false);
@@ -34,7 +36,6 @@ const OutputMain = ({ mainId }: { mainId: string }) => {
       return updatedIsShareOn;
     });
     const result = await patchSharePermission(mainCategoryList[Number(mainId)].categoryId);
-    console.log(mainCategoryList[Number(mainId)].categoryId, result);
   };
 
   const handleGoToWorkCard = (middleId: number) => {

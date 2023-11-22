@@ -2,8 +2,8 @@ import { useQuery } from '@tanstack/react-query';
 import { getMainCategoryList } from 'core/apis/output';
 import { mainCategoryInfo } from 'types/output';
 
-export const useGetMainCategoryList = (isSharePage: boolean) => {
-  const { data, error } = useQuery(['main-category'], () => getMainCategoryList(), {
+export const useGetMainCategoryList = (memberId: number, isSharePage?: boolean) => {
+  const { data, error } = useQuery(['main-category'], () => getMainCategoryList(memberId), {
     retry: 3,
   });
 

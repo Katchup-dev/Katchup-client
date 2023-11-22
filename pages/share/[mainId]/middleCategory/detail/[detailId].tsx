@@ -7,14 +7,14 @@ import styled from '@emotion/styled';
 
 const detail = () => {
   const router = useRouter();
-  const { detailId, content } = router.query;
+  const { detailId } = router.query;
 
   const { detailPageInfo } = useGetDetailPage(Number(detailId));
 
   return (
     <>
       <StWrapper>
-        <DetailContent fileList={detailPageInfo?.fileList} content={content as string} />
+        <DetailContent fileList={detailPageInfo?.fileList} content={detailPageInfo?.content} />
         {detailPageInfo?.screenshotList.length > 0 && (
           <ScreenshotOutput screenshotList={detailPageInfo?.screenshotList} />
         )}

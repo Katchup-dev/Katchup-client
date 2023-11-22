@@ -4,6 +4,8 @@ import React, { useEffect, useState } from 'react';
 import { mainCategoryInfo } from 'types/output';
 
 import styled from '@emotion/styled';
+import { useRecoilValue } from 'recoil';
+import { memberId } from 'core/atom';
 
 export interface MainCategoryListProps {
   currentMain: string;
@@ -12,7 +14,8 @@ export interface MainCategoryListProps {
 
 const MainCategoryList = ({ mainId }: { mainId: string }) => {
   const router = useRouter();
-  const { mainCategoryList } = useGetMainCategoryList(true);
+  const userMemberId = useRecoilValue(memberId);
+  const { mainCategoryList } = useGetMainCategoryList(userMemberId);
 
   function initializeArray(arrSize: number) {
     const arr = new Array(arrSize).fill(false);

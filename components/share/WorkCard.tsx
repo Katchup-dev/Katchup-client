@@ -78,7 +78,6 @@ const WorkCard = (props: WorkCardProps, { mainId }: { mainId: string }) => {
       <Link
         href={{
           pathname: `/share/${mainId}/middleCategory/detail/${cardId}`,
-          query: { content: content },
         }}>
         <StMoreDetailBtn>
           <IcMoreDetail />

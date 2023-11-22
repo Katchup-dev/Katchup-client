@@ -5,7 +5,7 @@ export default function Document() {
   return (
     <Html lang="ko">
       <Head>
-        <title>Katchup</title>
+        {/* <title>Katchup</title> */}
         <link rel="icon" href="/favicon.svg" />
       </Head>
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />

@@ -8,6 +8,7 @@ export interface ScreenshotOutputProps {
 
 const ScreenshotOutput = (props: ScreenshotOutputProps) => {
   const { screenshotList } = props;
+  console.log(screenshotList);
   return (
     <StScreenshotWrapper>
       <div>
