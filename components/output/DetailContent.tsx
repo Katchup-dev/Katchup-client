@@ -6,26 +6,22 @@ import { useState } from 'react';
 import { PostFileListInfo } from 'types/input';
 
 import styled from '@emotion/styled';
+import { useRecoilState, useSetRecoilState } from 'recoil';
+import { idForUpdate } from 'core/atom';
 
 export interface DetailContentProps {
   fileList: PostFileListInfo[];
-  content: string;
   cardId: number;
-}
-
-interface DeleteCategoryModalProps {
-  setIsMoreModalOpen?: (isMoreModalOpen: boolean) => void;
-  setIsDeleteMode?: (isDeleteMode: boolean) => void;
-  folderIdx?: number;
-  categoryType: string;
-  isOpen: boolean;
-  setIsOpen: (isOpen: boolean) => void;
+  middleId: string;
+  mainId: string;
+  content: string;
 }
 
 const DetailContent = (props: DetailContentProps) => {
-  const { fileList, content, cardId } = props;
+  const { fileList, content, cardId, middleId, mainId } = props;
   const router = useRouter();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [IdForUpdate, setIdForUpdate] = useRecoilState(idForUpdate);
 
   const handleFileDownload = async (id: string, name: string) => {
     try {
@@ -39,8 +35,6 @@ const DetailContent = (props: DetailContentProps) => {
       console.error(error);
     }
   };
-
-  console.log('fileList', fileList);
 
   return (
     <StDetailWrapper>
@@ -84,7 +78,15 @@ const DetailContent = (props: DetailContentProps) => {
         <button type="button" onClick={() => setIsDeleteModalOpen(true)}>
           삭제하기
         </button>
-        <button type="button" onClick={() => router.push(`/update/${cardId}`)}>
+        <button
+          type="button"
+          onClick={() => {
+            setIdForUpdate({
+              mainId: mainId,
+              middleId: middleId,
+            });
+            router.push(`/update/${cardId}`);
+          }}>
           수정하기
         </button>
       </StButtonWrapper>
