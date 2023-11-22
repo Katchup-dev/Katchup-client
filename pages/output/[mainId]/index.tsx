@@ -36,7 +36,6 @@ const OutputMain = ({ mainId }: { mainId: string }) => {
       return updatedIsShareOn;
     });
     const result = await patchSharePermission(mainCategoryList[Number(mainId)].categoryId);
-    console.log(mainCategoryList[Number(mainId)].categoryId, result);
   };
 
   const handleGoToWorkCard = (middleId: number) => {
