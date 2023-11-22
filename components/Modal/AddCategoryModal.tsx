@@ -23,7 +23,7 @@ const AddCategoryModal = (props: AddCategoryModalProps & { mainId: string }) => 
   const [isCategoryAvailable, setIsCategoryAvailable] = useState(false);
 
   const userMemberId = useRecoilValue(memberId);
-  const { mainCategoryList } = useGetMainCategoryList(userMemberId);
+  const { mainCategoryList } = useGetMainCategoryList(userMemberId, false);
 
   const categoryId = mainCategoryList && mainCategoryList[Number(mainId)]?.categoryId;
   const { middleCategoryList } = useGetMiddleCategoryList(categoryId);

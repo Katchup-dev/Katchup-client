@@ -20,7 +20,7 @@ interface DeleteCategoryModalProps {
 export default function DeleteCategoryModal(props: DeleteCategoryModalProps & { mainId?: string }) {
   const { setIsMoreModalOpen, setIsDeleteMode, folderIdx, categoryType, isOpen, setIsOpen, mainId, workCardId } = props;
   const userMemberId = useRecoilValue(memberId);
-  const { mainCategoryList } = useGetMainCategoryList(userMemberId);
+  const { mainCategoryList } = useGetMainCategoryList(userMemberId, false);
 
   const queryClient = useQueryClient();
   const router = useRouter();

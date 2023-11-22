@@ -15,7 +15,7 @@ import { memberId } from 'core/atom';
 const OutputMain = ({ mainId }: { mainId: string }) => {
   const router = useRouter();
   const userMemberId = useRecoilValue(memberId);
-  const { mainCategoryList } = useGetMainCategoryList(userMemberId);
+  const { mainCategoryList } = useGetMainCategoryList(userMemberId, true);
   const [middleCategoryId, setMiddleCategoryId] = useState<number>(0);
   const { middleCategoryList } = useGetMiddleCategoryList(middleCategoryId);
 
