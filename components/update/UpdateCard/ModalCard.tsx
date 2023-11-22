@@ -3,6 +3,7 @@ import {
   etcState,
   fileNameChangeState,
   fileSelectState,
+  idForUpdate,
   keywordSelectState,
   screenshotSelectState,
   subTaskSelectState,
@@ -25,6 +26,7 @@ import { useRouter } from 'next/router';
 interface ModalProps {
   isShowing: boolean;
   handleHide: React.MouseEventHandler;
+  cardId?: number;
 }
 
 const ModalCard = (props: ModalProps, { cardId }: { cardId: string }) => {
@@ -33,6 +35,7 @@ const ModalCard = (props: ModalProps, { cardId }: { cardId: string }) => {
   const router = useRouter();
 
   const { detailPageInfo } = useGetDetailPage(Number(cardId));
+  const IdForUpdate = useRecoilValue(idForUpdate);
 
   const currentWorkInput = useRecoilValue(workInputState);
   const selectedCategory = useRecoilValue(categorySelectState);
@@ -63,6 +66,7 @@ const ModalCard = (props: ModalProps, { cardId }: { cardId: string }) => {
     if (result.status === 'SSS') {
       localStorage.setItem('toastMessage', '업무 카드가 수정되었어요.');
       window.location.reload();
+      // router.push(`/output/${IdForUpdate.mainId}/middleCategory/${IdForUpdate.middleId}/detail/${cardId}`);
     }
   };
 
@@ -103,14 +107,6 @@ const ModalCard = (props: ModalProps, { cardId }: { cardId: string }) => {
     </>
   );
 };
-
-// export const getServerSideProps = async (ctx: cardCtxType) => {
-//   const cardId = ctx.query.cardId;
-
-//   return {
-//     props: { cardId },
-//   };
-// };
 
 export default ModalCard;
 

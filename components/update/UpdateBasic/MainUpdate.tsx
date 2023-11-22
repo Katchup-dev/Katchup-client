@@ -64,7 +64,7 @@ const MainUpdate = (props: MainUpdateProps) => {
                 다음 단계
               </button>
             </StNextBtn>
-            <CardModal isShowing={cardModal.isShowing} handleHide={cardModal.toggle} />
+            <CardModal cardId={cardId} isShowing={cardModal.isShowing} handleHide={cardModal.toggle} />
             <StToastWrapper>
               <Toast key={toastKey} message={toastMessage} isCheck />
             </StToastWrapper>
